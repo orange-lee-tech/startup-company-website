@@ -1,60 +1,71 @@
 import Image from "next/image";
-import SectionTitle from "../Common/SectionTitle";
+import Link from "next/link";
 
-const checkIcon = (
-  <svg width="16" height="13" viewBox="0 0 16 13" className="fill-current">
-    <path d="M5.8535 12.6631C5.65824 12.8584 5.34166 12.8584 5.1464 12.6631L0.678505 8.1952C0.483242 7.99994 0.483242 7.68336 0.678505 7.4881L2.32921 5.83739C2.52467 5.64193 2.84166 5.64216 3.03684 5.83791L5.14622 7.95354C5.34147 8.14936 5.65859 8.14952 5.85403 7.95388L13.3797 0.420561C13.575 0.22513 13.8917 0.225051 14.087 0.420383L15.7381 2.07143C15.9333 2.26669 15.9333 2.58327 15.7381 2.77854L5.8535 12.6631Z" />
-  </svg>
-);
+const capabilities = [
+  {
+    title: "全链条服务",
+    description: "覆盖升学申请、科研文书、面试辅导与就业陪跑。",
+  },
+  {
+    title: "一对一定制",
+    description: "围绕学员背景、目标方向和时间周期制定路径。",
+  },
+  {
+    title: "合规透明",
+    description: "不夸大承诺，不模板化包装，尊重学员长期发展。",
+  },
+];
 
 const AboutSectionOne = () => {
-  const List = ({ text }: { text: string }) => (
-    <p className="text-body-color mb-5 flex items-center text-lg font-medium">
-      <span className="bg-primary/10 text-primary mr-4 flex h-[30px] w-[30px] items-center justify-center rounded-md">
-        {checkIcon}
-      </span>
-      {text}
-    </p>
-  );
-
   return (
-    <section id="about" className="pt-16 md:pt-20 lg:pt-28">
+    <section id="about" className="bg-white py-14 dark:bg-gray-dark md:py-16 lg:py-20">
       <div className="container">
-        <div className="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
-          <div className="-mx-4 flex flex-wrap items-center">
-            <div className="w-full px-4 lg:w-1/2">
-              <SectionTitle
-                title="关于九辰教育"
-                paragraph="九辰教育咨询有限公司是深耕学业深造与高端就业全链条服务的专业教育机构，围绕保研、海外本硕、国内申博、海外全奖博士、本科就业与高端就业，提供从背景提升、文书辅导、科研指导到面试模拟、求职内推的闭环服务。"
-                mb="44px"
-              />
+        <div className="grid grid-cols-1 gap-10 border-b border-body-color/10 pb-14 dark:border-white/10 lg:grid-cols-12 lg:items-center">
+          <div className="lg:col-span-7">
+            <p className="mb-4 text-base font-semibold text-primary">
+              关于九辰
+            </p>
 
-              <div className="mb-12 max-w-[570px] lg:mb-0">
-                <div className="mx-[-12px] flex flex-wrap">
-                  <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                    <List text="本硕博升学与就业全链条服务" />
-                    <List text="一对一长期陪伴式规划" />
-                    <List text="按学员背景量身定制路径" />
-                  </div>
+            <h2 className="mb-5 max-w-[760px] text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
+              不做模板化包装，只做可执行的升学与就业规划。
+            </h2>
 
-                  <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                    <List text="阶段目标可量化、可跟进" />
-                    <List text="升学申请与就业求职闭环护航" />
-                    <List text="不夸大承诺，坚持透明诚信" />
-                  </div>
+            <p className="mb-8 max-w-[760px] text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
+              九辰教育咨询有限公司专注本硕博升学与高端就业服务，帮助学员看清目标、拆解路径、推进关键动作。
+            </p>
+
+            <div className="grid grid-cols-1 border border-body-color/10 dark:border-white/10 md:grid-cols-3">
+              {capabilities.map((item) => (
+                <div
+                  key={item.title}
+                  className="border-b border-body-color/10 p-5 last:border-b-0 dark:border-white/10 md:border-b-0 md:border-r md:last:border-r-0"
+                >
+                  <h3 className="mb-3 text-lg font-bold text-black dark:text-white">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+                    {item.description}
+                  </p>
                 </div>
-              </div>
+              ))}
             </div>
 
-            <div className="w-full px-4 lg:w-1/2">
-              <div className="relative mx-auto aspect-video max-w-[560px] overflow-hidden rounded-2xl bg-gray-light shadow-three lg:mr-0">
-                <Image
-                  src="/startup-company-website/images/jiuchen/jiuchen-one-on-one-consultation.png"
-                  alt="九辰教育一对一咨询服务"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+            <Link
+              href="/about"
+              className="mt-7 inline-flex text-base font-semibold text-primary hover:underline"
+            >
+              了解九辰教育
+            </Link>
+          </div>
+
+          <div className="lg:col-span-5">
+            <div className="relative aspect-[4/3] overflow-hidden border border-body-color/10 bg-gray-light dark:border-white/10">
+              <Image
+                src="/startup-company-website/images/jiuchen/jiuchen-one-on-one-consultation.png"
+                alt="九辰教育一对一咨询服务"
+                fill
+                className="object-cover"
+              />
             </div>
           </div>
         </div>
