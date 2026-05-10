@@ -24,8 +24,8 @@ const AboutSectionOne = () => {
           <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 lg:w-1/2">
               <SectionTitle
-                title="Crafted for Startup, SaaS and Business Sites."
-                paragraph="The main ‘thrust’ is to focus on educating attendees on how to best protect highly vulnerable business applications with interactive panel discussions and roundtables."
+                title="关于九辰教育"
+                paragraph="九辰教育咨询有限公司是深耕学业深造与高端就业全链条服务的专业教育机构，围绕保研、海外本硕、国内申博、海外全奖博士、本科就业与高端就业，提供从背景提升、文书辅导、科研指导到面试模拟、求职内推的闭环服务。"
                 mb="44px"
               />
 
@@ -35,15 +35,15 @@ const AboutSectionOne = () => {
               >
                 <div className="mx-[-12px] flex flex-wrap">
                   <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                    <List text="Premium quality" />
-                    <List text="Tailwind CSS" />
-                    <List text="Use for lifetime" />
+                    <List text="本硕博升学与就业全链条服务" />
+                    <List text="一对一长期陪伴式规划" />
+                    <List text="按学员背景量身定制路径" />
                   </div>
 
                   <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                    <List text="Next.js" />
-                    <List text="Rich documentation" />
-                    <List text="Developer friendly" />
+                    <List text="阶段目标可量化、可跟进" />
+                    <List text="升学申请与就业求职闭环护航" />
+                    <List text="不夸大承诺，坚持透明诚信" />
                   </div>
                 </div>
               </div>
