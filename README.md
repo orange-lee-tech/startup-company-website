@@ -1,81 +1,141 @@
-# Startup - Free Next.js Startup Website Template
+# 九辰本硕博升学就业官网
 
-Startup is a free, open-source, and premium-quality [**Next.js startup website template**](https://nextjstemplates.com/templates/startup) that comes with everything you need to launch a startup, business, or SaaS website, including all essential sections, components, and pages.
+本项目为九辰教育咨询有限公司企业门户网站，用于展示品牌介绍、六大核心服务赛道、常见问题、咨询入口与后续资讯内容。
 
-If you're looking for a high-quality and visually appealing, feature-rich Next.js Template for your next startup, SaaS, or business website, this is the perfect choice and starting point for you!
+网站当前阶段以静态展示为主，后续可根据业务需要扩展为动态内容管理网站。
 
-### ✨ Key Features
+## 项目定位
 
-- Crafted for Startup and SaaS Business
-- Next.js and Tailwind CSS
-- All Essential Business Sections and Pages
-- High-quality and Clean Design
-- Dark and Light Version
-- TypeScript Support
-and Much More ...
+网站展示名称：九辰本硕博升学就业
 
-### 🙌 Detailed comparison between the Free and Pro versions of Startup
+公司主体：九辰教育咨询有限公司
 
-| Feature             | Free | Pro |
-|---------------------|------------|----------|
-| Next.js Landing Page             | ✅ Yes      | ✅ Yes      |
-| All The Integrations - Auth, DB, Payments, Blog and many more ...             | ❌ No      | ✅ Yes |
-| Homepage Variations             | 1      | 2 |
-| Additional SaaS Pages and Components             | ❌ No      | ✅ Yes |
-| Functional Blog with Sanity       | ❌ No      | ✅ Yes |
-| Use with Commercial Projects            | ✅ Yes      | ✅ Yes      |
-| Lifetime Free Updates             | ✅ Yes      | ✅ Yes |
-| Email Support       | ❌ No         | ✅ Yes       |
-| Community Support         | ✅ Yes         | ✅ Yes       |
+品牌简称：九辰教育
 
-### [🔥 Get Startup Pro](https://nextjstemplates.com/templates/saas-starter-startup)
+品牌口号：以智启学，以仁伴行
 
-[![Startup Pro](https://raw.githubusercontent.com/NextJSTemplates/startup-nextjs/main/startup-pro.webp)](https://nextjstemplates.com/templates/saas-starter-startup)
+核心关键词：长期陪伴式、量身定制、可量化目标
 
-Startup Pro - Expertly crafted for fully-functional, high-performing SaaS startup websites. Comes with with Authentication, Database, Blog, and all the essential integrations necessary for SaaS business sites.
+## 当前展示内容
 
-- [🚀 View Free Demo](https://startup.nextjstemplates.com/)
+首页当前包含以下模块：
 
-- [🚀 View Pro Demo](https://startup-pro.nextjstemplates.com/)
+- 首屏品牌展示
+- 六大核心服务赛道
+- 关于九辰教育
+- 教育初心与服务理念
+- 常见问题与服务说明
+- 免费咨询入口
+- 页脚导航与联系方式
 
-- [📦 Download](https://nextjstemplates.com/templates/startup)
+## 六大核心服务赛道
 
-- [🔥 Get Pro](https://nextjstemplates.com/templates/saas-starter-startup)
+- 保研一站式升学
+- 海外本硕申请
+- 国内博士申请
+- 海外全奖博士申请
+- 本科就业陪跑
+- 高端就业定制
 
-- [🔌 Documentation](https://nextjstemplates.com/docs)
+## 技术栈
 
-### ⚡ Deploy Now
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- GitHub Pages
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FNextJSTemplates%2Fstartup-nextjs)
+## 本地运行
 
-[![Deploy with Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/NextJSTemplates/startup-nextjs)
+安装依赖：
 
-### 📄 License
+npm install
 
-Startup is 100% free and open-source, feel free to use with your personal and commercial projects.
+启动开发环境：
 
-### 💜 Support
+npm run dev
 
-If you like the template, please star this repository to inspire the team to create more stuff like this and reach more users like you!
+构建项目：
 
-### ✨ Explore and Download - Free [Next.js Templates](https://nextjstemplates.com)
+npm run build
+## 内容维护说明
 
-### Update Log
+主要页面内容位于：
 
-**03 December 2025**
+src/app
+src/components
 
-- Upgrade to Next.js 16
-- Fixed video modal issue
+首页结构位于：
 
-**10 April 2025**
+src/app/page.tsx
 
-- Fix peer deps issue with Next.js 15
-- Upgrade to tailwind v4
-- Refactored blog cards for handling edge cases(text ellipsis on bio, keeping author details at the bottom etc.)
-- Re-wrote blog details page with icons separation, fallback author image and better markup.
-- Fixed duplicate key errors on homepage.
-- Separated icons on theme-switcher button, and refactored scroll-to-top button.
+首页主要模块包括：
 
-**29 Jan 2025**
+src/components/Hero
+src/components/Features
+src/components/About
+src/components/Blog
+src/components/Contact
+src/components/Footer
 
-- Upgraded to Next.js 15
+服务赛道数据位于：
+
+src/components/Features/featuresData.tsx
+
+常见问题卡片数据位于：
+
+src/components/Blog/blogData.tsx
+
+## 当前待补充内容
+
+以下内容仍需在发布前继续完善：
+
+Logo 正式文件
+咨询二维码
+公开电话
+公开邮箱
+公开地址
+学员案例
+导师或教研团队资料
+资讯详情页内容
+隐私政策与合规说明页面
+## 合规说明
+
+网站内容应避免使用“保录取”“包 offer”“百分百上岸”“包过”“必过”等绝对化或夸大宣传表述。
+
+所有学员案例、录取截图、聊天记录、Offer 材料等内容，发布前必须获得授权，并进行脱敏处理，隐藏姓名、院校、企业、联系方式等可识别信息。
+
+视觉规范
+
+当前建议品牌色：
+
+主色：克莱因蓝 #002FA7
+辅色：温暖黄 #F5C542
+页面背景：白色、浅蓝灰、浅暖黄分区组合
+
+黄色仅用于强调，不建议大面积铺满。
+
+## 部署说明
+
+当前项目使用 GitHub Pages 部署。
+
+每次修改并提交到 main 分支后，GitHub Actions 会自动构建并部署。
+
+如页面未及时更新，可前往：
+
+Actions
+
+查看最新部署状态。
+
+## 项目状态
+
+当前状态：静态企业门户编辑阶段。
+
+下一阶段计划：
+
+完善 Logo 与图片素材
+完善资讯详情页
+补充案例与团队内容
+完善咨询表单接收方式
+增加隐私政策与合规页面
+根据需要扩展动态内容管理能力
