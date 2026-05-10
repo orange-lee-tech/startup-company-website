@@ -24,8 +24,8 @@ const Header = () => {
   return (
     <header
       className={`header top-0 left-0 z-40 flex w-full items-center ${sticky
-          ? "dark:bg-gray-dark dark:shadow-sticky-dark shadow-sticky fixed z-9999 bg-white/80 backdrop-blur-xs transition"
-          : "absolute bg-transparent"
+        ? "dark:bg-gray-dark dark:shadow-sticky-dark shadow-sticky fixed z-9999 bg-white/80 backdrop-blur-xs transition"
+        : "absolute bg-transparent"
         }`}
     >
       <div className="container">
@@ -33,17 +33,17 @@ const Header = () => {
           <div className="w-60 max-w-full px-4 xl:mr-12">
             <Link
               href="/"
-              className={`header-logo flex items-center gap-3 ${sticky ? "py-5 lg:py-2" : "py-8"}`}
+              className={`header-logo flex items-center gap-2 sm:gap-3 ${sticky ? "py-5 lg:py-2" : "py-8"}`}
             >
               <Image
                 src="/startup-company-website/images/jiuchen/jiuchen-logo-notext.png"
                 alt="九辰教育咨询"
                 width={44}
                 height={44}
-                className="h-11 w-11 object-contain"
+                className="h-9 w-9 sm:h-11 sm:w-11 object-contain"
                 priority
               />
-              <span className="text-lg font-bold leading-tight text-black dark:text-white">
+              <span className="text-lg font-bold leading-tight text-black dark:text-white whitespace-nowrap">
                 九辰教育
               </span>
             </Link>
@@ -74,8 +74,8 @@ const Header = () => {
                         href={menuItem.path}
                         onClick={() => setNavbarOpen(false)}
                         className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${usePathName === menuItem.path
-                            ? "text-primary dark:text-white"
-                            : "text-dark hover:text-primary dark:text-white/70 dark:hover:text-white"
+                          ? "text-primary dark:text-white"
+                          : "text-dark hover:text-primary dark:text-white/70 dark:hover:text-white"
                           }`}
                       >
                         {menuItem.title}
