@@ -18,13 +18,13 @@ export default function Home() {
   return (
     <>
       <ScrollUp />
-      <Hero />
-      <Features />
-      <AboutSectionOne />
-      <AboutSectionTwo />
-      <Testimonials />
-      <Blog />
-      <Contact />
+<Hero />
+<Features />
+<AboutSectionOne />
+<AboutSectionTwo />
+<Testimonials />
+<Blog />
+<Contact />
     </>
   );
 }

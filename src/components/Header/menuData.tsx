@@ -15,8 +15,8 @@ const menuData: Menu[] = [
   },
   {
     id: 3,
-    title: "资讯动态",
-    path: "/blog",
+    title: "服务说明",
+    path: "/services",
     newTab: false,
   },
   {
