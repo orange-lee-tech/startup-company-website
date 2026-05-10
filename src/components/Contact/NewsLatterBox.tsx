@@ -8,34 +8,48 @@ const NewsLatterBox = () => {
   return (
     <div className="shadow-three dark:bg-gray-dark relative z-10 rounded-xs bg-white p-8 sm:p-11 lg:p-8 xl:p-11">
       <h3 className="mb-4 text-2xl leading-tight font-bold text-black dark:text-white">
-        Subscribe to receive future updates
+        咨询到服务启动流程
       </h3>
       <p className="border-body-color/25 text-body-color mb-11 border-b pb-11 text-base leading-relaxed dark:border-white/25">
-        Lorem ipsum dolor sited Sed ullam corper consectur adipiscing Mae ornare
-        massa quis lectus.
+        提交咨询信息后，我们会先进行免费背景评估，再根据目标方向制定专属方案，确认后签约启动全程陪跑服务。
       </p>
-      <div>
-        <input
-          type="text"
-          name="name"
-          placeholder="Enter your name"
-          className="border-stroke text-body-color focus:border-primary dark:text-body-color-dark dark:shadow-two dark:focus:border-primary mb-4 w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base outline-hidden dark:border-transparent dark:bg-[#2C303B] dark:focus:shadow-none"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter your email"
-          className="border-stroke text-body-color focus:border-primary dark:text-body-color-dark dark:shadow-two dark:focus:border-primary mb-4 w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base outline-hidden dark:border-transparent dark:bg-[#2C303B] dark:focus:shadow-none"
-        />
-        <input
-          type="submit"
-          value="Subscribe"
-          className="bg-primary shadow-submit hover:bg-primary/90 dark:shadow-submit-dark mb-5 flex w-full cursor-pointer items-center justify-center rounded-xs px-9 py-4 text-base font-medium text-white duration-300"
-        />
-        <p className="text-body-color dark:text-body-color-dark text-center text-base leading-relaxed">
-          No spam guaranteed, So please don’t send any spam mail.
-        </p>
-      </div>
+      <div className="space-y-5">
+  <div>
+    <p className="mb-1 text-base font-semibold text-black dark:text-white">
+      1. 提交咨询信息
+    </p>
+    <p className="text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+      填写称呼、联系方式、当前阶段与意向服务。
+    </p>
+  </div>
+
+  <div>
+    <p className="mb-1 text-base font-semibold text-black dark:text-white">
+      2. 免费一对一评估
+    </p>
+    <p className="text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+      规划老师了解背景、目标和当前困难，初步判断可提升空间。
+    </p>
+  </div>
+
+  <div>
+    <p className="mb-1 text-base font-semibold text-black dark:text-white">
+      3. 定制方案沟通
+    </p>
+    <p className="text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+      根据保研、留学、申博或就业目标，明确服务内容、周期与执行节奏。
+    </p>
+  </div>
+
+  <div>
+    <p className="mb-1 text-base font-semibold text-black dark:text-white">
+      4. 签约启动陪跑
+    </p>
+    <p className="text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+      确认方案后签署服务协议，组建专属服务团队，全程推进与复盘。
+    </p>
+  </div>
+</div>
 
       <div>
         <span className="absolute top-7 left-2">
