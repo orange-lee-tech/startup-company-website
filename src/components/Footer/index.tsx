@@ -11,11 +11,11 @@ const Footer = () => {
                 href="/"
                 className="mb-6 inline-block text-2xl font-bold text-black dark:text-white"
               >
-                长沙九辰教育咨询有限公司
+                九辰教育咨询有限公司
               </Link>
 
               <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                专注教育咨询服务展示，致力于以清晰、专业、可信的方式呈现企业形象、服务内容与联系渠道。
+                专注本硕博升学与就业陪跑服务，以长期陪伴式、量身定制、可量化目标为核心，帮助学员走清晰路径，拿到理想结果。
               </p>
             </div>
           </div>
@@ -70,7 +70,7 @@ const Footer = () => {
               </h2>
 
               <p className="mb-4 text-base text-body-color dark:text-body-color-dark">
-                公司名称：长沙九辰教育咨询有限公司
+                公司名称：九辰教育咨询有限公司
               </p>
               <p className="mb-4 text-base text-body-color dark:text-body-color-dark">
                 联系电话：待补充
@@ -89,7 +89,7 @@ const Footer = () => {
 
         <div className="py-8">
           <p className="text-center text-base text-body-color dark:text-white">
-            © {new Date().getFullYear()} 长沙九辰教育咨询有限公司. All rights reserved.
+            © {new Date().getFullYear()} 九辰教育咨询有限公司. All rights reserved.
           </p>
         </div>
       </div>
