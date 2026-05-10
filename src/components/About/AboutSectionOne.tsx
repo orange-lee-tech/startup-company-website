@@ -49,7 +49,7 @@ const AboutSectionOne = () => {
             <div className="w-full px-4 lg:w-1/2">
               <div className="relative mx-auto aspect-video max-w-[560px] overflow-hidden rounded-2xl bg-gray-light shadow-three lg:mr-0">
                 <Image
-                  src="/images/jiuchen/jiuchen-one-on-one-consultation.png"
+                  src="/startup-company-website/images/jiuchen/jiuchen-one-on-one-consultation.png"
                   alt="九辰教育一对一咨询服务"
                   fill
                   className="object-cover"

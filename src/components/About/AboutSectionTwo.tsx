@@ -8,7 +8,7 @@ const AboutSectionTwo = () => {
           <div className="w-full px-4 lg:w-1/2">
             <div className="relative mx-auto mb-12 aspect-video max-w-[560px] overflow-hidden rounded-2xl bg-white shadow-three lg:m-0">
               <Image
-                src="/images/jiuchen/jiuchen-growth-path.png"
+                src="/startup-company-website/images/jiuchen/jiuchen-growth-path.png"
                 alt="九辰教育成长路径规划"
                 fill
                 className="object-cover"

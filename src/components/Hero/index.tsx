@@ -50,7 +50,7 @@ const Hero = () => {
           <div className="mt-12 w-full px-4 lg:mt-0 lg:w-1/2">
             <div className="relative mx-auto aspect-video max-w-[620px] overflow-hidden rounded-2xl bg-white shadow-three">
               <Image
-                src="/images/jiuchen/jiuchen-education-planning.png"
+                src="/startup-company-website/images/jiuchen/jiuchen-education-planning.png"
                 alt="九辰教育规划服务"
                 fill
                 priority
