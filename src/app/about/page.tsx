@@ -5,17 +5,17 @@ import Breadcrumb from "@/components/Common/Breadcrumb";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Page | Free Next.js Template for Startup and SaaS",
-  description: "This is About Page for Startup Nextjs Template",
-  // other metadata
+  title: "关于九辰 | 九辰本硕博升学就业",
+  description:
+    "了解九辰教育咨询有限公司的服务理念、教育初心与本硕博升学就业全链条陪跑服务。",
 };
 
 const AboutPage = () => {
   return (
     <>
       <Breadcrumb
-        pageName="About Page"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In varius eros eget sapien consectetur ultrices. Ut quis dapibus libero."
+        pageName="关于九辰"
+        description="九辰教育咨询有限公司专注本硕博升学与就业陪跑服务，以长期陪伴式、量身定制、可量化目标为核心，陪伴学员走清晰路径。"
       />
       <AboutSectionOne />
       <AboutSectionTwo />
