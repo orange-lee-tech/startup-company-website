@@ -23,33 +23,29 @@ const Header = () => {
 
   return (
     <header
-      className={`header top-0 left-0 z-40 flex w-full items-center ${
-        sticky
+      className={`header top-0 left-0 z-40 flex w-full items-center ${sticky
           ? "dark:bg-gray-dark dark:shadow-sticky-dark shadow-sticky fixed z-9999 bg-white/80 backdrop-blur-xs transition"
           : "absolute bg-transparent"
-      }`}
+        }`}
     >
       <div className="container">
         <div className="relative -mx-4 flex items-center justify-between">
           <div className="w-60 max-w-full px-4 xl:mr-12">
             <Link
               href="/"
-              className={`header-logo block w-full ${sticky ? "py-5 lg:py-2" : "py-8"}`}
+              className={`header-logo flex items-center gap-3 ${sticky ? "py-5 lg:py-2" : "py-8"}`}
             >
               <Image
-                src="/images/logo/logo-2.svg"
-                alt="长沙九辰教育咨询有限公司"
-                width={140}
-                height={30}
-                className="w-full dark:hidden"
+                src="/startup-company-website/images/jiuchen/jiuchen-logo-notext.png"
+                alt="九辰教育咨询"
+                width={44}
+                height={44}
+                className="h-11 w-11 object-contain"
+                priority
               />
-              <Image
-                src="/images/logo/logo.svg"
-                alt="长沙九辰教育咨询有限公司"
-                width={140}
-                height={30}
-                className="hidden w-full dark:block"
-              />
+              <span className="text-lg font-bold leading-tight text-black dark:text-white">
+                九辰教育
+              </span>
             </Link>
           </div>
 
@@ -68,9 +64,8 @@ const Header = () => {
 
               <nav
                 id="navbarCollapse"
-                className={`navbar border-body-color/50 dark:border-body-color/20 dark:bg-dark absolute right-0 z-30 w-[250px] rounded border-[.5px] bg-white px-6 py-4 duration-300 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
-                  navbarOpen ? "visibility top-full opacity-100" : "invisible top-[120%] opacity-0"
-                }`}
+                className={`navbar border-body-color/50 dark:border-body-color/20 dark:bg-dark absolute right-0 z-30 w-[250px] rounded border-[.5px] bg-white px-6 py-4 duration-300 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${navbarOpen ? "visibility top-full opacity-100" : "invisible top-[120%] opacity-0"
+                  }`}
               >
                 <ul className="block lg:flex lg:space-x-12">
                   {menuData.map((menuItem) => (
@@ -78,11 +73,10 @@ const Header = () => {
                       <Link
                         href={menuItem.path}
                         onClick={() => setNavbarOpen(false)}
-                        className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${
-                          usePathName === menuItem.path
+                        className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${usePathName === menuItem.path
                             ? "text-primary dark:text-white"
                             : "text-dark hover:text-primary dark:text-white/70 dark:hover:text-white"
-                        }`}
+                          }`}
                       >
                         {menuItem.title}
                       </Link>
