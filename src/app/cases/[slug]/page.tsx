@@ -1,5 +1,9 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import { casePages, getCasePage } from "@/data/routePages";
+import { getCasesByCategory } from "@/data/cases";
+import {
+  casePages,
+  getCasePage,
+} from "@/data/routePages";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -41,6 +45,8 @@ const CaseCategoryPage = async ({
     notFound();
   }
 
+  const cases = getCasesByCategory(slug as Parameters<typeof getCasesByCategory>[0]);
+
   return (
     <>
       <Breadcrumb
@@ -50,7 +56,7 @@ const CaseCategoryPage = async ({
 
       <section className="bg-white py-16 dark:bg-gray-dark md:py-20 lg:py-28">
         <div className="container">
-          <div className="mx-auto max-w-[960px]">
+          <div className="mb-12 max-w-[960px]">
             <p className="mb-4 text-base font-semibold text-primary">
               案例详情
             </p>
@@ -59,11 +65,11 @@ const CaseCategoryPage = async ({
               {page.title}
             </h1>
 
-            <p className="mb-10 text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
+            <p className="mb-8 text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
               {page.description}
             </p>
 
-            <div className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {page.highlights.map((item) => (
                 <div
                   key={item}
@@ -73,14 +79,82 @@ const CaseCategoryPage = async ({
                 </div>
               ))}
             </div>
+          </div>
 
+          {cases.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              {cases.map((item) => (
+                <article
+                  key={item.id}
+                  className="rounded-2xl border border-body-color/10 bg-gray-light p-7 transition hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-bg-color-dark dark:hover:bg-gray-dark"
+                >
+                  <div className="mb-5 flex flex-wrap items-center gap-3">
+                    <span className="rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                      {item.studentLabel}
+                    </span>
+
+                    {item.tags.slice(0, 3).map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-white px-4 py-2 text-sm font-medium text-body-color dark:bg-white/10 dark:text-body-color-dark"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <h2 className="mb-5 text-2xl font-bold leading-tight text-black dark:text-white">
+                    {item.title}
+                  </h2>
+
+                  <div className="space-y-5">
+                    <div>
+                      <h3 className="mb-2 text-base font-bold text-black dark:text-white">
+                        学员背景
+                      </h3>
+                      <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
+                        {item.background}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="mb-2 text-base font-bold text-black dark:text-white">
+                        初始问题
+                      </h3>
+                      <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
+                        {item.challenge}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="mb-2 text-base font-bold text-black dark:text-white">
+                        服务过程
+                      </h3>
+                      <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
+                        {item.service}
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border-l-4 border-yellow bg-white p-5 dark:bg-white/5">
+                      <h3 className="mb-2 text-base font-bold text-black dark:text-white">
+                        最终结果
+                      </h3>
+                      <p className="text-base font-semibold leading-relaxed text-black dark:text-white">
+                        {item.result}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
             <div className="rounded-2xl border border-body-color/10 bg-gray-light p-8 dark:border-white/10 dark:bg-bg-color-dark">
               <h2 className="mb-4 text-2xl font-bold text-black dark:text-white">
                 案例内容整理中
               </h2>
 
               <p className="mb-6 text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                后续将在此页面补充该方向的代表案例。所有案例发布前应完成授权确认与脱敏处理，避免展示学员真实姓名、完整院校、企业、联系方式等敏感信息。
+                当前方向的案例素材仍在整理与脱敏确认中。后续将补充经授权展示的代表案例。
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -99,7 +173,30 @@ const CaseCategoryPage = async ({
                 </Link>
               </div>
             </div>
-          </div>
+          )}
+
+          {cases.length > 0 && (
+            <div className="mt-12 rounded-2xl bg-primary p-8 text-white md:p-10">
+              <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
+                <div>
+                  <h2 className="mb-3 text-2xl font-bold">
+                    想了解与你背景相近的规划路径？
+                  </h2>
+
+                  <p className="max-w-[700px] text-base leading-relaxed text-white/80">
+                    你可以提交当前阶段、目标方向与主要困惑，九辰规划老师将进行免费一对一初步评估。
+                  </p>
+                </div>
+
+                <Link
+                  href="/contact"
+                  className="inline-flex shrink-0 items-center justify-center rounded-xs bg-white px-8 py-4 text-base font-semibold text-primary transition hover:bg-white/90"
+                >
+                  预约免费评估
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </>
