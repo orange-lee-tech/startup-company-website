@@ -61,7 +61,7 @@ const TeacherCarousel = () => {
               aria-label="上一组师资"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-body-color/20 text-black transition hover:border-primary hover:bg-primary hover:text-white dark:border-white/20 dark:text-white"
             >
-              ←
+              <span className="text-2xl font-bold leading-none">←</span>
             </button>
 
             <button
@@ -70,7 +70,7 @@ const TeacherCarousel = () => {
               aria-label="下一组师资"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-body-color/20 text-black transition hover:border-primary hover:bg-primary hover:text-white dark:border-white/20 dark:text-white"
             >
-              →
+              <span className="text-2xl font-bold leading-none">→</span>
             </button>
           </div>
         </div>
