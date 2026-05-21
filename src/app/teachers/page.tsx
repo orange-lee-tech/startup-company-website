@@ -39,15 +39,15 @@ const TeachersPage = () => {
                 key={teacher.id}
                 className="group h-full overflow-hidden rounded-2xl border border-body-color/10 bg-gray-light transition hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-bg-color-dark dark:hover:bg-gray-dark"
               >
-                <div className="relative h-[260px] w-full overflow-hidden bg-[#EEF3FF] dark:bg-gray-dark">
-                  <Image
-                    src={teacher.portraitImage}
-                    alt={teacher.name}
-                    fill
-                    sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover object-top transition duration-500 group-hover:scale-105"
-                  />
-                </div>
+                <div className="relative flex h-[320px] w-full items-end justify-center overflow-hidden bg-linear-to-b from-[#EEF3FF] to-white px-6 pt-6 dark:from-gray-dark dark:to-bg-color-dark">
+  <Image
+    src={teacher.portraitImage}
+    alt={teacher.name}
+    fill
+    sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+    className="object-contain object-bottom transition duration-500 group-hover:scale-105"
+  />
+</div>
 
                 <div className="p-6">
                   <h2 className="mb-2 text-2xl font-bold text-black transition group-hover:text-primary dark:text-white">
