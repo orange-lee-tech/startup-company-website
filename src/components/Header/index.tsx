@@ -1,49 +1,11 @@
 "use client";
 
+import { siteNavItems } from "@/data/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
-
-const primaryNav = [
-  {
-    title: "首页",
-    path: "/",
-  },
-  {
-    title: "服务说明",
-    path: "/services",
-  },
-];
-
-const fullNav = [
-  {
-    title: "关于九辰",
-    description: "了解九辰教育的服务理念与机构定位",
-    path: "/about",
-  },
-  {
-    title: "服务说明",
-    description: "查看六大核心服务赛道与适用人群",
-    path: "/services",
-  },
-  {
-    title: "常见问题",
-    description: "了解流程、导师匹配、合规边界等问题",
-    path: "/blog",
-  },
-  {
-    title: "学员案例",
-    description: "案例资料整理中，后续展示授权脱敏成果",
-    path: "/#testimonials",
-  },
-  {
-    title: "免费咨询",
-    description: "提交当前阶段与目标方向，预约初步评估",
-    path: "/contact",
-  },
-];
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -52,6 +14,14 @@ const Header = () => {
 
   const isHome = pathname === "/";
   const isTransparent = isHome && !sticky;
+
+  const isActivePath = (path: string) => {
+    if (path === "/") {
+      return pathname === "/";
+    }
+
+    return pathname === path || pathname.startsWith(`${path}/`);
+  };
 
   useEffect(() => {
     const handleStickyNavbar = () => setSticky(window.scrollY >= 80);
@@ -107,15 +77,16 @@ const Header = () => {
 
           <div className="flex flex-1 items-center justify-end px-4">
             <nav className="hidden lg:block">
-              <ul className="flex items-center gap-10">
-                {primaryNav.map((item) => {
-                  const active = pathname === item.path;
+              <ul className="flex items-center gap-8">
+                {siteNavItems.map((item) => {
+                  const active = isActivePath(item.path);
+                  const hasChildren = Boolean(item.children?.length);
 
                   return (
-                    <li key={item.path}>
+                    <li key={item.path} className="group relative">
                       <Link
                         href={item.path}
-                        className={`text-base font-medium transition ${
+                        className={`flex items-center gap-1.5 text-base font-medium transition ${
                           isTransparent
                             ? active
                               ? "text-yellow"
@@ -125,28 +96,62 @@ const Header = () => {
                               : "text-dark hover:text-primary dark:text-white/75 dark:hover:text-white"
                         }`}
                       >
-                        {item.title}
+                        <span>{item.title}</span>
+
+                        {hasChildren && (
+                          <svg
+                            className="h-4 w-4 transition group-hover:rotate-180"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
                       </Link>
+
+                      {hasChildren && (
+                        <div className="pointer-events-none absolute left-1/2 top-full z-50 w-[260px] -translate-x-1/2 pt-4 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:opacity-100">
+                          <div className="rounded-xl border border-body-color/10 bg-white p-3 shadow-three dark:border-white/10 dark:bg-gray-dark">
+                            {item.children?.map((child) => {
+                              const childActive = isActivePath(child.path);
+
+                              return (
+                                <Link
+                                  key={child.path}
+                                  href={child.path}
+                                  className={`block rounded-lg px-4 py-3 transition ${
+                                    childActive
+                                      ? "bg-primary/10 text-primary"
+                                      : "hover:bg-primary/5"
+                                  }`}
+                                >
+                                  <span className="block text-base font-semibold text-black dark:text-white">
+                                    {child.title}
+                                  </span>
+
+                                  {child.description && (
+                                    <span className="mt-1 block text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+                                      {child.description}
+                                    </span>
+                                  )}
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </li>
                   );
                 })}
               </ul>
             </nav>
 
-            <div className="ml-6 hidden items-center md:flex">
-              <Link
-                href="/contact"
-                className={`rounded-md px-7 py-3 text-base font-semibold transition ${
-                  isTransparent
-                    ? "bg-yellow text-[#07142F] hover:bg-yellow/90"
-                    : "bg-primary text-white hover:bg-primary/90"
-                }`}
-              >
-                联系咨询
-              </Link>
-            </div>
-
-            <div className="ml-4 hidden md:block">
+            <div className="ml-5 hidden md:block">
               <ThemeToggler />
             </div>
 
@@ -155,7 +160,7 @@ const Header = () => {
               onClick={() => setMenuOpen((open) => !open)}
               aria-label="打开全站导航"
               aria-expanded={menuOpen}
-              className={`ml-4 flex h-11 w-11 items-center justify-center border transition ${
+              className={`ml-4 flex h-11 w-11 items-center justify-center border transition lg:hidden ${
                 isTransparent
                   ? "border-white/25 text-white hover:bg-white/10"
                   : "border-body-color/20 text-black hover:border-primary hover:text-primary dark:border-white/20 dark:text-white"
@@ -182,11 +187,9 @@ const Header = () => {
           </div>
 
           {menuOpen && (
-            <div className="absolute right-4 top-full mt-3 w-[min(92vw,460px)] border border-body-color/10 bg-white p-6 shadow-three dark:border-white/10 dark:bg-gray-dark">
+            <div className="absolute right-4 top-full mt-3 w-[min(92vw,460px)] border border-body-color/10 bg-white p-6 shadow-three dark:border-white/10 dark:bg-gray-dark lg:hidden">
               <div className="mb-5 flex items-center justify-between">
-                <p className="text-sm font-semibold text-primary">
-                  全站导航
-                </p>
+                <p className="text-sm font-semibold text-primary">全站导航</p>
 
                 <button
                   type="button"
@@ -197,31 +200,56 @@ const Header = () => {
                 </button>
               </div>
 
-              <div className="space-y-1">
-                {fullNav.map((item) => (
-                  <Link
-                    key={item.path}
-                    href={item.path}
-                    onClick={() => setMenuOpen(false)}
-                    className="block border-b border-body-color/10 py-4 last:border-b-0 dark:border-white/10"
-                  >
-                    <span className="mb-1 block text-lg font-bold text-black transition hover:text-primary dark:text-white">
-                      {item.title}
-                    </span>
-                    <span className="block text-sm leading-relaxed text-body-color dark:text-body-color-dark">
-                      {item.description}
-                    </span>
-                  </Link>
-                ))}
-              </div>
+              <div className="space-y-2">
+                {siteNavItems.map((item) => {
+                  const active = isActivePath(item.path);
+                  const hasChildren = Boolean(item.children?.length);
 
-              <Link
-                href="/contact"
-                onClick={() => setMenuOpen(false)}
-                className="mt-6 flex w-full items-center justify-center bg-primary px-6 py-4 text-base font-semibold text-white transition hover:bg-primary/90"
-              >
-                预约免费评估
-              </Link>
+                  return (
+                    <div
+                      key={item.path}
+                      className="border-b border-body-color/10 pb-3 last:border-b-0 dark:border-white/10"
+                    >
+                      <Link
+                        href={item.path}
+                        onClick={() => setMenuOpen(false)}
+                        className="block py-2"
+                      >
+                        <span
+                          className={`mb-1 block text-lg font-bold transition ${
+                            active
+                              ? "text-primary"
+                              : "text-black hover:text-primary dark:text-white"
+                          }`}
+                        >
+                          {item.title}
+                        </span>
+
+                        {item.description && (
+                          <span className="block text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+                            {item.description}
+                          </span>
+                        )}
+                      </Link>
+
+                      {hasChildren && (
+                        <div className="mt-2 grid grid-cols-2 gap-2">
+                          {item.children?.map((child) => (
+                            <Link
+                              key={child.path}
+                              href={child.path}
+                              onClick={() => setMenuOpen(false)}
+                              className="rounded-lg bg-primary/5 px-3 py-2 text-sm font-medium text-dark transition hover:bg-primary/10 hover:text-primary dark:text-white"
+                            >
+                              {child.title}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
