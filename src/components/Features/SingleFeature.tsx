@@ -41,12 +41,12 @@ const cardThemes = [
 ];
 
 const SingleFeature = ({ feature }: { feature: Feature }) => {
-  const { id, title, audience, keywords } = feature;
+  const { id, title, audience, keywords, path} = feature;
   const theme = cardThemes[(id - 1) % cardThemes.length];
 
   return (
     <Link
-      href="/services"
+      href={path}
       className={`group relative block min-h-[260px] bg-white p-6 transition duration-300 dark:bg-gray-dark ${theme.hover}`}
     >
       <span
@@ -62,7 +62,7 @@ const SingleFeature = ({ feature }: { feature: Feature }) => {
         </span>
 
         <span className="text-sm font-medium text-body-color transition group-hover:text-current dark:text-body-color-dark">
-          进入说明
+          查看详情
         </span>
       </div>
 

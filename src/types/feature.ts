@@ -3,4 +3,5 @@ export type Feature = {
   title: string;
   audience: string;
   keywords: string[];
+  path: string;
 };
