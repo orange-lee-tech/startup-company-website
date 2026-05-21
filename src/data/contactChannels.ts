@@ -3,6 +3,7 @@ export type ContactChannel = {
   title: string;
   description: string;
   image: string;
+  account?: string;
 };
 
 const contactImageBase = "/startup-company-website/images/contact";
@@ -25,5 +26,6 @@ export const contactChannels: ContactChannel[] = [
     title: "抖音",
     description: "关注抖音账号，快速了解九辰教育服务与内容更新。",
     image: `${contactImageBase}/douyin.png`,
+    account: "67544071749",
   },
 ];
