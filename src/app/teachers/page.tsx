@@ -1,10 +1,12 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { teachers } from "@/data/teachers";
+import Image from "next/image";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "师资 | 九辰本硕博升学就业",
   description:
-    "九辰教育导师与教研团队总览，后续展示老师照片、姓名、学校或机构名称及职称。",
+    "九辰教育导师与教研团队总览，展示老师照片、姓名、学校或机构名称及职称。",
 };
 
 const TeachersPage = () => {
@@ -12,7 +14,7 @@ const TeachersPage = () => {
     <>
       <Breadcrumb
         pageName="师资"
-        description="展示九辰教育导师与教研团队。当前页面先搭建总览骨架，后续将接入老师照片、姓名、学校或机构名称与职称。"
+        description="展示九辰教育导师与教研团队。总览页仅展示老师照片、姓名、学校或机构名称与职称；若老师有更多可公开信息，后续将单独设置个人详情页。"
       />
 
       <section className="bg-white py-16 dark:bg-gray-dark md:py-20 lg:py-28">
@@ -27,18 +29,41 @@ const TeachersPage = () => {
             </h1>
 
             <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-              后续此页面仅展示老师照片、姓名、学校或机构名称、职称。若某位老师有更多可展示信息，再单独建立个人详情页。
+              以下信息用于展示导师资源覆盖范围。当前总览页只展示基础信息，涉及个人履历、成果介绍等更多内容，后续根据授权情况再进入个人详情页。
             </p>
           </div>
 
-          <div className="rounded-2xl border border-body-color/10 bg-gray-light p-8 dark:border-white/10 dark:bg-bg-color-dark">
-            <h2 className="mb-4 text-2xl font-bold text-black dark:text-white">
-              师资资料整理中
-            </h2>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {teachers.map((teacher) => (
+              <div
+                key={teacher.id}
+                className="group h-full overflow-hidden rounded-2xl border border-body-color/10 bg-gray-light transition hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-bg-color-dark dark:hover:bg-gray-dark"
+              >
+                <div className="relative h-[260px] w-full overflow-hidden bg-[#EEF3FF] dark:bg-gray-dark">
+                  <Image
+                    src={teacher.portraitImage}
+                    alt={teacher.name}
+                    fill
+                    sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover object-top transition duration-500 group-hover:scale-105"
+                  />
+                </div>
 
-            <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-              下一轮将新增师资数据文件，并将老师卡片接入本页面与首页横向轮播组件。
-            </p>
+                <div className="p-6">
+                  <h2 className="mb-2 text-2xl font-bold text-black transition group-hover:text-primary dark:text-white">
+                    {teacher.name}
+                  </h2>
+
+                  <p className="mb-3 text-base font-semibold text-primary">
+                    {teacher.title}
+                  </p>
+
+                  <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
+                    {teacher.school}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
