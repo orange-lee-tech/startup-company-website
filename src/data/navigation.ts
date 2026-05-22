@@ -46,34 +46,24 @@ export const serviceNavItems: NavChild[] = [
 
 export const caseNavItems: NavChild[] = [
   {
-    title: "保研",
+    title: "保研辅导",
     path: "/cases/baoyan",
     description: "推免入营、拟录取与升学去向案例",
   },
   {
-    title: "海外本硕",
-    path: "/cases/overseas-undergrad-master",
+    title: "留学申请",
+    path: "/cases/study-abroad",
     description: "海外本科、硕士申请结果案例",
   },
   {
-    title: "国内博士",
-    path: "/cases/domestic-phd",
-    description: "国内博士申请与录取案例",
+    title: "博士申请",
+    path: "/cases/phd-application",
+    description: "国内申博、海外 PhD 与全奖申请案例",
   },
   {
-    title: "海外全奖博士",
-    path: "/cases/overseas-funded-phd",
-    description: "海外 PhD 与全奖录取案例",
-  },
-  {
-    title: "本科就业",
-    path: "/cases/undergrad-career",
-    description: "本科就业陪跑与 offer 案例",
-  },
-  {
-    title: "高端就业",
-    path: "/cases/elite-career",
-    description: "名企、金融、咨询、国央企等高端就业案例",
+    title: "就业辅导",
+    path: "/cases/career-coaching",
+    description: "本科就业、名企、金融、咨询、国央企等案例",
   },
 ];
 

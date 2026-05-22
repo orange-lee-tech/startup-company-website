@@ -53,45 +53,31 @@ export const servicePages: RoutePage[] = [
 export const casePages: RoutePage[] = [
   {
     slug: "baoyan",
-    title: "保研",
+    title: "保研辅导",
     description:
       "展示保研方向学员在背景提升、夏令营入营、预推免申请、最终去向等方面的代表性案例。",
     highlights: ["入营院校", "科研竞赛", "最终去向", "背景提升"],
   },
   {
-    slug: "overseas-undergrad-master",
-    title: "海外本硕",
+    slug: "study-abroad",
+    title: "留学申请",
     description:
       "展示海外本科、硕士申请方向的代表性案例，后续将按地区、院校层次、专业方向进一步整理。",
     highlights: ["海外申请", "选校定位", "文书申请", "录取结果"],
   },
   {
-    slug: "domestic-phd",
-    title: "国内博士",
+    slug: "phd-application",
+    title: "博士申请",
     description:
-      "展示国内博士申请方向的代表性案例，包括背景评估、博导匹配、研究计划、复试辅导与录取结果。",
+      "展示国内博士与海外全奖博士申请方向的代表性案例，包括背景评估、导师匹配、研究计划、套磁沟通、面试辅导与录取结果。",
     highlights: ["导师匹配", "研究计划", "科研补强", "博士录取"],
   },
   {
-    slug: "overseas-funded-phd",
-    title: "海外全奖博士",
+    slug: "career-coaching",
+    title: "就业辅导",
     description:
-      "展示海外 PhD 与全额奖学金申请方向的代表性案例，后续将按国家地区、专业方向与奖学金类型整理。",
-    highlights: ["海外 PhD", "全奖申请", "套磁沟通", "英文面试"],
-  },
-  {
-    slug: "undergrad-career",
-    title: "本科就业",
-    description:
-      "展示本科就业陪跑方向的代表性案例，包括职业定位、简历优化、面试训练、投递策略与 offer 结果。",
+      "展示本科就业与高端就业方向的代表性案例，覆盖职业定位、简历优化、面试训练、投递策略与 offer 结果。",
     highlights: ["职业定位", "简历优化", "面试训练", "offer 结果"],
-  },
-  {
-    slug: "elite-career",
-    title: "高端就业",
-    description:
-      "展示高端就业方向的代表性案例，覆盖金融、咨询、名企、国企央企、大厂等目标岗位。",
-    highlights: ["名企 offer", "金融咨询", "国央企", "高端岗位"],
   },
 ];
 

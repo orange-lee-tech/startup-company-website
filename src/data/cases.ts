@@ -1,10 +1,8 @@
 export type CaseCategory =
   | "baoyan"
-  | "overseas-undergrad-master"
-  | "domestic-phd"
-  | "overseas-funded-phd"
-  | "undergrad-career"
-  | "elite-career";
+  | "study-abroad"
+  | "phd-application"
+  | "career-coaching";
 
 export type StudentCase = {
   id: string;
@@ -87,7 +85,7 @@ export const studentCases: StudentCase[] = [
 
   {
     id: "domestic-phd-01",
-    category: "domestic-phd",
+    category: "phd-application",
     title: "艺术设计与书法背景，提前接触目标博导",
     studentLabel: "某艺术方向硕士",
     background: "本科为艺术设计方向，硕士阶段聚焦书法与艺术教育，语言成绩较好。",
@@ -100,7 +98,7 @@ export const studentCases: StudentCase[] = [
   },
   {
     id: "domestic-phd-02",
-    category: "domestic-phd",
+    category: "phd-application",
     title: "计算机硕士背景，补齐独立科研成果短板",
     studentLabel: "某计算机方向硕士",
     background: "本科与硕士均为计算机相关专业，硕士期间参与多个人工智能研究项目。",
@@ -113,7 +111,7 @@ export const studentCases: StudentCase[] = [
   },
   {
     id: "domestic-phd-03",
-    category: "domestic-phd",
+    category: "phd-application",
     title: "生命科学背景转向生物信息学方向",
     studentLabel: "某生命科学方向硕士",
     background: "本科为生物科学方向，硕士阶段为生命科学相关专业。",
@@ -126,7 +124,7 @@ export const studentCases: StudentCase[] = [
   },
   {
     id: "domestic-phd-04",
-    category: "domestic-phd",
+    category: "phd-application",
     title: "地理信息背景，转向遥感技术研究",
     studentLabel: "某地理信息方向硕士",
     background: "本科为地理科学方向，硕士阶段聚焦地理信息科学。",
@@ -139,7 +137,7 @@ export const studentCases: StudentCase[] = [
   },
   {
     id: "domestic-phd-05",
-    category: "domestic-phd",
+    category: "phd-application",
     title: "材料科学背景，聚焦新能源材料申博",
     studentLabel: "某材料方向硕士",
     background: "本科为材料化学方向，硕士阶段为材料科学与工程方向。",
@@ -153,7 +151,7 @@ export const studentCases: StudentCase[] = [
 
   {
     id: "elite-career-01",
-    category: "elite-career",
+    category: "career-coaching",
     title: "海外名校背景，补齐国内金融求职认知",
     studentLabel: "某海外本硕学生",
     background: "海外名校本硕背景，学历优秀，但长期在海外学习，对国内求职形式不熟悉。",
@@ -166,7 +164,7 @@ export const studentCases: StudentCase[] = [
   },
   {
     id: "elite-career-02",
-    category: "elite-career",
+    category: "career-coaching",
     title: "毕业后求职窗口有限，校招社招同步推进",
     studentLabel: "某海外硕士",
     background: "海外硕士与国内本科背景，加入项目时已经毕业，可参与的校招机会较少。",
@@ -179,7 +177,7 @@ export const studentCases: StudentCase[] = [
   },
   {
     id: "elite-career-03",
-    category: "elite-career",
+    category: "career-coaching",
     title: "非相关专业背景，转向金融行业研究方向",
     studentLabel: "某海外名校学生",
     background: "海外顶尖院校背景，目标金融方向，但缺少相关专业背景与实习经历。",
@@ -192,7 +190,7 @@ export const studentCases: StudentCase[] = [
   },
   {
     id: "elite-career-04",
-    category: "elite-career",
+    category: "career-coaching",
     title: "顶尖高校背景，系统准备咨询行业求职",
     studentLabel: "某顶尖高校学生",
     background: "本科与硕士均为国内顶尖高校背景，目标咨询行业。",
@@ -205,7 +203,7 @@ export const studentCases: StudentCase[] = [
   },
   {
     id: "elite-career-05",
-    category: "elite-career",
+    category: "career-coaching",
     title: "秋招末期加入，远程补充咨询项目经历",
     studentLabel: "某海外硕士",
     background: "海外硕士与国内重点高校本科背景，秋招末期加入项目。",
