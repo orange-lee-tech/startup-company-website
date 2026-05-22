@@ -1,8 +1,7 @@
 import ScrollUp from "@/components/Common/ScrollUp";
-import HomeHeroServicesStage from "@/components/Home/HeroServicesStage";
 import HomeContactCTA from "@/components/Home/HomeContactCTA";
+import HomeHeroServicesStage from "@/components/Home/HeroServicesStage";
 import TeacherCarousel from "@/components/Teachers/TeacherCarousel";
-import Testimonials from "@/components/Testimonials";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -16,7 +15,6 @@ export default function Home() {
     <>
       <ScrollUp />
       <HomeHeroServicesStage />
-<Testimonials />
       <TeacherCarousel />
       <HomeContactCTA />
     </>

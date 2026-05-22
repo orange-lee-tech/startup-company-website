@@ -240,8 +240,8 @@ export const studentCases: StudentCase[] = [
     imageRatio: "portrait",
   },
   {
-    id: "phd-overseas-01",
-    category: "phd-application",
+  id: "phd-overseas-01",
+  category: "study-abroad",
     title: "在职背景，获得世纪大学管理学博士录取",
     studentLabel: "某在职申请者",
     background:
@@ -257,8 +257,8 @@ export const studentCases: StudentCase[] = [
     imageRatio: "portrait",
   },
   {
-    id: "phd-overseas-02",
-    category: "phd-application",
+  id: "phd-overseas-02",
+  category: "study-abroad",
     title: "海外口腔医学背景，获得马来亚大学博士录取",
     studentLabel: "某海外口腔医学学生",
     background:
