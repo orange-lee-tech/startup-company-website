@@ -152,9 +152,9 @@ const Header = () => {
               </ul>
             </nav>
 
-            <div className="ml-5 hidden md:block">
-              <ThemeToggler transparent={isTransparent} />
-            </div>
+            <div className="ml-3 flex md:ml-5">
+  <ThemeToggler transparent={isTransparent} />
+</div>
 
             <button
               type="button"
