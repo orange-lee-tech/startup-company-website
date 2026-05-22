@@ -72,6 +72,7 @@ export const teachers: Teacher[] = [
     portraitImage: `${portraitBase}/wang-zhifeng.png`,
     featured: true,
     hasDetail: true,
+    detailPath: "/teachers/wang-zhifeng",
     summary:
       "长期深耕现代竹木结构理论及应用、绿色交通材料与桥梁工程创新领域。",
   },
