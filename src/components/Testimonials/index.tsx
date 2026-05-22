@@ -1,5 +1,4 @@
 import { studentCases, type CaseCategory } from "@/data/cases";
-import Image from "next/image";
 import Link from "next/link";
 
 const featuredCaseIds = [
@@ -77,9 +76,9 @@ const Testimonials = () => {
               <Link
                 key={item.id}
                 href={categoryMeta.path}
-                className="group flex min-h-[360px] flex-col bg-[#06152F]/72 p-6 transition hover:bg-white/10"
+                className="group flex min-h-[420px] flex-col bg-[#06152F]/72 p-7 transition hover:bg-white/10"
               >
-                <div className="mb-5 flex items-center justify-between gap-4">
+                <div className="mb-6 flex items-center justify-between gap-4">
                   <p className="text-sm font-bold tracking-wide text-yellow">
                     {String(index + 1).padStart(2, "0")}
                   </p>
@@ -89,33 +88,11 @@ const Testimonials = () => {
                   </span>
                 </div>
 
-                {item.image && (
-                  <div
-                    className={`relative mb-5 overflow-hidden rounded-xl border border-white/10 bg-white/8 ${
-                      item.imageRatio === "portrait"
-                        ? "mx-auto aspect-[2/3] w-full max-w-[160px]"
-                        : "aspect-[4/3] w-full"
-                    }`}
-                  >
-                    <Image
-                      src={item.image}
-                      alt={`${item.title}证明材料`}
-                      fill
-                      sizes={
-                        item.imageRatio === "portrait"
-                          ? "160px"
-                          : "(min-width: 768px) 30vw, 100vw"
-                      }
-                      className="object-contain p-2"
-                    />
-                  </div>
-                )}
-
-                <h3 className="mb-4 text-2xl font-bold leading-snug text-white transition group-hover:text-yellow">
+                <h3 className="mb-5 text-2xl font-bold leading-snug text-white transition group-hover:text-yellow">
                   {item.title}
                 </h3>
 
-                <p className="mb-5 text-base leading-relaxed text-white/72 transition group-hover:text-white">
+                <p className="mb-6 text-base leading-relaxed text-white/74 transition group-hover:text-white">
                   {item.background}
                 </p>
 
@@ -150,7 +127,7 @@ const Testimonials = () => {
 
         <div className="mt-8 rounded-2xl border border-yellow/25 bg-yellow/10 p-6">
           <p className="text-sm font-medium leading-relaxed text-white/82">
-            案例展示说明：网站案例均采用脱敏表达，重点展示背景类型、初始问题、服务过程与最终结果，不展示学员真实姓名、联系方式等敏感信息。
+            案例展示说明：网站案例均采用脱敏表达，重点展示背景类型、初始问题、服务过程与最终结果；录取截图、Offer、证明材料等更适合放在案例详情页展示。
           </p>
         </div>
       </div>
