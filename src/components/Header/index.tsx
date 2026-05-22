@@ -13,7 +13,7 @@ const Header = () => {
   const [sticky, setSticky] = useState(false);
   const pathname = usePathname();
 
-    const isHome = pathname === "/";
+  const isHome = pathname === "/";
   const isTransparent = isHome && !sticky;
 
   const scrollToHomeTop = () => {
@@ -31,7 +31,7 @@ const Header = () => {
     }
   };
 
-  const isActivePath = (path: string) => { => {
+    const isActivePath = (path: string) => {
     if (path === "/") {
       return pathname === "/";
     }
