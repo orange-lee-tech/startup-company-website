@@ -39,7 +39,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative z-10 flex min-h-[100svh] items-center overflow-hidden bg-[#020817] pt-[112px] pb-12 dark:bg-[#020817] md:pt-[132px] md:pb-16 lg:min-h-[760px] lg:pt-[150px] lg:pb-[110px]"
+      className="relative z-10 flex min-h-[100svh] items-center overflow-hidden bg-[#020817] pt-[112px] pb-12 dark:bg-[#020817] md:pt-[132px] md:pb-16 lg:min-h-[680px] lg:pt-[118px] lg:pb-[64px]"
     >
       <div
         className="absolute inset-0 z-0 bg-cover bg-center opacity-95"
@@ -62,7 +62,7 @@ const Hero = () => {
               九辰教育 · 升学就业一站式规划
             </p>
 
-            <h1 className="mb-6 whitespace-nowrap text-[clamp(30px,9.2vw,46px)] font-bold leading-[1.08] tracking-[-0.05em] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)] sm:text-6xl md:text-7xl lg:text-[84px]">
+            <h1 className="mb-5 whitespace-nowrap text-[clamp(30px,9.2vw,46px)] font-bold leading-[1.08] tracking-[-0.05em] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)] sm:text-6xl md:text-7xl lg:text-[76px] xl:text-[84px]">
   以智启学，
   <span className="text-yellow">以仁伴行</span>
 </h1>
@@ -75,7 +75,7 @@ const Hero = () => {
               围绕保研辅导、留学申请、博士申请与就业辅导，提供从定位评估、背景提升、材料打磨到面试陪跑的系统服务，让升学与求职路径更清晰、更可执行。
             </p>
 
-            <div className="mb-8 grid max-w-[720px] grid-cols-3 overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-center backdrop-blur-sm lg:mx-0">
+            <div className="mb-6 grid max-w-[720px] grid-cols-3 overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-center backdrop-blur-sm lg:mx-0">
               {heroStats.map((item, index) => (
                 <div
                   key={item.label}
@@ -113,7 +113,7 @@ const Hero = () => {
           </div>
 
           <div className="hero-fade-up lg:col-span-5">
-            <div className="relative overflow-hidden rounded-[28px] border border-white/12 bg-white/[0.075] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-md md:p-6">
+            <div className="relative overflow-hidden rounded-[28px] border border-white/12 bg-white/[0.075] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-md md:p-6 lg:p-5 xl:p-6">
               <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-yellow/10 blur-3xl" />
               <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-primary/20 blur-3xl" />
 
@@ -126,12 +126,12 @@ const Hero = () => {
                   先判断方向，再定制路径
                 </h2>
 
-                <div className="space-y-3">
+                <div className="space-y-3 lg:space-y-2 xl:space-y-3">
                   {heroCategories.map((item, index) => (
                     <Link
                       key={item.title}
                       href="/services"
-                      className="group grid grid-cols-[42px_1fr] gap-4 rounded-2xl border border-white/10 bg-[#06152F]/58 p-4 transition hover:border-yellow/40 hover:bg-white/10"
+                      className="group grid grid-cols-[42px_1fr] gap-4 rounded-2xl border border-white/10 bg-[#06152F]/58 p-4 transition hover:border-yellow/40 hover:bg-white/10 lg:p-3 xl:p-4"
                     >
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-yellow transition group-hover:bg-yellow group-hover:text-[#07142F]">
                         {String(index + 1).padStart(2, "0")}
