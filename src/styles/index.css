@@ -20,10 +20,10 @@
   --color-dark: #1d2430;
   --color-primary: #002FA7;
   --color-yellow: #F5C542;
-  --color-bg-color-dark: #171c28;
+  --color-bg-color-dark: #0f172a;
 
   --color-body-color: #788293;
-  --color-body-color-dark: #959cb1;
+  --color-body-color-dark: #c7d2e5;
 
   --color-stroke-stroke: #e3e8ef;
   --color-stroke-dark: #353943;
@@ -39,7 +39,7 @@
   --color-gray-800: #1f2937;
   --color-gray-900: #111827;
   --color-gray-950: #030712;
-  --color-gray-dark: #1e232e;
+  --color-gray-dark: #121a2a;
   --color-gray-light: #f0f2f9;
 
   --shadow-sign-up: 0px 5px 10px rgba(4, 10, 34, 0.2);
@@ -139,5 +139,61 @@
 @layer components {
   input[type="checkbox"]:checked ~ label span svg {
     @apply inline-flex;
+  }
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(18px, -14px, 0);
+  }
+}
+
+@keyframes heroSoftPulse {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: scale(1.08);
+  }
+}
+
+.hero-fade-up {
+  animation: heroFadeUp 0.75s ease-out both;
+}
+
+.hero-float {
+  animation: heroFloat 8s ease-in-out infinite;
+}
+
+.hero-soft-pulse {
+  animation: heroSoftPulse 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade-up,
+  .hero-float,
+  .hero-soft-pulse {
+    animation: none;
   }
 }
