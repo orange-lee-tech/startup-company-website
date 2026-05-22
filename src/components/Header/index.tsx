@@ -13,10 +13,25 @@ const Header = () => {
   const [sticky, setSticky] = useState(false);
   const pathname = usePathname();
 
-  const isHome = pathname === "/";
+    const isHome = pathname === "/";
   const isTransparent = isHome && !sticky;
 
-  const isActivePath = (path: string) => {
+  const scrollToHomeTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const handleHomeClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (pathname === "/") {
+      event.preventDefault();
+      setMenuOpen(false);
+      scrollToHomeTop();
+    }
+  };
+
+  const isActivePath = (path: string) => { => {
     if (path === "/") {
       return pathname === "/";
     }
@@ -49,12 +64,13 @@ const Header = () => {
         <div className="relative -mx-4 flex items-center justify-between">
           <div className="w-auto max-w-full px-4">
             <Link
-              href="/"
-              aria-label="九辰教育首页"
-              className={`header-logo flex items-center gap-3 ${
-                sticky ? "py-4 lg:py-3" : "py-6"
-              }`}
-            >
+  href="/"
+  aria-label="九辰教育首页"
+  onClick={handleHomeClick}
+  className={`header-logo flex items-center gap-3 ${
+    sticky ? "py-4 lg:py-3" : "py-6"
+  }`}
+>
               <Image
                 src={withBasePath("/images/jiuchen/jiuchen-logo-notext.png")}
                 alt="九辰教育咨询"
@@ -86,8 +102,9 @@ const Header = () => {
                   return (
                     <li key={item.path} className="group relative">
                       <Link
-                        href={item.path}
-                        className={`flex items-center gap-1.5 text-base font-medium transition ${
+  href={item.path}
+  onClick={item.path === "/" ? handleHomeClick : undefined}
+  className={`flex items-center gap-1.5 text-base font-medium transition ${
                           isTransparent
                             ? active
                               ? "text-yellow"
@@ -212,10 +229,14 @@ const Header = () => {
                       className="border-b border-body-color/10 pb-3 last:border-b-0 dark:border-white/10"
                     >
                       <Link
-                        href={item.path}
-                        onClick={() => setMenuOpen(false)}
-                        className="block py-2"
-                      >
+  href={item.path}
+  onClick={
+    item.path === "/"
+      ? handleHomeClick
+      : () => setMenuOpen(false)
+  }
+  className="block py-2"
+>
                         <span
                           className={`mb-1 block text-lg font-bold transition ${
                             active
