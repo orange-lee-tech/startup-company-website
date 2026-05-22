@@ -68,11 +68,11 @@ const Hero = () => {
                 </Link>
 
                 <Link
-                  href="/services"
-                  className="rounded-xs border border-white/25 px-8 py-4 text-base font-semibold text-white duration-300 hover:bg-white/10"
-                >
-                  查看学员案例
-                </Link>
+  href="/cases"
+  className="rounded-xs border border-white/25 px-8 py-4 text-base font-semibold text-white duration-300 hover:bg-white/10"
+>
+  查看学员案例
+</Link>
               </div>
             </div>
           </div>
