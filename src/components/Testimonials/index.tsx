@@ -2,9 +2,9 @@ import { studentCases, type CaseCategory } from "@/data/cases";
 import Link from "next/link";
 
 const featuredCaseIds = [
-  "baoyan-01",
-  "phd-overseas-01",
-  "elite-career-01",
+  "baoyan-001",
+  "study-abroad-01",
+  "career-coaching-001",
 ];
 
 const categoryMetaMap: Record<

@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { withBasePath } from "@/lib/site";
 
 export type CaseCategory =
@@ -19,261 +21,289 @@ export type StudentCase = {
   result: string;
   tags: string[];
   image?: string;
+  imageFile?: string;
   imageRatio?: CaseImageRatio;
+  sourceNumber?: string;
+  sourceDocument?: string;
+  featured?: boolean;
+  displayOrder?: number;
 };
 
-const caseImageBase = withBasePath("/images/case");
+type RawFrontmatter = Record<string, string | string[] | undefined>;
 
-export const studentCases: StudentCase[] = [
-  {
-    id: "baoyan-01",
-    category: "baoyan",
-    title: "普通 985 工科背景，冲刺强势工科院校",
-    studentLabel: "W 同学",
-    background: "某 985 高校土木工程专业，成绩前 20%，具备省级大创与结构设计竞赛经历。",
-    challenge:
-      "学生有一定竞赛基础，但成绩排名并非绝对优势，需要进一步梳理科研竞赛亮点，优化院校梯度与申请节奏。",
-    service:
-      "围绕保研定位、竞赛经历提炼、材料表达和夏令营申请节奏进行系统规划，协助形成冲刺、稳妥、保底组合。",
-    result: "入营多所强势工科院校，最终进入某 C9 高校深圳校区继续深造。",
-    tags: ["工科保研", "竞赛经历", "院校梯度"],
-  },
-  {
-    id: "baoyan-02",
-    category: "baoyan",
-    title: "电子信息背景，科研与建模经历助力保研",
-    studentLabel: "P 同学",
-    background: "某 211 高校电子信息类专业，成绩前 15%，具备论文在投、校级大创和数学建模经历。",
-    challenge:
-      "学生综合条件较好，但科研成果仍处于在投阶段，需要在有限时间内梳理已有经历并优化申请表达。",
-    service:
-      "帮助学生提炼科研、竞赛与项目经历，梳理目标院校申请材料，并针对电子信息方向强化面试表达。",
-    result: "入营多所重点院校及科研院所，最终进入中国科学院体系相关研究机构深造。",
-    tags: ["电子信息", "科研梳理", "研究所方向"],
-  },
-  {
-    id: "baoyan-03",
-    category: "baoyan",
-    title: "数学类高排名背景，冲刺顶尖统计与数学方向",
-    studentLabel: "W 同学",
-    background: "某 985 高校数学类专业，成绩前 10%，具备数学竞赛、数学建模和大模型项目经历。",
-    challenge:
-      "学生目标院校层次较高，需要将竞赛能力、数理基础与新兴项目经历转化为申请优势。",
-    service:
-      "围绕数学与统计方向进行院校定位，梳理竞赛及项目材料，并进行面试问答与自我介绍打磨。",
-    result: "入营多所重点高校，最终进入某顶尖综合大学数学与统计学院深造。",
-    tags: ["数学统计", "竞赛优势", "项目表达"],
-  },
-  {
-    id: "baoyan-04",
-    category: "baoyan",
-    title: "头部高校高排名背景，冲刺顶尖工科院系",
-    studentLabel: "L 同学",
-    background: "某 C9 高校土木工程专业，成绩前 1%，具备国家级结构设计竞赛负责人经历。",
-    challenge:
-      "学生基础优秀，但目标院校竞争激烈，需要突出排名、竞赛负责人经历与专业潜力。",
-    service:
-      "协助学生进行材料精修、科研竞赛经历表达、面试逻辑梳理，并对目标院校进行精细化投递规划。",
-    result: "入营多所顶尖高校，最终进入国内顶尖高校土木工程相关院系。",
-    tags: ["高排名", "顶尖院校", "工科升学"],
-  },
-  {
-    id: "baoyan-05",
-    category: "baoyan",
-    title: "材料方向科研成果突出，聚焦强势工科平台",
-    studentLabel: "C 同学",
-    background: "某 211 高校材料类专业，专业排名靠前，具备中英文 SCI 论文与多项创新创业经历。",
-    challenge:
-      "学生成果较丰富，需要在材料方向申请中突出科研连续性与高水平成果价值。",
-    service:
-      "帮助学生整合论文、项目、竞赛和创新经历，提炼申请亮点并进行目标院校面试准备。",
-    result: "成功进入国内顶尖高校材料相关学院继续深造。",
-    tags: ["材料方向", "SCI 成果", "科研强化"],
-  },
+const categoryOrder: Record<CaseCategory, number> = {
+  baoyan: 1,
+  "study-abroad": 2,
+  "phd-application": 3,
+  "career-coaching": 4,
+};
 
-  {
-    id: "domestic-phd-01",
-    category: "phd-application",
-    title: "艺术设计与书法背景，提前接触目标博导",
-    studentLabel: "某艺术方向硕士",
-    background: "本科为艺术设计方向，硕士阶段聚焦书法与艺术教育，语言成绩较好。",
-    challenge:
-      "学生希望申请顶尖艺术院校博士，同时希望提前接触目标导师并完成论文成果准备。",
-    service:
-      "协助学生梳理研究方向与申请节奏，陪同进行线下导师沟通，并规划南核期刊发表与博士申请材料。",
-    result: "最终获得国内顶尖艺术院校艺术教育方向博士录取机会。",
-    tags: ["艺术教育", "导师沟通", "申博规划"],
-  },
-  {
-    id: "domestic-phd-02",
-    category: "phd-application",
-    title: "计算机硕士背景，补齐独立科研成果短板",
-    studentLabel: "某计算机方向硕士",
-    background: "本科与硕士均为计算机相关专业，硕士期间参与多个人工智能研究项目。",
-    challenge:
-      "学生项目经历较多，但缺乏能独立证明研究能力的成果，博士申请竞争力不足。",
-    service:
-      "提供研究指导，协助其完成深度学习方向论文发表，并补充企业实习经历与申请材料准备。",
-    result: "最终获得国内顶尖高校计算机科学与技术相关博士录取。",
-    tags: ["人工智能", "论文发表", "计算机申博"],
-  },
-  {
-    id: "domestic-phd-03",
-    category: "phd-application",
-    title: "生命科学背景转向生物信息学方向",
-    studentLabel: "某生命科学方向硕士",
-    background: "本科为生物科学方向，硕士阶段为生命科学相关专业。",
-    challenge:
-      "学生希望博士阶段转向生物信息学，但此前相关背景不足，需要补齐方向匹配度。",
-    service:
-      "推荐相关课程与独立项目，协助完成生物信息学方向项目积累，并规划实习与研究论文。",
-    result: "最终获得国内重点高校生命科学相关博士录取。",
-    tags: ["跨方向申博", "生物信息学", "背景补强"],
-  },
-  {
-    id: "domestic-phd-04",
-    category: "phd-application",
-    title: "地理信息背景，转向遥感技术研究",
-    studentLabel: "某地理信息方向硕士",
-    background: "本科为地理科学方向，硕士阶段聚焦地理信息科学。",
-    challenge:
-      "学生希望博士阶段专注遥感技术，但原有研究方向与目标方向存在差异。",
-    service:
-      "提供遥感方向学术指导，协助发表国际会议论文，并安排相关科研机构实习经历。",
-    result: "最终获得国内强势遥感方向学院博士录取机会。",
-    tags: ["遥感方向", "国际会议", "方向转型"],
-  },
-  {
-    id: "domestic-phd-05",
-    category: "phd-application",
-    title: "材料科学背景，聚焦新能源材料申博",
-    studentLabel: "某材料方向硕士",
-    background: "本科为材料化学方向，硕士阶段为材料科学与工程方向。",
-    challenge:
-      "学生希望围绕新能源材料尤其是锂离子电池方向申请博士，需要增强研究成果与产业项目匹配度。",
-    service:
-      "协助联系新能源材料相关合作项目，并提供论文写作与发表指导。",
-    result: "最终获得国内顶尖科研机构物理与材料相关方向博士录取。",
-    tags: ["新能源材料", "科研项目", "论文指导"],
-  },
-
-  {
-    id: "elite-career-01",
-    category: "career-coaching",
-    title: "海外名校背景，补齐国内金融求职认知",
-    studentLabel: "某海外本硕学生",
-    background: "海外名校本硕背景，学历优秀，但长期在海外学习，对国内求职形式不熟悉。",
-    challenge:
-      "学生目标金融方向，但缺乏对国内招聘流程、笔试面试节奏和岗位要求的系统认知。",
-    service:
-      "安排在职导师进行行业普及，深挖过往经历，精修简历，并安排笔试练习与针对性面试辅导。",
-    result: "最终获得头部券商投行方向全职 Offer。",
-    tags: ["金融求职", "投行方向", "海外背景"],
-  },
-  {
-    id: "elite-career-02",
-    category: "career-coaching",
-    title: "毕业后求职窗口有限，校招社招同步推进",
-    studentLabel: "某海外硕士",
-    background: "海外硕士与国内本科背景，加入项目时已经毕业，可参与的校招机会较少。",
-    challenge:
-      "学生时间窗口有限，需要同步考虑校招与社招，并快速补齐金融知识与面试技能。",
-    service:
-      "帮助学生修改简历，安排导师短期普及金融专业知识，同时进行面试技能辅导和岗位筛选。",
-    result: "最终获得国际银行个人理财顾问方向全职 Offer。",
-    tags: ["金融岗位", "社招同步", "面试辅导"],
-  },
-  {
-    id: "elite-career-03",
-    category: "career-coaching",
-    title: "非相关专业背景，转向金融行业研究方向",
-    studentLabel: "某海外名校学生",
-    background: "海外顶尖院校背景，目标金融方向，但缺少相关专业背景与实习经历。",
-    challenge:
-      "学生对金融行业理解较浅，缺少相关经历支撑，求职目标与履历之间存在差距。",
-    service:
-      "补充金融相关实习经历，安排职业规划课程、行业认知课程、专业知识梳理和面试 case 训练。",
-    result: "最终获得国际银行行业研究方向全职 Offer。",
-    tags: ["跨专业求职", "行业研究", "背景补强"],
-  },
-  {
-    id: "elite-career-04",
-    category: "career-coaching",
-    title: "顶尖高校背景，系统准备咨询行业求职",
-    studentLabel: "某顶尖高校学生",
-    background: "本科与硕士均为国内顶尖高校背景，目标咨询行业。",
-    challenge:
-      "学生基础优秀，但咨询求职对简历表达、case 面试和长期 mock 要求较高。",
-    service:
-      "一周内精修多版简历，匹配合适导师长期 mock，并持续复盘 case 表现和面试表达。",
-    result: "最终获得国际咨询公司分析师方向全职 Offer。",
-    tags: ["咨询求职", "case mock", "简历精修"],
-  },
-  {
-    id: "elite-career-05",
-    category: "career-coaching",
-    title: "秋招末期加入，远程补充咨询项目经历",
-    studentLabel: "某海外硕士",
-    background: "海外硕士与国内重点高校本科背景，秋招末期加入项目。",
-    challenge:
-      "学生此前准备不足，投递数量有限，且短期内无法回国参加线下实习。",
-    service:
-      "安排笔面试准备，补充咨询远程 PTA，完善简历，并由在职导师进行多轮面试辅导。",
-    result: "最终获得知名咨询公司咨询分析师方向全职 Offer。",
-    tags: ["秋招冲刺", "远程 PTA", "咨询面试"],
-  },
-    {
-    id: "study-abroad-01",
-    category: "study-abroad",
-    title: "国内 985 背景，快速获得马来亚大学统计硕士录取",
-    studentLabel: "某 985 本科学生",
-    background:
-      "国内 985 大学本科，经济学金融方向，成绩约 82%，具备金融投资等相关工作经验，并有环境科学相关研究经历。",
-    challenge:
-      "学生希望申请海外硕士，但暂无雅思成绩，需要通过线上语言递交路径完成申请，并在较短周期内完成材料准备。",
-    service:
-      "围绕院校项目匹配、材料整理、语言递交路径与申请节奏进行快速规划，协助完成申请材料递交。",
-    result:
-      "最终获得马来亚大学 Master Of Science In Statistics 硕士录取。",
-    tags: ["海外硕士", "马来亚大学", "统计方向"],
-    image: `${caseImageBase}/study-abroad-malaya-statistics.jpg`,
-    imageRatio: "portrait",
-  },
-  {
-  id: "phd-overseas-01",
-  category: "study-abroad",
-    title: "在职背景，获得世纪大学管理学博士录取",
-    studentLabel: "某在职申请者",
-    background:
-      "本硕阶段绩点 3.0+，体制内工作背景，希望选择能兼顾工作安排与学历提升的海外博士项目。",
-    challenge:
-      "学生对海外博士项目、认证路径、学习安排与申请材料要求不熟悉，需要在较短时间内明确可行方案。",
-    service:
-      "根据学生工作安排、学历背景与认证需求，筛选合适海外博士项目，协助梳理申请材料与递交节奏。",
-    result:
-      "最终获得世纪大学管理学博士录取，源文件记录该项目可满足体制内工作者阶段性请假学习与认证需求。",
-    tags: ["海外博士", "在职提升", "管理学博士"],
-    image: `${caseImageBase}/phd-overseas-segi-management.jpg`,
-    imageRatio: "portrait",
-  },
-  {
-  id: "phd-overseas-02",
-  category: "study-abroad",
-    title: "海外口腔医学背景，获得马来亚大学博士录取",
-    studentLabel: "某海外口腔医学学生",
-    background:
-      "本硕连读海外口腔医学背景，绩点 3.0+，雅思 7.0，具备较明确的博士申请方向。",
-    challenge:
-      "学生需要匹配海外博士项目，并在材料递交、项目适配与申请节奏上获得系统指导。",
-    service:
-      "围绕马来亚大学博士项目要求，协助学生完成材料梳理、申请路径确认与递交流程推进。",
-    result:
-      "最终获得马来亚大学口腔医学博士录取。",
-    tags: ["海外博士", "马来亚大学", "口腔医学"],
-    image: `${caseImageBase}/phd-overseas-malaya-dentistry.jpg`,
-    imageRatio: "portrait",
-  },
+const caseCategories: CaseCategory[] = [
+  "baoyan",
+  "study-abroad",
+  "phd-application",
+  "career-coaching",
 ];
+
+function getCasesRoot() {
+  const canonicalRoot = path.join(process.cwd(), "content", "cases");
+  const temporaryRoot = path.join(
+    process.cwd(),
+    "jiuchen-case-markdown",
+    "content",
+    "cases",
+  );
+
+  if (fs.existsSync(canonicalRoot)) {
+    return canonicalRoot;
+  }
+
+  return temporaryRoot;
+}
+
+function isCaseCategory(value: string): value is CaseCategory {
+  return caseCategories.includes(value as CaseCategory);
+}
+
+function readMarkdownFiles(directory: string): string[] {
+  if (!fs.existsSync(directory)) {
+    return [];
+  }
+
+  const entries = fs.readdirSync(directory, {
+    withFileTypes: true,
+  });
+
+  return entries.flatMap((entry) => {
+    const fullPath = path.join(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      return readMarkdownFiles(fullPath);
+    }
+
+    if (entry.isFile() && entry.name.endsWith(".md")) {
+      return [fullPath];
+    }
+
+    return [];
+  });
+}
+
+function cleanScalar(value: string) {
+  const trimmed = value.trim();
+
+  if (
+    (trimmed.startsWith("'") && trimmed.endsWith("'")) ||
+    (trimmed.startsWith('"') && trimmed.endsWith('"'))
+  ) {
+    return trimmed.slice(1, -1);
+  }
+
+  return trimmed;
+}
+
+function parseMarkdown(markdown: string) {
+  const match = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+
+  if (!match) {
+    return {
+      frontmatter: {} as RawFrontmatter,
+      body: markdown,
+    };
+  }
+
+  const frontmatterBlock = match[1];
+  const body = markdown.slice(match[0].length);
+  const frontmatter: RawFrontmatter = {};
+  let currentArrayKey: string | undefined;
+
+  frontmatterBlock.split(/\r?\n/).forEach((line) => {
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      return;
+    }
+
+    if (trimmed.startsWith("- ") && currentArrayKey) {
+      const currentValue = frontmatter[currentArrayKey];
+      const item = cleanScalar(trimmed.slice(2));
+
+      if (Array.isArray(currentValue)) {
+        currentValue.push(item);
+      } else {
+        frontmatter[currentArrayKey] = [item];
+      }
+
+      return;
+    }
+
+    const separatorIndex = line.indexOf(":");
+
+    if (separatorIndex === -1) {
+      return;
+    }
+
+    const key = line.slice(0, separatorIndex).trim();
+    const value = line.slice(separatorIndex + 1).trim();
+
+    if (!value) {
+      frontmatter[key] = [];
+      currentArrayKey = key;
+      return;
+    }
+
+    frontmatter[key] = cleanScalar(value);
+    currentArrayKey = key;
+  });
+
+  return {
+    frontmatter,
+    body,
+  };
+}
+
+function getString(frontmatter: RawFrontmatter, key: string) {
+  const value = frontmatter[key];
+
+  if (Array.isArray(value)) {
+    return value.join("、").trim();
+  }
+
+  return value?.trim() ?? "";
+}
+
+function getStringArray(frontmatter: RawFrontmatter, key: string) {
+  const value = frontmatter[key];
+
+  if (Array.isArray(value)) {
+    return value.filter(Boolean);
+  }
+
+  if (value) {
+    return [value];
+  }
+
+  return [];
+}
+
+function getBoolean(frontmatter: RawFrontmatter, key: string) {
+  return getString(frontmatter, key) === "true";
+}
+
+function getNumber(frontmatter: RawFrontmatter, key: string) {
+  const value = Number(getString(frontmatter, key));
+
+  return Number.isFinite(value) ? value : undefined;
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getSection(body: string, title: string) {
+  const pattern = new RegExp(
+    `^##\\s+${escapeRegExp(title)}\\s*$([\\s\\S]*?)(?=^##\\s+|$)`,
+    "m",
+  );
+
+  const match = body.match(pattern);
+
+  return match?.[1].trim() ?? "";
+}
+
+function normalizeImagePath(imagePath: string) {
+  if (!imagePath) {
+    return undefined;
+  }
+
+  return withBasePath(imagePath);
+}
+
+function normalizeImageRatio(value: string): CaseImageRatio | undefined {
+  if (value === "portrait" || value === "landscape") {
+    return value;
+  }
+
+  return undefined;
+}
+
+function getSourceSortValue(sourceNumber?: string) {
+  if (!sourceNumber) {
+    return 9999;
+  }
+
+  const digits = sourceNumber.match(/\d+/g)?.join("");
+
+  return digits ? Number(digits) : 9999;
+}
+
+function parseCaseFile(filePath: string): StudentCase | undefined {
+  const markdown = fs.readFileSync(filePath, "utf-8");
+  const { frontmatter, body } = parseMarkdown(markdown);
+
+  const category = getString(frontmatter, "category");
+
+  if (!isCaseCategory(category)) {
+    return undefined;
+  }
+
+  const id = getString(frontmatter, "id");
+  const title = getString(frontmatter, "title");
+
+  if (!id || !title) {
+    return undefined;
+  }
+
+  const imagePath = getString(frontmatter, "image");
+  const imageRatio = normalizeImageRatio(getString(frontmatter, "imageRatio"));
+
+  return {
+    id,
+    category,
+    title,
+    studentLabel: getString(frontmatter, "studentLabel"),
+    background: getSection(body, "学员背景"),
+    challenge: getSection(body, "初始问题"),
+    service: getSection(body, "服务过程"),
+    result: getString(frontmatter, "result") || getSection(body, "最终结果"),
+    tags: getStringArray(frontmatter, "tags"),
+    image: normalizeImagePath(imagePath),
+    imageFile: getString(frontmatter, "imageFile") || undefined,
+    imageRatio,
+    sourceNumber: getString(frontmatter, "sourceNumber") || undefined,
+    sourceDocument: getString(frontmatter, "sourceDocument") || undefined,
+    featured: getBoolean(frontmatter, "featured"),
+    displayOrder: getNumber(frontmatter, "displayOrder"),
+  };
+}
+
+function loadStudentCases() {
+  const casesRoot = getCasesRoot();
+
+  return readMarkdownFiles(casesRoot)
+    .map(parseCaseFile)
+    .filter((item): item is StudentCase => Boolean(item))
+    .sort((a, b) => {
+      const categoryDiff = categoryOrder[a.category] - categoryOrder[b.category];
+
+      if (categoryDiff !== 0) {
+        return categoryDiff;
+      }
+
+      const orderA = a.displayOrder ?? getSourceSortValue(a.sourceNumber);
+      const orderB = b.displayOrder ?? getSourceSortValue(b.sourceNumber);
+
+      if (orderA !== orderB) {
+        return orderA - orderB;
+      }
+
+      return a.id.localeCompare(b.id, "zh-Hans-CN", {
+        numeric: true,
+      });
+    });
+}
+
+export const studentCases: StudentCase[] = loadStudentCases();
 
 export function getCasesByCategory(category: CaseCategory) {
   return studentCases.filter((item) => item.category === category);
