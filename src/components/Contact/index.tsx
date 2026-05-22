@@ -1,4 +1,5 @@
 import { contactChannels } from "@/data/contactChannels";
+import { contactInfo } from "@/data/contactInfo";
 import Image from "next/image";
 
 const serviceOptions = [
@@ -174,8 +175,29 @@ const Contact = () => {
           </div>
 
           <div className="lg:col-span-5">
-            <div className="space-y-6">
-              <div className="rounded-2xl bg-primary p-5 text-white shadow-three md:p-8">
+  <div className="space-y-6">
+    <div className="rounded-2xl bg-white p-6 shadow-three dark:bg-gray-dark md:p-8">
+      <p className="mb-2 text-sm font-semibold text-primary">
+        电话咨询
+      </p>
+
+      <h2 className="mb-3 text-2xl font-bold text-black dark:text-white">
+        {contactInfo.phone}
+      </h2>
+
+      <p className="mb-5 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+        可通过电话、二维码或后续腾讯问卷提交咨询信息，规划老师将根据你的阶段与目标进行初步评估。
+      </p>
+
+      <a
+        href={`tel:${contactInfo.phone}`}
+        className="inline-flex items-center justify-center rounded-xs bg-primary px-6 py-3 text-base font-semibold text-white transition hover:bg-primary/90"
+      >
+        拨打电话
+      </a>
+    </div>
+
+    <div className="rounded-2xl bg-primary p-5 text-white shadow-three md:p-8">
                 <h2 className="mb-4 text-2xl font-bold">
                   扫码关注 / 咨询
                 </h2>

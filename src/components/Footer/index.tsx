@@ -131,11 +131,20 @@ const Footer = () => {
             </h2>
 
             <div className="space-y-4 text-base leading-relaxed text-body-color dark:text-body-color-dark">
-              <p>公司名称：{contactInfo.companyName}</p>
-              <p>电子邮箱：{contactInfo.email}</p>
-              <p>抖音号：{contactInfo.douyinId}</p>
-              <p>地址：{contactInfo.address}</p>
-            </div>
+  <p>公司名称：{contactInfo.companyName}</p>
+  <p>
+    联系电话：
+    <a
+      href={`tel:${contactInfo.phone}`}
+      className="font-semibold text-primary hover:underline"
+    >
+      {contactInfo.phone}
+    </a>
+  </p>
+  <p>电子邮箱：{contactInfo.email}</p>
+  <p>抖音号：{contactInfo.douyinId}</p>
+  <p>地址：{contactInfo.address}</p>
+</div>
 
             <Link
               href="/contact"
