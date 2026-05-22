@@ -1,0 +1,5 @@
+baoyan: 10
+career-coaching: 15
+phd-application: 7
+study-abroad: 4
+Total: 36
