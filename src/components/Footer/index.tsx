@@ -158,38 +158,38 @@ const Footer = () => {
           </div>
 
           <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {mainChannels.map((channel) => (
-                <div
-                  key={channel.id}
-                  className="rounded-2xl border border-body-color/10 bg-gray-light p-4 dark:border-white/10 dark:bg-bg-color-dark"
-                >
-                  <div className="relative mb-4 aspect-square overflow-hidden rounded-xl bg-white dark:bg-gray-dark">
-                    <Image
-                      src={channel.image}
-                      alt={channel.title}
-                      fill
-                      sizes="160px"
-                      className="object-contain p-2"
-                    />
-                  </div>
+            <div className="grid grid-cols-3 gap-3 md:gap-4">
+  {mainChannels.map((channel) => (
+    <div
+      key={channel.id}
+      className="rounded-2xl border border-body-color/10 bg-gray-light p-3 text-center dark:border-white/10 dark:bg-bg-color-dark md:p-4"
+    >
+      <div className="relative mx-auto mb-3 aspect-square w-[72px] overflow-hidden rounded-xl bg-white dark:bg-gray-dark md:w-[96px]">
+        <Image
+          src={channel.image}
+          alt={channel.title}
+          fill
+          sizes="(min-width: 768px) 96px, 72px"
+          className="object-contain p-1.5"
+        />
+      </div>
 
-                  <h3 className="mb-2 text-base font-bold text-black dark:text-white">
-                    {channel.title}
-                  </h3>
+      <h3 className="mb-1 text-sm font-bold leading-tight text-black dark:text-white md:text-base">
+        {channel.title}
+      </h3>
 
-                  {channel.account && (
-                    <p className="mb-2 text-sm font-semibold text-primary">
-                      {channel.account}
-                    </p>
-                  )}
+      {channel.account && (
+        <p className="mb-1 text-xs font-semibold text-primary md:text-sm">
+          {channel.account}
+        </p>
+      )}
 
-                  <p className="text-sm leading-relaxed text-body-color dark:text-body-color-dark">
-                    {channel.description}
-                  </p>
-                </div>
-              ))}
-            </div>
+      <p className="hidden text-sm leading-relaxed text-body-color dark:text-body-color-dark md:block">
+        {channel.description}
+      </p>
+    </div>
+  ))}
+</div>
           </div>
         </div>
 

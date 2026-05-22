@@ -197,3 +197,28 @@
     animation: none;
   }
 }
+
+/* 深色模式下，不强行沿用日间深蓝文字；文字、边框、浅底强调色改为更适合暗背景的浅青蓝 */
+.dark .text-primary {
+  color: #8fd3ff;
+}
+
+.dark .hover\:text-primary:hover {
+  color: #8fd3ff;
+}
+
+.dark .group:hover .group-hover\:text-primary {
+  color: #8fd3ff;
+}
+
+.dark .border-primary {
+  border-color: #5bc7ff;
+}
+
+.dark .hover\:border-primary:hover {
+  border-color: #5bc7ff;
+}
+
+.dark .bg-primary\/10 {
+  background-color: rgba(143, 211, 255, 0.14);
+}

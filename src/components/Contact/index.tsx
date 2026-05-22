@@ -2,12 +2,10 @@ import { contactChannels } from "@/data/contactChannels";
 import Image from "next/image";
 
 const serviceOptions = [
-  "保研",
-  "海外本硕",
-  "国内博士",
-  "海外全奖博士",
-  "本科就业",
-  "高端就业",
+  "保研辅导",
+  "留学申请",
+  "博士申请",
+  "就业辅导",
   "其他 / 暂不确定",
 ];
 
@@ -177,46 +175,52 @@ const Contact = () => {
 
           <div className="lg:col-span-5">
             <div className="space-y-6">
-              <div className="rounded-2xl bg-primary p-6 text-white shadow-three md:p-8">
-                <h2 className="mb-4 text-2xl font-bold">
-                  扫码关注 / 咨询
-                </h2>
+              <div className="rounded-2xl bg-primary p-5 text-white shadow-three md:p-7">
+  <h2 className="mb-3 text-2xl font-bold">
+    扫码关注 / 咨询
+  </h2>
 
-                <p className="mb-6 text-base leading-relaxed text-white/80">
-                  可通过微信公众号、微信视频号、抖音了解九辰教育内容与服务动态。
-                </p>
+  <p className="mb-5 text-base leading-relaxed text-white/80">
+    可通过微信公众号、微信视频号、抖音了解九辰教育内容与服务动态。
+  </p>
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-1">
-                  {contactChannels.map((channel) => (
-                    <div
-                      key={channel.id}
-                      className="rounded-2xl bg-white p-4 text-black dark:bg-gray-dark dark:text-white"
-                    >
-                      <div className="grid grid-cols-[112px_1fr] items-center gap-4 sm:block lg:grid">
-                        <div className="relative aspect-square overflow-hidden rounded-xl bg-gray-light dark:bg-bg-color-dark sm:mb-4 lg:mb-0">
-                          <Image
-                            src={channel.image}
-                            alt={channel.title}
-                            fill
-                            sizes="112px"
-                            className="object-contain p-2"
-                          />
-                        </div>
+  <div className="grid grid-cols-3 gap-3 lg:grid-cols-1 lg:gap-4">
+    {contactChannels.map((channel) => (
+      <div
+        key={channel.id}
+        className="rounded-2xl bg-white p-3 text-center text-black dark:bg-gray-dark dark:text-white lg:text-left"
+      >
+        <div className="grid grid-cols-1 items-center gap-3 lg:grid-cols-[88px_1fr]">
+          <div className="relative mx-auto aspect-square w-[72px] overflow-hidden rounded-xl bg-gray-light dark:bg-bg-color-dark sm:w-[84px] lg:mx-0 lg:w-[88px]">
+            <Image
+              src={channel.image}
+              alt={channel.title}
+              fill
+              sizes="(min-width: 1024px) 88px, 84px"
+              className="object-contain p-1.5"
+            />
+          </div>
 
-                        <div>
-                          <h3 className="mb-2 text-lg font-bold">
-                            {channel.title}
-                          </h3>
+          <div>
+            <h3 className="text-sm font-bold leading-tight lg:text-base">
+              {channel.title}
+            </h3>
 
-                          <p className="text-sm leading-relaxed text-body-color dark:text-body-color-dark">
-                            {channel.description}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            {channel.account && (
+              <p className="mt-1 text-xs font-semibold text-primary">
+                {channel.account}
+              </p>
+            )}
+
+            <p className="mt-1 hidden text-sm leading-relaxed text-body-color dark:text-body-color-dark lg:block">
+              {channel.description}
+            </p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
 
               <div className="rounded-2xl bg-white p-6 shadow-three dark:bg-gray-dark md:p-8">
                 <h2 className="mb-6 text-2xl font-bold text-black dark:text-white">
