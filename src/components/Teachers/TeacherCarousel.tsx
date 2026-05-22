@@ -127,7 +127,7 @@ const TeacherCarousel = () => {
           {visibleTeachers.map((teacher, index) => (
             <Link
               key={`${teacher.id}-${index}`}
-              href="/teachers"
+              href={teacher.hasDetail && teacher.detailPath ? teacher.detailPath : "/teachers"}
               className="group relative flex min-h-[210px] flex-col overflow-hidden rounded-xl bg-white transition hover:z-10 hover:shadow-three dark:bg-gray-dark sm:min-h-[260px] lg:min-h-[430px] lg:rounded-none lg:border-r lg:border-body-color/10 lg:last:border-r-0 lg:dark:border-white/10"
             >
               <div className="relative flex h-[104px] w-full items-end justify-center overflow-hidden bg-linear-to-b from-[#EEF3FF] to-white px-2 pt-2 dark:from-bg-color-dark dark:to-gray-dark sm:h-[140px] md:h-[180px] lg:h-[285px]">

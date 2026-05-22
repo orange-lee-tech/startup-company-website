@@ -71,7 +71,7 @@ export const teachers: Teacher[] = [
     title: "副教授",
     portraitImage: `${portraitBase}/wang-zhifeng.png`,
     featured: true,
-    hasDetail: false,
+    hasDetail: true,
     summary:
       "长期深耕现代竹木结构理论及应用、绿色交通材料与桥梁工程创新领域。",
   },
@@ -82,7 +82,8 @@ export const teachers: Teacher[] = [
     title: "院长 / 博士生导师 / 特聘教授",
     portraitImage: `${portraitBase}/wang-da.png`,
     featured: true,
-    hasDetail: false,
+    hasDetail: true,
+    detailPath: "/teachers/wang-da",
     summary:
       "芙蓉计划高校学术拔尖人才特聘教授，长期聚焦桥梁结构性能演化感知与运营可靠性保障。",
   },
