@@ -4,6 +4,7 @@ import {
   casePages,
   getCasePage,
 } from "@/data/routePages";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -145,7 +146,27 @@ const CaseCategoryPage = async ({
                   <h2 className="mb-5 text-2xl font-bold leading-tight text-black dark:text-white">
                     {item.title}
                   </h2>
-
+{item.image && (
+  <div
+    className={`relative mb-6 overflow-hidden rounded-xl bg-white dark:bg-gray-dark ${
+      item.imageRatio === "portrait"
+        ? "mx-auto aspect-[2/3] w-full max-w-[240px]"
+        : "aspect-[4/3] w-full"
+    }`}
+  >
+    <Image
+      src={item.image}
+      alt={`${item.title}证明材料`}
+      fill
+      sizes={
+        item.imageRatio === "portrait"
+          ? "240px"
+          : "(min-width: 1280px) 45vw, 100vw"
+      }
+      className="object-contain p-2"
+    />
+  </div>
+)}
                   <div className="space-y-5">
                     <div>
                       <h3 className="mb-2 text-base font-bold text-black dark:text-white">

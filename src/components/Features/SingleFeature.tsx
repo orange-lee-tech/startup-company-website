@@ -3,51 +3,30 @@ import Link from "next/link";
 
 const cardThemes = [
   {
-    bar: "bg-primary",
-    number: "text-primary",
-    hover: "hover:bg-primary hover:text-white",
-    tag: "bg-primary/10 text-primary",
-  },
-  {
-    bar: "bg-[#0F62FE]",
-    number: "text-[#0F62FE]",
-    hover: "hover:bg-[#0F62FE] hover:text-white",
-    tag: "bg-[#0F62FE]/10 text-[#0F62FE]",
-  },
-  {
-    bar: "bg-[#07142F]",
-    number: "text-[#07142F] dark:text-white",
-    hover: "hover:bg-[#07142F] hover:text-white",
-    tag: "bg-[#07142F]/10 text-[#07142F] dark:bg-white/10 dark:text-white",
-  },
-  {
     bar: "bg-yellow",
     number: "text-yellow",
-    hover: "hover:bg-yellow hover:text-[#07142F]",
-    tag: "bg-yellow/20 text-[#07142F] dark:text-yellow",
+    tag: "border-yellow/25 bg-yellow/10 text-yellow",
   },
   {
-    bar: "bg-[#6B7A90]",
-    number: "text-[#6B7A90]",
-    hover: "hover:bg-[#6B7A90] hover:text-white",
-    tag: "bg-[#6B7A90]/10 text-[#6B7A90]",
+    bar: "bg-[#8FD3FF]",
+    number: "text-[#8FD3FF]",
+    tag: "border-[#8FD3FF]/25 bg-[#8FD3FF]/10 text-[#8FD3FF]",
   },
   {
-    bar: "bg-black",
-    number: "text-black dark:text-white",
-    hover: "hover:bg-black hover:text-white",
-    tag: "bg-black/10 text-black dark:bg-white/10 dark:text-white",
+    bar: "bg-white",
+    number: "text-white",
+    tag: "border-white/20 bg-white/10 text-white",
   },
 ];
 
 const SingleFeature = ({ feature }: { feature: Feature }) => {
-  const { id, title, audience, keywords, path} = feature;
+  const { id, title, audience, keywords, path } = feature;
   const theme = cardThemes[(id - 1) % cardThemes.length];
 
   return (
     <Link
       href={path}
-      className={`group relative block min-h-[260px] bg-white p-6 transition duration-300 dark:bg-gray-dark ${theme.hover}`}
+      className="group relative block min-h-[250px] bg-[#06152F]/72 p-6 transition duration-300 hover:bg-white/10"
     >
       <span
         className={`absolute left-0 top-0 h-1 w-full ${theme.bar}`}
@@ -56,21 +35,21 @@ const SingleFeature = ({ feature }: { feature: Feature }) => {
 
       <div className="mb-8 flex items-start justify-between gap-6">
         <span
-          className={`text-sm font-bold tracking-wide transition group-hover:text-current ${theme.number}`}
+          className={`text-sm font-bold tracking-wide transition ${theme.number}`}
         >
           {String(id).padStart(2, "0")}
         </span>
 
-        <span className="text-sm font-medium text-body-color transition group-hover:text-current dark:text-body-color-dark">
+        <span className="text-sm font-medium text-white/60 transition group-hover:text-yellow">
           查看详情
         </span>
       </div>
 
-      <h3 className="mb-4 text-2xl font-bold leading-snug text-black transition group-hover:text-current dark:text-white">
+      <h3 className="mb-4 text-2xl font-bold leading-snug text-white transition group-hover:text-yellow">
         {title}
       </h3>
 
-      <p className="mb-6 text-base leading-relaxed text-body-color transition group-hover:text-current dark:text-body-color-dark">
+      <p className="mb-6 text-base leading-relaxed text-white/72 transition group-hover:text-white">
         {audience}
       </p>
 
@@ -78,7 +57,7 @@ const SingleFeature = ({ feature }: { feature: Feature }) => {
         {keywords.map((keyword) => (
           <span
             key={keyword}
-            className={`px-3 py-1 text-xs font-semibold transition group-hover:bg-white/15 group-hover:text-current ${theme.tag}`}
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition group-hover:border-white/25 group-hover:bg-white/15 group-hover:text-white ${theme.tag}`}
           >
             {keyword}
           </span>

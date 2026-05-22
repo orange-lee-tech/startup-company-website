@@ -1,4 +1,3 @@
-import { withBasePath } from "@/lib/site";
 import Link from "next/link";
 
 const heroCategories = [
@@ -39,22 +38,8 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative z-10 flex min-h-[100svh] items-center overflow-hidden bg-[#020817] pt-[112px] pb-12 dark:bg-[#020817] md:pt-[132px] md:pb-16 lg:min-h-[680px] lg:pt-[118px] lg:pb-[64px]"
-    >
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center opacity-95"
-        style={{
-          backgroundImage: `url('${withBasePath("/images/jiuchen/background.png")}')`,
-        }}
-      />
-
-      <div className="absolute inset-0 z-0 bg-linear-to-r from-[#020817]/96 via-[#07142F]/84 to-[#061B3A]/36" />
-      <div className="absolute inset-0 z-0 bg-linear-to-b from-black/15 via-transparent to-black/78" />
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_24%_30%,rgba(0,47,167,0.28),transparent_34%)]" />
-
-      <div className="hero-float absolute right-[14%] top-[22%] z-0 hidden h-44 w-44 rounded-full bg-primary/20 blur-[90px] lg:block" />
-      <div className="hero-soft-pulse absolute left-[8%] bottom-[12%] z-0 h-28 w-28 rounded-full bg-yellow/12 blur-[70px]" />
-
+className="relative z-10 flex min-h-[100svh] items-center overflow-hidden bg-transparent pt-[112px] pb-12 md:pt-[132px] md:pb-16 lg:min-h-[680px] lg:pt-[118px] lg:pb-[64px]"    >
+      
       <div className="container relative z-10">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="hero-fade-up text-center lg:col-span-7 lg:text-left">

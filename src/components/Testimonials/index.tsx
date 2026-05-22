@@ -3,8 +3,8 @@ import Link from "next/link";
 
 const featuredCaseIds = [
   "baoyan-01",
-  "domestic-phd-02",
-  "elite-career-01",
+  "study-abroad-01",
+  "phd-overseas-01",
 ];
 
 const categoryMetaMap: Record<

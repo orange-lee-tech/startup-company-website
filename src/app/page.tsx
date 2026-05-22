@@ -1,6 +1,5 @@
 import ScrollUp from "@/components/Common/ScrollUp";
-import Features from "@/components/Features";
-import Hero from "@/components/Hero";
+import HomeHeroServicesStage from "@/components/Home/HeroServicesStage";
 import HomeContactCTA from "@/components/Home/HomeContactCTA";
 import TeacherCarousel from "@/components/Teachers/TeacherCarousel";
 import Testimonials from "@/components/Testimonials";
@@ -16,9 +15,8 @@ export default function Home() {
   return (
     <>
       <ScrollUp />
-      <Hero />
-      <Features />
-      <Testimonials />
+      <HomeHeroServicesStage />
+<Testimonials />
       <TeacherCarousel />
       <HomeContactCTA />
     </>

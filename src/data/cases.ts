@@ -1,8 +1,12 @@
+import { withBasePath } from "@/lib/site";
+
 export type CaseCategory =
   | "baoyan"
   | "study-abroad"
   | "phd-application"
   | "career-coaching";
+
+export type CaseImageRatio = "portrait" | "landscape";
 
 export type StudentCase = {
   id: string;
@@ -14,7 +18,11 @@ export type StudentCase = {
   service: string;
   result: string;
   tags: string[];
+  image?: string;
+  imageRatio?: CaseImageRatio;
 };
+
+const caseImageBase = withBasePath("/images/case");
 
 export const studentCases: StudentCase[] = [
   {
@@ -213,6 +221,57 @@ export const studentCases: StudentCase[] = [
       "安排笔面试准备，补充咨询远程 PTA，完善简历，并由在职导师进行多轮面试辅导。",
     result: "最终获得知名咨询公司咨询分析师方向全职 Offer。",
     tags: ["秋招冲刺", "远程 PTA", "咨询面试"],
+  },
+    {
+    id: "study-abroad-01",
+    category: "study-abroad",
+    title: "国内 985 背景，快速获得马来亚大学统计硕士录取",
+    studentLabel: "某 985 本科学生",
+    background:
+      "国内 985 大学本科，经济学金融方向，成绩约 82%，具备金融投资等相关工作经验，并有环境科学相关研究经历。",
+    challenge:
+      "学生希望申请海外硕士，但暂无雅思成绩，需要通过线上语言递交路径完成申请，并在较短周期内完成材料准备。",
+    service:
+      "围绕院校项目匹配、材料整理、语言递交路径与申请节奏进行快速规划，协助完成申请材料递交。",
+    result:
+      "最终获得马来亚大学 Master Of Science In Statistics 硕士录取。",
+    tags: ["海外硕士", "马来亚大学", "统计方向"],
+    image: `${caseImageBase}/study-abroad-malaya-statistics.jpg`,
+    imageRatio: "portrait",
+  },
+  {
+    id: "phd-overseas-01",
+    category: "phd-application",
+    title: "在职背景，获得世纪大学管理学博士录取",
+    studentLabel: "某在职申请者",
+    background:
+      "本硕阶段绩点 3.0+，体制内工作背景，希望选择能兼顾工作安排与学历提升的海外博士项目。",
+    challenge:
+      "学生对海外博士项目、认证路径、学习安排与申请材料要求不熟悉，需要在较短时间内明确可行方案。",
+    service:
+      "根据学生工作安排、学历背景与认证需求，筛选合适海外博士项目，协助梳理申请材料与递交节奏。",
+    result:
+      "最终获得世纪大学管理学博士录取，源文件记录该项目可满足体制内工作者阶段性请假学习与认证需求。",
+    tags: ["海外博士", "在职提升", "管理学博士"],
+    image: `${caseImageBase}/phd-overseas-segi-management.jpg`,
+    imageRatio: "portrait",
+  },
+  {
+    id: "phd-overseas-02",
+    category: "phd-application",
+    title: "海外口腔医学背景，获得马来亚大学博士录取",
+    studentLabel: "某海外口腔医学学生",
+    background:
+      "本硕连读海外口腔医学背景，绩点 3.0+，雅思 7.0，具备较明确的博士申请方向。",
+    challenge:
+      "学生需要匹配海外博士项目，并在材料递交、项目适配与申请节奏上获得系统指导。",
+    service:
+      "围绕马来亚大学博士项目要求，协助学生完成材料梳理、申请路径确认与递交流程推进。",
+    result:
+      "最终获得马来亚大学口腔医学博士录取。",
+    tags: ["海外博士", "马来亚大学", "口腔医学"],
+    image: `${caseImageBase}/phd-overseas-malaya-dentistry.jpg`,
+    imageRatio: "portrait",
   },
 ];
 
