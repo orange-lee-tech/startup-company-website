@@ -153,7 +153,7 @@ const Header = () => {
             </nav>
 
             <div className="ml-5 hidden md:block">
-              <ThemeToggler />
+              <ThemeToggler transparent={isTransparent} />
             </div>
 
             <button

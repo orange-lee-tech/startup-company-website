@@ -45,7 +45,9 @@ const CaseCategoryPage = async ({
     notFound();
   }
 
-  const cases = getCasesByCategory(slug as Parameters<typeof getCasesByCategory>[0]);
+  const cases = getCasesByCategory(
+    slug as Parameters<typeof getCasesByCategory>[0],
+  );
 
   return (
     <>
@@ -54,39 +56,76 @@ const CaseCategoryPage = async ({
         description={page.description}
       />
 
-      <section className="bg-white py-16 dark:bg-gray-dark md:py-20 lg:py-28">
+      <section className="bg-white py-14 dark:bg-gray-dark md:py-16 lg:py-20">
         <div className="container">
-          <div className="mb-12 max-w-[960px]">
-            <p className="mb-4 text-base font-semibold text-primary">
-              案例详情
-            </p>
+          <div className="mb-8 flex flex-wrap gap-3">
+            {casePages.map((item) => {
+              const active = item.slug === slug;
 
-            <h1 className="mb-6 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
-              {page.title}
-            </h1>
-
-            <p className="mb-8 text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-              {page.description}
-            </p>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {page.highlights.map((item) => (
-                <div
-                  key={item}
-                  className="rounded-xl border border-body-color/10 bg-gray-light p-5 text-center text-base font-semibold text-primary dark:border-white/10 dark:bg-bg-color-dark"
+              return (
+                <Link
+                  key={item.slug}
+                  href={`/cases/${item.slug}`}
+                  className={`rounded-full border px-5 py-2.5 text-sm font-semibold transition ${
+                    active
+                      ? "border-primary bg-primary text-white"
+                      : "border-body-color/15 bg-gray-light text-body-color hover:border-primary hover:text-primary dark:border-white/10 dark:bg-bg-color-dark dark:text-body-color-dark dark:hover:text-white"
+                  }`}
                 >
-                  {item}
-                </div>
-              ))}
+                  {item.title}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="mb-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-8">
+              <p className="mb-4 text-base font-semibold text-primary">
+                案例详情
+              </p>
+
+              <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
+                {page.title}
+              </h1>
+
+              <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
+                {page.description}
+              </p>
+            </div>
+
+            <div className="lg:col-span-4">
+              <div className="rounded-2xl bg-gray-light p-6 dark:bg-bg-color-dark">
+                <p className="mb-2 text-sm font-semibold text-primary">
+                  当前分类案例
+                </p>
+
+                <p className="text-4xl font-bold text-black dark:text-white">
+                  {cases.length}
+                  <span className="ml-2 text-lg text-body-color dark:text-body-color-dark">
+                    个
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
 
+          <div className="mb-10 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {page.highlights.map((item) => (
+              <div
+                key={item}
+                className="rounded-xl border border-body-color/10 bg-gray-light p-4 text-center text-sm font-semibold text-primary dark:border-white/10 dark:bg-bg-color-dark md:text-base"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+
           {cases.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
               {cases.map((item) => (
                 <article
                   key={item.id}
-                  className="rounded-2xl border border-body-color/10 bg-gray-light p-7 transition hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-bg-color-dark dark:hover:bg-gray-dark"
+                  className="rounded-2xl border border-body-color/10 bg-gray-light p-6 transition hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-bg-color-dark dark:hover:bg-gray-dark md:p-7"
                 >
                   <div className="mb-5 flex flex-wrap items-center gap-3">
                     <span className="rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
@@ -176,7 +215,7 @@ const CaseCategoryPage = async ({
           )}
 
           {cases.length > 0 && (
-            <div className="mt-12 rounded-2xl bg-primary p-8 text-white md:p-10">
+            <div className="mt-10 rounded-2xl bg-primary p-7 text-white md:p-8">
               <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
                 <div>
                   <h2 className="mb-3 text-2xl font-bold">

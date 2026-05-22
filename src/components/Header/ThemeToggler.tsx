@@ -1,7 +1,11 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-const ThemeToggler = () => {
+type ThemeTogglerProps = {
+  transparent?: boolean;
+};
+
+const ThemeToggler = ({ transparent = false }: ThemeTogglerProps) => {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -11,12 +15,16 @@ const ThemeToggler = () => {
 
   const isDark = mounted && resolvedTheme === "dark";
 
+  const buttonClass = transparent
+    ? "border-white/25 bg-white/10 text-white backdrop-blur-sm hover:border-yellow/50 hover:bg-white/15 hover:text-yellow"
+    : "border-primary/20 bg-primary/10 text-primary shadow-btn hover:border-primary hover:bg-primary hover:text-white dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:border-yellow/50 dark:hover:bg-white/15 dark:hover:text-yellow";
+
   return (
     <button
       aria-label="切换深色模式"
       type="button"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm transition hover:border-yellow/50 hover:bg-white/15 hover:text-yellow md:h-11 md:w-11"
+      className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border transition md:h-11 md:w-11 ${buttonClass}`}
     >
       {isDark ? (
         <svg
