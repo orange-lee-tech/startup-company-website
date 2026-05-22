@@ -1,6 +1,7 @@
 "use client";
 
 import { siteNavItems } from "@/data/navigation";
+import { withBasePath } from "@/lib/site";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -55,7 +56,7 @@ const Header = () => {
               }`}
             >
               <Image
-                src="/startup-company-website/images/jiuchen/jiuchen-logo-notext.png"
+                src={withBasePath("/images/jiuchen/jiuchen-logo-notext.png")}
                 alt="九辰教育咨询"
                 width={42}
                 height={42}

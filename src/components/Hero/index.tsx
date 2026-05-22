@@ -1,3 +1,4 @@
+import { withBasePath } from "@/lib/site";
 import Link from "next/link";
 
 const heroCategories = [
@@ -43,8 +44,7 @@ const Hero = () => {
       <div
         className="absolute inset-0 z-0 bg-cover bg-center opacity-95"
         style={{
-          backgroundImage:
-            "url('/startup-company-website/images/jiuchen/background.png')",
+          backgroundImage: `url('${withBasePath("/images/jiuchen/background.png")}')`,
         }}
       />
 
@@ -62,10 +62,10 @@ const Hero = () => {
               九辰教育 · 升学就业一站式规划
             </p>
 
-            <h1 className="mb-6 text-[46px] font-bold leading-[1.08] tracking-[-0.04em] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)] sm:text-6xl md:text-7xl lg:text-[84px]">
-              以智启学，
-              <span className="text-yellow">以仁伴行</span>
-            </h1>
+            <h1 className="mb-6 whitespace-nowrap text-[clamp(30px,9.2vw,46px)] font-bold leading-[1.08] tracking-[-0.05em] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)] sm:text-6xl md:text-7xl lg:text-[84px]">
+  以智启学，
+  <span className="text-yellow">以仁伴行</span>
+</h1>
 
             <p className="mb-5 max-w-[780px] text-xl font-semibold leading-relaxed text-white md:text-2xl lg:mx-0">
               保研、留学、申博与就业，四类入口清晰匹配不同阶段目标

@@ -1,3 +1,5 @@
+import { withBasePath } from "@/lib/site";
+
 export type ContactChannel = {
   id: string;
   title: string;
@@ -6,7 +8,7 @@ export type ContactChannel = {
   account?: string;
 };
 
-const contactImageBase = "/startup-company-website/images/contact";
+const contactImageBase = withBasePath("/images/contact");
 
 export const contactChannels: ContactChannel[] = [
   {

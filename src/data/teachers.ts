@@ -1,3 +1,4 @@
+import { withBasePath } from "@/lib/site";
 export type Teacher = {
   id: string;
   name: string;
@@ -11,8 +12,8 @@ export type Teacher = {
   summary?: string;
 };
 
-const portraitBase = "/startup-company-website/images/teacher/portraits";
-const cardBase = "/startup-company-website/images/teacher/card";
+const portraitBase = withBasePath("/images/teacher/portraits");
+const cardBase = withBasePath("/images/teacher/card");
 
 export const teachers: Teacher[] = [
   {
