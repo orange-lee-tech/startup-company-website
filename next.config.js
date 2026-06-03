@@ -6,10 +6,12 @@ const siteBasePath =
   (isGithubPages ? "/startup-company-website" : "");
 
 const nextConfig = {
+  output: "export",
   env: {
     NEXT_PUBLIC_SITE_BASE_PATH: siteBasePath,
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",

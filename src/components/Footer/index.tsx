@@ -209,10 +209,21 @@ const Footer = () => {
             </p>
           </div>
 
-          <p className="text-center text-base text-body-color dark:text-white">
-            © {new Date().getFullYear()} {contactInfo.companyName}. All rights
-            reserved.
-          </p>
+          <div className="text-center text-base text-body-color dark:text-white">
+  <p>
+    © {new Date().getFullYear()} {contactInfo.companyName}. All rights
+    reserved.
+  </p>
+
+  <a
+    href={contactInfo.icpUrl}
+    target="_blank"
+    rel="noreferrer"
+    className="mt-3 inline-block transition hover:text-primary hover:underline"
+  >
+    {contactInfo.icpRecord}
+  </a>
+</div>
         </div>
       </div>
     </footer>
