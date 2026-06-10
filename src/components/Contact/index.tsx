@@ -2,14 +2,6 @@ import { contactChannels } from "@/data/contactChannels";
 import { contactInfo } from "@/data/contactInfo";
 import Image from "next/image";
 
-const serviceOptions = [
-  "保研辅导",
-  "留学申请",
-  "博士申请",
-  "就业辅导",
-  "其他 / 暂不确定",
-];
-
 const processSteps = [
   {
     title: "提交咨询信息",
@@ -46,7 +38,7 @@ const Contact = () => {
           </h1>
 
           <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-            你可以通过表单整理咨询信息，也可以直接扫描二维码关注或联系。当前表单作为信息收集入口展示，后续可接入腾讯问卷或其他国内线索系统。
+            你可以通过下方腾讯问卷整理咨询信息，也可以直接扫描二维码或拨打电话联系。提交后，规划老师将尽快与你沟通。
           </p>
         </div>
 
@@ -58,119 +50,36 @@ const Contact = () => {
               </h2>
 
               <p className="mb-8 text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                留下你的基本情况，便于规划老师初步判断适合的服务方向。正式提交功能接入前，建议优先通过右侧二维码或后续腾讯问卷入口联系。
+                请在下方填写基本情况。问卷提交后，规划老师将根据你的阶段与目标进行初步评估。
               </p>
 
-              <form>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                    >
-                      称呼
-                    </label>
-
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      placeholder="请填写你的称呼"
-                      className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="contact"
-                      className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                    >
-                      手机号 / 微信号
-                    </label>
-
-                    <input
-                      id="contact"
-                      name="contact"
-                      type="text"
-                      placeholder="请填写手机号或微信号"
-                      className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="stage"
-                      className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                    >
-                      当前阶段 / 身份
-                    </label>
-
-                    <input
-                      id="stage"
-                      name="stage"
-                      type="text"
-                      placeholder="例如：本科在读、硕士在读、在职求职"
-                      className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="service"
-                      className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                    >
-                      意向服务
-                    </label>
-
-                    <select
-                      id="service"
-                      name="service"
-                      className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark"
-                      defaultValue=""
-                    >
-                      <option value="" disabled>
-                        请选择意向服务
-                      </option>
-
-                      {serviceOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label
-                      htmlFor="message"
-                      className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                    >
-                      咨询问题
-                    </label>
-
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={6}
-                      placeholder="例如：本科大三，想咨询保研定位；硕士在读，想咨询申博；应届生，想咨询就业辅导。"
-                      className="border-stroke w-full resize-none rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <button
-                      type="button"
-                      className="rounded-xs bg-primary px-9 py-4 text-base font-semibold text-white shadow-submit transition hover:bg-primary/90"
-                    >
-                      提交咨询信息
-                    </button>
-
-                    <p className="mt-4 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
-                      提示：当前页面先展示咨询入口，正式线索接收方式接入前，建议扫描二维码联系九辰教育。后续可将按钮接入腾讯问卷。
-                    </p>
-                  </div>
+                <div className="overflow-hidden rounded-xl border border-body-color/10 bg-white dark:border-white/10 dark:bg-gray-dark">
+                  <iframe
+                    id="idy_frame"
+                    title="九辰官网咨询问卷"
+                    src="https://wj.qq.com/s2/26980177/9e75/"
+                    width="100%"
+                    height="100%"
+                    className="min-h-[720px] w-full bg-white md:min-h-[760px]"
+                    frameBorder="0"
+                    allowFullScreen
+                    loading="lazy"
+                    sandbox="allow-same-origin allow-scripts allow-modals allow-downloads allow-forms allow-popups"
+                  />
                 </div>
-              </form>
+
+                <p className="mt-4 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+                  若问卷未正常显示，可
+                  <a
+                    href="https://wj.qq.com/s2/26980177/9e75/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-semibold text-primary hover:underline"
+                  >
+                    点击此处在新页面打开腾讯问卷
+                  </a>
+                  。
+                </p>
             </div>
           </div>
 
@@ -186,7 +95,7 @@ const Contact = () => {
       </h2>
 
       <p className="mb-5 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
-        可通过电话、二维码或后续腾讯问卷提交咨询信息，规划老师将根据你的阶段与目标进行初步评估。
+        可通过电话、二维码或腾讯问卷提交咨询信息，规划老师将根据你的阶段与目标进行初步评估。
       </p>
 
       <a
