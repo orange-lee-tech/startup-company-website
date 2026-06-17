@@ -61,8 +61,8 @@ const TeacherDetailPage = async ({
         <div className="container">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
             <div className="lg:col-span-4">
-              <div className="overflow-hidden rounded-2xl border border-body-color/10 bg-gray-light dark:border-white/10 dark:bg-bg-color-dark">
-                <div className="relative flex h-[360px] items-end justify-center overflow-hidden bg-linear-to-b from-[#EEF3FF] to-white px-6 pt-6 dark:from-gray-dark dark:to-bg-color-dark">
+              <div className="overflow-hidden rounded-2xl border border-primary/10 bg-primary/5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three dark:border-white/10 dark:bg-white/5">
+                <div className="relative flex h-[360px] items-end justify-center overflow-hidden bg-linear-to-b from-[#EEF3FF] to-white px-6 pt-6 dark:from-white/10 dark:to-bg-color-dark">
                   <Image
                     src={teacher.portraitImage}
                     alt={teacher.name}
@@ -90,7 +90,7 @@ const TeacherDetailPage = async ({
             </div>
 
             <div className="lg:col-span-8">
-              <div className="rounded-2xl border border-body-color/10 bg-gray-light p-7 dark:border-white/10 dark:bg-bg-color-dark md:p-8">
+              <div className="rounded-2xl border border-primary/10 bg-primary/5 p-7 shadow-sm transition duration-300 hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark md:p-8">
                 <p className="mb-4 text-base font-semibold text-primary">
                   个人简介
                 </p>
@@ -105,7 +105,7 @@ const TeacherDetailPage = async ({
               </div>
 
               <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div className="rounded-2xl border border-body-color/10 bg-white p-6 shadow-three dark:border-white/10 dark:bg-bg-color-dark">
+                <div className="rounded-2xl border border-yellow/20 bg-yellow/5 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-yellow/50 hover:bg-white hover:shadow-three dark:border-yellow/20 dark:bg-white/10 dark:hover:bg-gray-dark">
                   <h2 className="mb-5 text-2xl font-bold text-black dark:text-white">
                     研究与指导方向
                   </h2>
@@ -114,7 +114,7 @@ const TeacherDetailPage = async ({
                     {detail.focusAreas.map((item) => (
                       <span
                         key={item}
-                        className="rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary"
+                        className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-primary shadow-sm dark:bg-white/10 dark:text-yellow"
                       >
                         {item}
                       </span>
@@ -122,7 +122,7 @@ const TeacherDetailPage = async ({
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-body-color/10 bg-white p-6 shadow-three dark:border-white/10 dark:bg-bg-color-dark">
+                <div className="rounded-2xl border border-primary/10 bg-primary/5 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark">
                   <h2 className="mb-5 text-2xl font-bold text-black dark:text-white">
                     公开履历摘要
                   </h2>
@@ -141,7 +141,7 @@ const TeacherDetailPage = async ({
                 </div>
               </div>
 
-              <div className="mt-6 rounded-2xl bg-primary p-7 text-white md:p-8">
+              <div className="mt-6 rounded-2xl bg-primary p-7 text-white shadow-three md:p-8">
                 <h2 className="mb-4 text-2xl font-bold">
                   对学生规划的参考价值
                 </h2>
