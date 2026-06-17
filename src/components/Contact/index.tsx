@@ -53,81 +53,81 @@ const Contact = () => {
                 请在下方填写基本情况。问卷提交后，规划老师将根据你的阶段与目标进行初步评估。
               </p>
 
-                <div className="overflow-hidden rounded-xl border border-body-color/10 bg-white dark:border-white/10 dark:bg-gray-dark">
-                  <iframe
-                    id="idy_frame"
-                    title="九辰官网咨询问卷"
-                    src="https://wj.qq.com/s2/26980177/9e75/"
-                    width="100%"
-                    height="100%"
-                    className="min-h-[720px] w-full bg-white md:min-h-[760px]"
-                    frameBorder="0"
-                    allowFullScreen
-                    loading="lazy"
-                    sandbox="allow-same-origin allow-scripts allow-modals allow-downloads allow-forms allow-popups"
-                  />
-                </div>
+              <div className="overflow-hidden rounded-xl border border-body-color/10 bg-white dark:border-white/10 dark:bg-gray-dark">
+                <iframe
+                  id="idy_frame"
+                  title="九辰官网咨询问卷"
+                  src="https://wj.qq.com/s2/26980177/9e75/"
+                  width="100%"
+                  height="100%"
+                  className="min-h-[720px] w-full bg-white md:min-h-[760px]"
+                  frameBorder="0"
+                  allowFullScreen
+                  loading="lazy"
+                  sandbox="allow-same-origin allow-scripts allow-modals allow-downloads allow-forms allow-popups"
+                />
+              </div>
 
-                <p className="mt-4 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
-                  若问卷未正常显示，可
-                  <a
-                    href="https://wj.qq.com/s2/26980177/9e75/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-semibold text-primary hover:underline"
-                  >
-                    点击此处在新页面打开腾讯问卷
-                  </a>
-                  。
-                </p>
+              <p className="mt-4 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+                若问卷未正常显示，可
+                <a
+                  href="https://wj.qq.com/s2/26980177/9e75/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-semibold text-primary hover:underline"
+                >
+                  点击此处在新页面打开腾讯问卷
+                </a>
+                。
+              </p>
             </div>
           </div>
 
           <div className="lg:col-span-5">
-  <div className="space-y-6">
-    <div className="rounded-2xl bg-white p-6 shadow-three dark:bg-gray-dark md:p-8">
-      <p className="mb-2 text-sm font-semibold text-primary">
-        电话咨询
-      </p>
+            <div className="space-y-6">
+              <div className="rounded-2xl bg-white p-6 shadow-three dark:bg-gray-dark md:p-8">
+                <p className="mb-2 text-sm font-semibold text-primary">
+                  电话咨询
+                </p>
 
-      <h2 className="mb-3 text-2xl font-bold text-black dark:text-white">
-        {contactInfo.phone}
-      </h2>
+                <h2 className="mb-3 text-2xl font-bold text-black dark:text-white">
+                  {contactInfo.phone}
+                </h2>
 
-      <p className="mb-5 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
-        可通过电话、二维码或腾讯问卷提交咨询信息，规划老师将根据你的阶段与目标进行初步评估。
-      </p>
+                <p className="mb-5 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+                  可通过电话、二维码或腾讯问卷提交咨询信息，规划老师将根据你的阶段与目标进行初步评估。
+                </p>
 
-      <a
-        href={`tel:${contactInfo.phone}`}
-        className="inline-flex items-center justify-center rounded-xs bg-primary px-6 py-3 text-base font-semibold text-white transition hover:bg-primary/90"
-      >
-        拨打电话
-      </a>
-    </div>
+                <a
+                  href={`tel:${contactInfo.phone}`}
+                  className="inline-flex items-center justify-center rounded-xs bg-primary px-6 py-3 text-base font-semibold text-white transition hover:bg-primary/90"
+                >
+                  拨打电话
+                </a>
+              </div>
 
-    <div className="rounded-2xl bg-primary p-5 text-white shadow-three md:p-8">
+              <div className="rounded-2xl bg-primary p-5 text-white shadow-three md:p-8">
                 <h2 className="mb-4 text-2xl font-bold">
-                  扫码关注 / 咨询
+                  扫码咨询 / 关注
                 </h2>
 
                 <p className="mb-5 text-base leading-relaxed text-white/80 md:mb-6">
-                  可通过微信公众号、微信视频号、抖音了解九辰教育内容与服务动态。
+                  可扫码填写腾讯问卷，也可通过微信公众号、微信视频号、抖音了解九辰教育内容与服务动态。
                 </p>
 
-                <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:grid-cols-1 lg:gap-4">
+                <div className="grid grid-cols-2 gap-3 lg:grid-cols-1 lg:gap-4">
                   {contactChannels.map((channel) => (
                     <div
                       key={channel.id}
-                      className="rounded-2xl bg-white p-2 text-center text-black dark:bg-gray-dark dark:text-white sm:p-3 lg:p-4 lg:text-left"
+                      className="rounded-2xl bg-white p-3 text-center text-black dark:bg-gray-dark dark:text-white lg:p-4 lg:text-left"
                     >
                       <div className="grid grid-cols-1 items-center gap-2 lg:grid-cols-[112px_1fr] lg:gap-4">
-                        <div className="relative mx-auto aspect-square w-full max-w-[96px] overflow-hidden rounded-xl bg-gray-light dark:bg-bg-color-dark sm:max-w-[112px] lg:mx-0 lg:max-w-none">
+                        <div className="relative mx-auto aspect-square w-full max-w-[112px] overflow-hidden rounded-xl bg-gray-light dark:bg-bg-color-dark lg:mx-0 lg:max-w-none">
                           <Image
                             src={channel.image}
                             alt={channel.title}
                             fill
-                            sizes="(min-width: 1024px) 112px, (min-width: 640px) 112px, 96px"
+                            sizes="(min-width: 1024px) 112px, 112px"
                             className="object-contain p-1.5 lg:p-2"
                           />
                         </div>
