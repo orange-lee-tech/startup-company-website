@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   alternates: { canonical: "/teachers" },
 };
 
+const teacherCardTones = [
+  {
+    card: "border-primary/10 bg-primary/5 hover:border-primary/40 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark",
+    image: "from-[#EEF3FF] to-white dark:from-white/10 dark:to-bg-color-dark",
+    badge: "bg-primary/10 text-primary",
+  },
+  {
+    card: "border-yellow/20 bg-yellow/5 hover:border-yellow/50 hover:bg-white dark:border-yellow/20 dark:bg-white/10 dark:hover:bg-gray-dark",
+    image: "from-[#FFFBEB] to-white dark:from-yellow/10 dark:to-bg-color-dark",
+    badge: "bg-yellow/20 text-primary dark:text-yellow",
+  },
+];
+
 const TeachersPage = () => {
   return (
     <>
@@ -36,12 +49,13 @@ const TeachersPage = () => {
           </div>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {teachers.map((teacher) => {
+            {teachers.map((teacher, index) => {
               const canOpenDetail = teacher.hasDetail && teacher.detailPath;
+              const tone = teacherCardTones[index % teacherCardTones.length];
 
               const card = (
-                <article className="group h-full overflow-hidden rounded-2xl border border-body-color/10 bg-gray-light transition hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-bg-color-dark dark:hover:bg-gray-dark">
-                  <div className="relative flex h-[300px] w-full items-end justify-center overflow-hidden bg-linear-to-b from-[#EEF3FF] to-white px-6 pt-6 dark:from-gray-dark dark:to-bg-color-dark md:h-[320px]">
+                <article className={`group h-full overflow-hidden rounded-2xl border shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three ${tone.card}`}>
+                  <div className={`relative flex h-[300px] w-full items-end justify-center overflow-hidden bg-linear-to-b px-6 pt-6 md:h-[320px] ${tone.image}`}>
                     <Image
                       src={teacher.portraitImage}
                       alt={teacher.name}
@@ -58,7 +72,7 @@ const TeachersPage = () => {
                       </h2>
 
                       {canOpenDetail && (
-                        <span className="shrink-0 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                        <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${tone.badge}`}>
                           详情
                         </span>
                       )}
@@ -79,7 +93,7 @@ const TeachersPage = () => {
                     )}
 
                     {canOpenDetail && (
-                      <p className="mt-5 text-sm font-semibold text-primary">
+                      <p className="mt-5 text-sm font-semibold text-primary transition group-hover:translate-x-1">
                         查看个人主页 →
                       </p>
                     )}
