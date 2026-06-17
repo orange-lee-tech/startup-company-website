@@ -7,15 +7,30 @@ import {
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+const detailBlockTones = [
+  {
+    card: "border-primary/10 bg-primary/5 hover:border-primary/40 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark",
+    dot: "bg-primary",
+  },
+  {
+    card: "border-yellow/20 bg-yellow/5 hover:border-yellow/50 hover:bg-white dark:border-yellow/20 dark:bg-white/10 dark:hover:bg-gray-dark",
+    dot: "bg-yellow",
+  },
+];
+
 const DetailBlock = ({
   title,
   items,
+  toneIndex,
 }: {
   title: string;
   items: string[];
+  toneIndex: number;
 }) => {
+  const tone = detailBlockTones[toneIndex % detailBlockTones.length];
+
   return (
-    <div className="rounded-2xl border border-body-color/10 bg-gray-light p-7 dark:border-white/10 dark:bg-bg-color-dark">
+    <div className={`rounded-2xl border p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three ${tone.card}`}>
       <h2 className="mb-5 text-2xl font-bold text-black dark:text-white">
         {title}
       </h2>
@@ -23,7 +38,7 @@ const DetailBlock = ({
       <div className="space-y-3">
         {items.map((item) => (
           <div key={item} className="flex gap-3">
-            <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary" />
+            <span className={`mt-2 h-2 w-2 shrink-0 rounded-full ${tone.dot}`} />
             <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
               {item}
             </p>
@@ -100,7 +115,7 @@ const ServiceDetailPage = async ({
             </div>
 
             <div className="lg:col-span-4">
-              <div className="rounded-2xl bg-primary p-7 text-white shadow-three">
+              <div className="rounded-2xl bg-primary p-7 text-white shadow-three transition duration-300 hover:-translate-y-1 hover:shadow-three">
                 <h2 className="mb-4 text-2xl font-bold">
                   适合先做免费评估
                 </h2>
@@ -120,10 +135,14 @@ const ServiceDetailPage = async ({
           </div>
 
           <div className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {page.highlights.map((item) => (
+            {page.highlights.map((item, index) => (
               <div
                 key={item}
-                className="rounded-xl border border-body-color/10 bg-gray-light p-5 text-center text-base font-semibold text-primary dark:border-white/10 dark:bg-bg-color-dark"
+                className={`rounded-xl border p-5 text-center text-base font-semibold shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three ${
+                  index % 2 === 0
+                    ? "border-primary/10 bg-primary/5 text-primary dark:border-white/10 dark:bg-white/5"
+                    : "border-yellow/20 bg-yellow/5 text-primary dark:border-yellow/20 dark:bg-white/10 dark:text-yellow"
+                }`}
               >
                 {item}
               </div>
@@ -131,18 +150,18 @@ const ServiceDetailPage = async ({
           </div>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <DetailBlock title="适合人群" items={detail.audience} />
-            <DetailBlock title="常见痛点" items={detail.painPoints} />
-            <DetailBlock title="服务目标" items={detail.goals} />
-            <DetailBlock title="服务内容" items={detail.serviceContent} />
-            <DetailBlock title="服务流程" items={detail.process} />
-            <DetailBlock title="服务周期" items={detail.cycle} />
-            <DetailBlock title="交付成果" items={detail.deliverables} />
-            <DetailBlock title="配套资源" items={detail.resources} />
+            <DetailBlock title="适合人群" items={detail.audience} toneIndex={0} />
+            <DetailBlock title="常见痛点" items={detail.painPoints} toneIndex={1} />
+            <DetailBlock title="服务目标" items={detail.goals} toneIndex={2} />
+            <DetailBlock title="服务内容" items={detail.serviceContent} toneIndex={3} />
+            <DetailBlock title="服务流程" items={detail.process} toneIndex={4} />
+            <DetailBlock title="服务周期" items={detail.cycle} toneIndex={5} />
+            <DetailBlock title="交付成果" items={detail.deliverables} toneIndex={6} />
+            <DetailBlock title="配套资源" items={detail.resources} toneIndex={7} />
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="rounded-2xl border border-body-color/10 bg-gray-light p-7 dark:border-white/10 dark:bg-bg-color-dark">
+            <div className="rounded-2xl border border-primary/10 bg-primary/5 p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark">
               <h2 className="mb-5 text-2xl font-bold text-black dark:text-white">
                 私人订制体现
               </h2>
@@ -152,7 +171,7 @@ const ServiceDetailPage = async ({
               </p>
             </div>
 
-            <div className="rounded-2xl border border-yellow/40 bg-[#FFFBEB] p-7 dark:border-yellow/30 dark:bg-white/5">
+            <div className="rounded-2xl border border-yellow/40 bg-[#FFFBEB] p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three dark:border-yellow/30 dark:bg-white/5">
               <h2 className="mb-5 text-2xl font-bold text-black dark:text-white">
                 展示边界
               </h2>
