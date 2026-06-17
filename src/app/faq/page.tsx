@@ -10,6 +10,17 @@ export const metadata: Metadata = {
   alternates: { canonical: "/faq" },
 };
 
+const faqCardTones = [
+  {
+    card: "border-primary/10 bg-primary/5 hover:border-primary/40 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark",
+    number: "bg-primary text-white",
+  },
+  {
+    card: "border-yellow/20 bg-yellow/5 hover:border-yellow/50 hover:bg-white dark:border-yellow/20 dark:bg-white/10 dark:hover:bg-gray-dark",
+    number: "bg-yellow text-black",
+  },
+];
+
 const FAQPage = () => {
   return (
     <>
@@ -54,33 +65,37 @@ const FAQPage = () => {
           </div>
 
           <div className="mx-auto max-w-[980px] space-y-5">
-            {faqItems.map((item, index) => (
-              <div
-                key={item.id}
-                className="rounded-2xl border border-body-color/10 bg-white p-7 dark:border-white/10 dark:bg-gray-dark"
-              >
-                <div className="mb-5 flex items-start gap-4">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
-                    {index + 1}
+            {faqItems.map((item, index) => {
+              const tone = faqCardTones[index % faqCardTones.length];
+
+              return (
+                <div
+                  key={item.id}
+                  className={`rounded-2xl border p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three ${tone.card}`}
+                >
+                  <div className="mb-5 flex items-start gap-4">
+                    <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold ${tone.number}`}>
+                      {index + 1}
+                    </div>
+
+                    <h2 className="text-xl font-bold leading-relaxed text-black dark:text-white">
+                      {item.question}
+                    </h2>
                   </div>
 
-                  <h2 className="text-xl font-bold leading-relaxed text-black dark:text-white">
-                    {item.question}
-                  </h2>
+                  <div className="space-y-3 pl-0 md:pl-13">
+                    {item.answer.map((paragraph) => (
+                      <p
+                        key={paragraph}
+                        className="text-base leading-relaxed text-body-color dark:text-body-color-dark"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-
-                <div className="space-y-3 pl-0 md:pl-13">
-                  {item.answer.map((paragraph) => (
-                    <p
-                      key={paragraph}
-                      className="text-base leading-relaxed text-body-color dark:text-body-color-dark"
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="mx-auto mt-12 max-w-[980px] rounded-2xl bg-primary p-8 text-white md:p-10">
