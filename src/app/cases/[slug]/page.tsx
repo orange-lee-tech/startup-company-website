@@ -8,6 +8,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+const caseCardTones = [
+  {
+    card: "border-primary/10 bg-primary/5 hover:border-primary/40 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark",
+    panel: "bg-white ring-1 ring-primary/10 dark:bg-white/5 dark:ring-white/10",
+    label: "bg-primary/10 text-primary",
+  },
+  {
+    card: "border-yellow/20 bg-yellow/5 hover:border-yellow/50 hover:bg-white dark:border-yellow/20 dark:bg-white/10 dark:hover:bg-gray-dark",
+    panel: "bg-white ring-1 ring-yellow/20 dark:bg-white/10 dark:ring-yellow/20",
+    label: "bg-yellow/20 text-primary dark:text-yellow",
+  },
+];
+
 export function generateStaticParams() {
   return casePages.map((page) => ({
     slug: page.slug,
@@ -96,16 +109,18 @@ const CaseCategoryPage = async ({
 
           {cases.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-              {cases.map((item) => {
-                const initialSummary = item.challenge || item.background;
+              {cases.map((item, index) => {
+                const tone = caseCardTones[index % caseCardTones.length];
+                const initialSummary = item.initialSummary?.trim();
+                const outcomeSummary = item.outcomeSummary?.trim() || item.result;
 
                 return (
                   <article
                     key={item.id}
-                    className="rounded-2xl border border-primary/10 bg-white p-6 shadow-three transition hover:-translate-y-1 hover:border-primary/40 dark:border-white/10 dark:bg-gray-dark md:p-7"
+                    className={`rounded-2xl border p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three md:p-7 ${tone.card}`}
                   >
                     <div className="mb-5 flex flex-wrap items-center gap-3">
-                      <span className="rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                      <span className={`rounded-full px-4 py-2 text-sm font-semibold ${tone.label}`}>
                         {item.studentLabel}
                       </span>
                     </div>
@@ -116,7 +131,7 @@ const CaseCategoryPage = async ({
 
                     {item.image && (
                       <div
-                        className={`relative mb-6 overflow-hidden rounded-xl bg-gray-light dark:bg-bg-color-dark ${
+                        className={`relative mb-6 overflow-hidden rounded-xl bg-white shadow-sm dark:bg-bg-color-dark ${
                           item.imageRatio === "portrait"
                             ? "mx-auto aspect-[2/3] w-full max-w-[240px]"
                             : "aspect-[4/3] w-full"
@@ -137,21 +152,23 @@ const CaseCategoryPage = async ({
                     )}
 
                     <div className="space-y-5">
-                      <div className="rounded-xl bg-primary/[0.04] p-5 ring-1 ring-primary/10 dark:bg-white/5 dark:ring-white/10">
-                        <h3 className="mb-2 text-base font-bold text-black dark:text-white">
-                          初始情况
-                        </h3>
-                        <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                          {initialSummary}
-                        </p>
-                      </div>
+                      {initialSummary && (
+                        <div className={`rounded-xl p-5 ${tone.panel}`}>
+                          <h3 className="mb-2 text-base font-bold text-black dark:text-white">
+                            初始情况
+                          </h3>
+                          <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
+                            {initialSummary}
+                          </p>
+                        </div>
+                      )}
 
                       <div className="rounded-xl border-l-4 border-yellow bg-[#FFFBEB] p-5 dark:bg-white/5">
                         <h3 className="mb-2 text-base font-bold text-black dark:text-white">
                           最终结果
                         </h3>
                         <p className="text-base font-semibold leading-relaxed text-black dark:text-white">
-                          {item.result}
+                          {outcomeSummary}
                         </p>
                       </div>
                     </div>
@@ -160,7 +177,7 @@ const CaseCategoryPage = async ({
               })}
             </div>
           ) : (
-            <div className="rounded-2xl border border-primary/10 bg-primary/[0.04] p-8 dark:border-white/10 dark:bg-white/5">
+            <div className="rounded-2xl border border-primary/10 bg-primary/5 p-8 dark:border-white/10 dark:bg-white/5">
               <h2 className="mb-4 text-2xl font-bold text-black dark:text-white">
                 案例内容整理中
               </h2>
