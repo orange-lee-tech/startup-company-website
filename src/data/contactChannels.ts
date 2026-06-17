@@ -9,8 +9,15 @@ export type ContactChannel = {
 };
 
 const contactImageBase = withBasePath("/images/contact");
+const jiuchenImageBase = withBasePath("/images/jiuchen");
 
 export const contactChannels: ContactChannel[] = [
+  {
+    id: "tencent-survey",
+    title: "腾讯问卷",
+    description: "扫码填写咨询信息，便于规划老师了解当前阶段与目标方向。",
+    image: `${jiuchenImageBase}/wj.qq.com.png`,
+  },
   {
     id: "wechat-official",
     title: "微信公众号",
