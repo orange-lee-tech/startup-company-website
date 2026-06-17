@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
+const aboutCardTones = [
+  "border-primary/10 bg-primary/5 hover:border-primary/40 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark",
+  "border-yellow/20 bg-yellow/5 hover:border-yellow/50 hover:bg-white dark:border-yellow/20 dark:bg-white/10 dark:hover:bg-gray-dark",
+];
+
 const AboutPage = () => {
   return (
     <>
@@ -36,7 +41,7 @@ const AboutPage = () => {
             </div>
 
             <div className="lg:col-span-4">
-              <div className="rounded-2xl bg-primary p-7 text-white shadow-three">
+              <div className="rounded-2xl bg-primary p-7 text-white shadow-three transition duration-300 hover:-translate-y-1">
                 <p className="mb-2 text-sm font-semibold text-white/70">
                   公司主体
                 </p>
@@ -52,11 +57,11 @@ const AboutPage = () => {
             </div>
           </div>
 
-          <div className="mb-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-body-color/10 bg-body-color/10 dark:border-white/10 dark:bg-white/10 md:grid-cols-3">
-            {aboutInfo.keywords.map((keyword) => (
+          <div className="mb-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+            {aboutInfo.keywords.map((keyword, index) => (
               <div
                 key={keyword}
-                className="bg-gray-light p-8 text-center dark:bg-bg-color-dark"
+                className={`rounded-2xl border p-8 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three ${aboutCardTones[index % aboutCardTones.length]}`}
               >
                 <p className="text-2xl font-bold text-primary">
                   {keyword}
@@ -67,7 +72,7 @@ const AboutPage = () => {
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
             <div className="lg:col-span-7">
-              <div className="rounded-2xl border border-body-color/10 bg-gray-light p-8 dark:border-white/10 dark:bg-bg-color-dark md:p-10">
+              <div className="rounded-2xl border border-primary/10 bg-primary/5 p-8 shadow-sm transition duration-300 hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark md:p-10">
                 <p className="mb-4 text-base font-semibold text-primary">
                   机构简介
                 </p>
@@ -90,7 +95,7 @@ const AboutPage = () => {
             </div>
 
             <div className="lg:col-span-5">
-              <div className="h-full rounded-2xl border border-body-color/10 bg-white p-8 shadow-three dark:border-white/10 dark:bg-gray-dark md:p-10">
+              <div className="h-full rounded-2xl border border-yellow/20 bg-yellow/5 p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-yellow/50 hover:bg-white hover:shadow-three dark:border-yellow/20 dark:bg-white/10 dark:hover:bg-gray-dark md:p-10">
                 <p className="mb-4 text-base font-semibold text-primary">
                   六大服务方向
                 </p>
@@ -100,11 +105,15 @@ const AboutPage = () => {
                 </h2>
 
                 <div className="grid grid-cols-1 gap-3">
-                  {aboutInfo.serviceDirections.map((item) => (
+                  {aboutInfo.serviceDirections.map((item, index) => (
                     <Link
                       key={item}
                       href="/services"
-                      className="rounded-xl bg-primary/10 px-5 py-4 text-base font-semibold text-primary transition hover:bg-primary hover:text-white"
+                      className={`rounded-xl px-5 py-4 text-base font-semibold transition hover:-translate-y-0.5 hover:bg-primary hover:text-white ${
+                        index % 2 === 0
+                          ? "bg-white text-primary shadow-sm dark:bg-white/10"
+                          : "bg-primary/10 text-primary dark:bg-white/10"
+                      }`}
                     >
                       {item}
                     </Link>
@@ -115,7 +124,7 @@ const AboutPage = () => {
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
-            <div className="rounded-2xl border border-body-color/10 bg-white p-8 shadow-three dark:border-white/10 dark:bg-gray-dark md:p-10">
+            <div className="rounded-2xl border border-primary/10 bg-primary/5 p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark md:p-10">
               <p className="mb-4 text-base font-semibold text-primary">
                 品牌理念
               </p>
@@ -136,7 +145,7 @@ const AboutPage = () => {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-body-color/10 bg-white p-8 shadow-three dark:border-white/10 dark:bg-gray-dark md:p-10">
+            <div className="rounded-2xl border border-yellow/20 bg-yellow/5 p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-yellow/50 hover:bg-white hover:shadow-three dark:border-yellow/20 dark:bg-white/10 dark:hover:bg-gray-dark md:p-10">
               <p className="mb-4 text-base font-semibold text-primary">
                 教育初心
               </p>
@@ -158,7 +167,7 @@ const AboutPage = () => {
             </div>
           </div>
 
-          <div className="mt-8 rounded-2xl border border-body-color/10 bg-gray-light p-8 dark:border-white/10 dark:bg-bg-color-dark md:p-10">
+          <div className="mt-8 rounded-2xl border border-primary/10 bg-primary/5 p-8 shadow-sm dark:border-white/10 dark:bg-white/5 md:p-10">
             <p className="mb-4 text-base font-semibold text-primary">
               用户痛点
             </p>
@@ -168,10 +177,10 @@ const AboutPage = () => {
             </h2>
 
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-              {aboutInfo.painPoints.map((item) => (
+              {aboutInfo.painPoints.map((item, index) => (
                 <div
                   key={item}
-                  className="rounded-xl bg-white p-6 dark:bg-gray-dark"
+                  className={`rounded-xl border p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three ${aboutCardTones[index % aboutCardTones.length]}`}
                 >
                   <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
                     {item}
@@ -182,10 +191,10 @@ const AboutPage = () => {
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {aboutInfo.principles.map((item) => (
+            {aboutInfo.principles.map((item, index) => (
               <div
                 key={item.title}
-                className="rounded-2xl border border-body-color/10 bg-white p-7 shadow-three dark:border-white/10 dark:bg-gray-dark"
+                className={`rounded-2xl border p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three ${aboutCardTones[index % aboutCardTones.length]}`}
               >
                 <h3 className="mb-4 text-xl font-bold text-black dark:text-white">
                   {item.title}
