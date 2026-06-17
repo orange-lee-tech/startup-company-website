@@ -19,107 +19,63 @@ const CasesPage = () => {
 
     return {
       ...item,
-      count: cases.length,
       featuredCase: cases[0],
     };
   });
-
-  const totalCases = caseCategories.reduce(
-    (sum, item) => sum + item.count,
-    0,
-  );
 
   return (
     <>
       <Breadcrumb
         pageName="案例"
-        description="按保研辅导、留学申请、博士申请与就业辅导四类整理九辰学员案例，持续补充已授权、已脱敏的升学与就业成果。"
+        description="按保研辅导、留学申请、博士申请与就业辅导四类整理九辰学员案例，重点呈现初始情况与最终结果。"
       />
 
-      <section className="bg-gray-light py-14 dark:bg-bg-color-dark md:py-16 lg:py-20">
+      <section className="bg-white py-14 dark:bg-bg-color-dark md:py-16 lg:py-20">
         <div className="container">
-          <div className="mb-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-8">
-              <p className="mb-4 text-base font-semibold text-primary">
-                案例总览
-              </p>
+          <div className="mb-10 max-w-[900px]">
+            <p className="mb-4 text-base font-semibold text-primary">
+              案例总览
+            </p>
 
-              <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
-                四类案例入口，快速查看相近背景的规划路径。
-              </h1>
+            <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
+              按目标方向查看相近背景的规划结果。
+            </h1>
 
-              <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-                当前案例采用脱敏展示方式，重点呈现背景类型、初始问题、服务过程与最终结果。后续可根据授权情况补充结果截图与证明材料。
-              </p>
-            </div>
-
-            <div className="lg:col-span-4">
-              <div className="rounded-2xl bg-primary p-6 text-white shadow-three">
-                <p className="mb-2 text-sm font-semibold text-white/70">
-                  当前已整理案例
-                </p>
-
-                <p className="mb-2 text-5xl font-bold">
-                  {totalCases}
-                  <span className="ml-2 text-xl">个</span>
-                </p>
-
-                <p className="text-sm leading-relaxed text-white/75">
-                  覆盖保研辅导、博士申请与就业辅导方向，留学申请案例正在整理中。
-                </p>
-              </div>
-            </div>
+            <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
+              案例均以脱敏方式展示，页面重点放在学员初始情况、目标诉求与最终结果，便于快速判断相近路径。
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
             {caseCategories.map((item, index) => {
-              const hasCases = item.count > 0;
-
               return (
                 <Link
                   key={item.slug}
                   href={`/cases/${item.slug}`}
-                  className="group flex h-full flex-col rounded-2xl border border-body-color/10 bg-white p-6 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-three dark:border-white/10 dark:bg-gray-dark"
+                  className="group flex h-full flex-col rounded-2xl border border-primary/10 bg-white p-6 shadow-three transition hover:-translate-y-1 hover:border-primary/40 dark:border-white/10 dark:bg-gray-dark"
                 >
-                  <div className="mb-5 flex items-start justify-between gap-4">
-                    <p className="text-sm font-bold tracking-wide text-primary">
+                  <div className="mb-5 flex items-center justify-between gap-4">
+                    <p className="rounded-full bg-primary/10 px-3 py-1.5 text-sm font-bold text-primary">
                       {String(index + 1).padStart(2, "0")}
                     </p>
 
-                    <div
-                      className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-bold ${
-                        hasCases
-                          ? "bg-primary/10 text-primary"
-                          : "bg-body-color/10 text-body-color dark:bg-white/10 dark:text-body-color-dark"
-                      }`}
-                    >
-                      {hasCases ? `${item.count} 个` : "整理中"}
-                    </div>
+                    <span className="text-sm font-semibold text-primary">
+                      查看详情 →
+                    </span>
                   </div>
 
                   <h2 className="mb-4 text-2xl font-bold text-black transition group-hover:text-primary dark:text-white">
                     {item.title}
                   </h2>
 
-                  <p className="mb-5 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
+                  <p className="mb-6 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
                     {item.description}
                   </p>
 
-                  <div className="mb-6 flex flex-wrap gap-2">
-                    {item.highlights.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
                   {item.featuredCase ? (
-                    <div className="mt-auto rounded-xl bg-gray-light p-4 dark:bg-bg-color-dark">
+                    <div className="mt-auto rounded-xl bg-primary/[0.04] p-4 ring-1 ring-primary/10 dark:bg-white/5 dark:ring-white/10">
                       <p className="mb-2 text-sm font-semibold text-primary">
-                        精选案例
+                        代表结果
                       </p>
 
                       <h3 className="mb-2 text-base font-bold leading-tight text-black dark:text-white">
@@ -131,22 +87,18 @@ const CasesPage = () => {
                       </p>
                     </div>
                   ) : (
-                    <div className="mt-auto rounded-xl border border-dashed border-body-color/20 p-4 dark:border-white/20">
+                    <div className="mt-auto rounded-xl border border-dashed border-primary/20 bg-primary/[0.03] p-4 dark:border-white/20 dark:bg-white/5">
                       <p className="text-sm leading-relaxed text-body-color dark:text-body-color-dark">
-                        该方向案例素材仍在整理与脱敏确认中。
+                        该方向案例素材仍在整理与脱敏确认中，可先咨询相近路径。
                       </p>
                     </div>
                   )}
-
-                  <p className="mt-5 text-sm font-semibold text-primary">
-                    查看该方向 →
-                  </p>
                 </Link>
               );
             })}
           </div>
 
-          <div className="mt-10 rounded-2xl border border-body-color/10 bg-white p-7 dark:border-white/10 dark:bg-gray-dark md:p-8">
+          <div className="mt-10 rounded-2xl border border-primary/10 bg-primary/[0.04] p-7 dark:border-white/10 dark:bg-white/5 md:p-8">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-8">
                 <h2 className="mb-3 text-2xl font-bold text-black dark:text-white">
@@ -154,7 +106,7 @@ const CasesPage = () => {
                 </h2>
 
                 <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                  所有案例发布前均应完成授权确认与脱敏处理。展示时优先突出背景类型、初始问题、服务过程与最终结果，避免将个别结果表述为普遍承诺。
+                  所有案例发布前均应完成授权确认与脱敏处理。公开展示以代表性路径为主，避免将个别结果表述为普遍承诺。
                 </p>
               </div>
 
