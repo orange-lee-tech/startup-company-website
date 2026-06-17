@@ -60,6 +60,26 @@ src/data/faq.ts
 
 案例 Markdown 中仍可保留背景、服务过程、标签等字段，用于内部管理或未来页面升级，但不应在前台一次性堆叠展示。
 
+`cases.ts` 会优先读取 Markdown 或 frontmatter 中的精简字段：
+
+```text
+initialSummary
+outcomeSummary
+```
+
+如果没有 `initialSummary`，则按以下顺序兜底读取：
+
+```text
+## 初始情况
+## 初始问题
+## 申请难点
+## 问题分析
+## 学员背景
+## 背景情况
+```
+
+如果仍然没有内容，前台不渲染空的“初始情况”模块。
+
 ## 师资与案例授权
 
 师资和案例公开前应确认：
