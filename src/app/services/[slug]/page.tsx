@@ -58,6 +58,7 @@ export async function generateMetadata({
   return {
     title: `${page.title} | 九辰服务`,
     description: detail?.subtitle || page.description,
+    alternates: { canonical: `/services/${slug}` },
   };
 }
 

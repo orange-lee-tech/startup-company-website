@@ -32,6 +32,7 @@ export async function generateMetadata({
     description:
       result.teacher.summary ??
       `${result.teacher.name}，${result.teacher.title}，${result.teacher.school}`,
+    alternates: { canonical: `/teachers/${slug}` },
   };
 }
 

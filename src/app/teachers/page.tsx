@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "师资 | 九辰本硕博升学就业",
   description:
     "九辰教育导师与教研团队总览，展示老师照片、姓名、学校或机构名称及职称。",
+  alternates: { canonical: "/teachers" },
 };
 
 const TeachersPage = () => {

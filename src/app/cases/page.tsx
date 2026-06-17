@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "案例 | 九辰本硕博升学就业",
   description:
     "九辰教育学员案例总览，覆盖保研辅导、留学申请、博士申请与就业辅导。",
+  alternates: { canonical: "/cases" },
 };
 
 const CasesPage = () => {

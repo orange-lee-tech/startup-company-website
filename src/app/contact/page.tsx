@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "免费咨询 | 九辰本硕博升学就业",
   description:
     "预约九辰教育免费一对一评估，了解保研、留学、申博、本科就业与高端就业定制陪跑服务。",
+  alternates: { canonical: "/contact" },
 };
 
 const ContactPage = () => {

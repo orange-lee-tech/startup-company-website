@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "关于九辰 | 九辰本硕博升学就业",
   description:
     "了解九辰教育咨询有限公司的服务理念、教育初心与本硕博升学就业全链条陪跑服务。",
+  alternates: { canonical: "/about" },
 };
 
 const AboutPage = () => {

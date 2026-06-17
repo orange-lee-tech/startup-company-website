@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "服务 | 九辰本硕博升学就业",
   description:
     "九辰教育六大核心服务方向，覆盖保研、海外本硕、国内博士、海外全奖博士、本科就业与高端就业。",
+  alternates: { canonical: "/services" },
 };
 
 const ServicesPage = () => {

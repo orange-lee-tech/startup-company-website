@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "常见问题 | 九辰本硕博升学就业",
   description:
     "九辰教育常见问题，涵盖服务流程、导师匹配、服务周期、收费方式、退费政策与合规边界。",
+  alternates: { canonical: "/faq" },
 };
 
 const FAQPage = () => {

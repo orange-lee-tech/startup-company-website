@@ -31,6 +31,7 @@ export async function generateMetadata({
   return {
     title: `${page.title} | 九辰案例`,
     description: page.description,
+    alternates: { canonical: `/cases/${slug}` },
   };
 }
 
