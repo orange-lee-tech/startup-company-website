@@ -20,6 +20,9 @@ export type StudentCase = {
   service: string;
   result: string;
   tags: string[];
+  initialSummary?: string;
+  outcomeSummary?: string;
+  contentStatus?: string;
   image?: string;
   imageFile?: string;
   imageRatio?: CaseImageRatio;
@@ -200,15 +203,31 @@ function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function normalizeSummary(value: string) {
+  return value.replace(/\s+/g, " ").trim();
+}
+
 function getSection(body: string, title: string) {
   const pattern = new RegExp(
-    `^##\\s+${escapeRegExp(title)}\\s*$([\\s\\S]*?)(?=^##\\s+|$)`,
+    `^##\\s+${escapeRegExp(title)}\\s*\\r?\\n([\\s\\S]*?)(?=\\r?\\n##\\s+|$)`,
     "m",
   );
 
   const match = body.match(pattern);
 
-  return match?.[1].trim() ?? "";
+  return normalizeSummary(match?.[1] ?? "");
+}
+
+function getFirstSection(body: string, titles: string[]) {
+  for (const title of titles) {
+    const section = getSection(body, title);
+
+    if (section) {
+      return section;
+    }
+  }
+
+  return "";
 }
 
 function normalizeImagePath(imagePath: string) {
@@ -256,17 +275,38 @@ function parseCaseFile(filePath: string): StudentCase | undefined {
 
   const imagePath = getString(frontmatter, "image");
   const imageRatio = normalizeImageRatio(getString(frontmatter, "imageRatio"));
+  const background = getFirstSection(body, [
+    "学员背景",
+    "背景情况",
+    "基本背景",
+  ]);
+  const challenge = getFirstSection(body, [
+    "初始情况",
+    "初始问题",
+    "申请难点",
+    "问题分析",
+  ]);
+  const service = getFirstSection(body, ["服务过程", "服务内容", "规划过程"]);
+  const result =
+    getString(frontmatter, "result") ||
+    getFirstSection(body, ["最终结果", "结果", "录取结果"]);
+  const initialSummary =
+    getString(frontmatter, "initialSummary") || challenge || background;
+  const outcomeSummary = getString(frontmatter, "outcomeSummary") || result;
 
   return {
     id,
     category,
     title,
     studentLabel: getString(frontmatter, "studentLabel"),
-    background: getSection(body, "学员背景"),
-    challenge: getSection(body, "初始问题"),
-    service: getSection(body, "服务过程"),
-    result: getString(frontmatter, "result") || getSection(body, "最终结果"),
+    background,
+    challenge,
+    service,
+    result,
     tags: getStringArray(frontmatter, "tags"),
+    initialSummary,
+    outcomeSummary,
+    contentStatus: getString(frontmatter, "contentStatus") || undefined,
     image: normalizeImagePath(imagePath),
     imageFile: getString(frontmatter, "imageFile") || undefined,
     imageRatio,
