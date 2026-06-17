@@ -58,7 +58,7 @@ const CaseCategoryPage = async ({
         description={page.description}
       />
 
-      <section className="bg-white py-14 dark:bg-gray-dark md:py-16 lg:py-20">
+      <section className="bg-white py-14 dark:bg-bg-color-dark md:py-16 lg:py-20">
         <div className="container">
           <div className="mb-8 flex flex-wrap gap-3">
             {casePages.map((item) => {
@@ -70,8 +70,8 @@ const CaseCategoryPage = async ({
                   href={`/cases/${item.slug}`}
                   className={`rounded-full border px-5 py-2.5 text-sm font-semibold transition ${
                     active
-                      ? "border-primary bg-primary text-white"
-                      : "border-body-color/15 bg-gray-light text-body-color hover:border-primary hover:text-primary dark:border-white/10 dark:bg-bg-color-dark dark:text-body-color-dark dark:hover:text-white"
+                      ? "border-primary bg-primary text-white shadow-three"
+                      : "border-primary/15 bg-white text-body-color hover:border-primary hover:text-primary dark:border-white/10 dark:bg-gray-dark dark:text-body-color-dark dark:hover:text-white"
                   }`}
                 >
                   {item.title}
@@ -80,136 +80,87 @@ const CaseCategoryPage = async ({
             })}
           </div>
 
-          <div className="mb-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-8">
-              <p className="mb-4 text-base font-semibold text-primary">
-                案例详情
-              </p>
+          <div className="mb-10 max-w-[900px]">
+            <p className="mb-4 text-base font-semibold text-primary">
+              案例详情
+            </p>
 
-              <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
-                {page.title}
-              </h1>
+            <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
+              {page.title}
+            </h1>
 
-              <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-                {page.description}
-              </p>
-            </div>
-
-            <div className="lg:col-span-4">
-              <div className="rounded-2xl bg-gray-light p-6 dark:bg-bg-color-dark">
-                <p className="mb-2 text-sm font-semibold text-primary">
-                  当前分类案例
-                </p>
-
-                <p className="text-4xl font-bold text-black dark:text-white">
-                  {cases.length}
-                  <span className="ml-2 text-lg text-body-color dark:text-body-color-dark">
-                    个
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-10 grid grid-cols-2 gap-3 md:grid-cols-4">
-            {page.highlights.map((item) => (
-              <div
-                key={item}
-                className="rounded-xl border border-body-color/10 bg-gray-light p-4 text-center text-sm font-semibold text-primary dark:border-white/10 dark:bg-bg-color-dark md:text-base"
-              >
-                {item}
-              </div>
-            ))}
+            <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
+              {page.description}
+            </p>
           </div>
 
           {cases.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-              {cases.map((item) => (
-                <article
-                  key={item.id}
-                  className="rounded-2xl border border-body-color/10 bg-gray-light p-6 transition hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-bg-color-dark dark:hover:bg-gray-dark md:p-7"
-                >
-                  <div className="mb-5 flex flex-wrap items-center gap-3">
-                    <span className="rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
-                      {item.studentLabel}
-                    </span>
+              {cases.map((item) => {
+                const initialSummary = item.challenge || item.background;
 
-                    {item.tags.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full bg-white px-4 py-2 text-sm font-medium text-body-color dark:bg-white/10 dark:text-body-color-dark"
-                      >
-                        {tag}
+                return (
+                  <article
+                    key={item.id}
+                    className="rounded-2xl border border-primary/10 bg-white p-6 shadow-three transition hover:-translate-y-1 hover:border-primary/40 dark:border-white/10 dark:bg-gray-dark md:p-7"
+                  >
+                    <div className="mb-5 flex flex-wrap items-center gap-3">
+                      <span className="rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                        {item.studentLabel}
                       </span>
-                    ))}
-                  </div>
-
-                  <h2 className="mb-5 text-2xl font-bold leading-tight text-black dark:text-white">
-                    {item.title}
-                  </h2>
-{item.image && (
-  <div
-    className={`relative mb-6 overflow-hidden rounded-xl bg-white dark:bg-gray-dark ${
-      item.imageRatio === "portrait"
-        ? "mx-auto aspect-[2/3] w-full max-w-[240px]"
-        : "aspect-[4/3] w-full"
-    }`}
-  >
-    <Image
-      src={item.image}
-      alt={`${item.title}证明材料`}
-      fill
-      sizes={
-        item.imageRatio === "portrait"
-          ? "240px"
-          : "(min-width: 1280px) 45vw, 100vw"
-      }
-      className="object-contain p-2"
-    />
-  </div>
-)}
-                  <div className="space-y-5">
-                    <div>
-                      <h3 className="mb-2 text-base font-bold text-black dark:text-white">
-                        学员背景
-                      </h3>
-                      <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                        {item.background}
-                      </p>
                     </div>
 
-                    <div>
-                      <h3 className="mb-2 text-base font-bold text-black dark:text-white">
-                        初始问题
-                      </h3>
-                      <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                        {item.challenge}
-                      </p>
-                    </div>
+                    <h2 className="mb-5 text-2xl font-bold leading-tight text-black dark:text-white">
+                      {item.title}
+                    </h2>
 
-                    <div>
-                      <h3 className="mb-2 text-base font-bold text-black dark:text-white">
-                        服务过程
-                      </h3>
-                      <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                        {item.service}
-                      </p>
-                    </div>
+                    {item.image && (
+                      <div
+                        className={`relative mb-6 overflow-hidden rounded-xl bg-gray-light dark:bg-bg-color-dark ${
+                          item.imageRatio === "portrait"
+                            ? "mx-auto aspect-[2/3] w-full max-w-[240px]"
+                            : "aspect-[4/3] w-full"
+                        }`}
+                      >
+                        <Image
+                          src={item.image}
+                          alt={`${item.title}证明材料`}
+                          fill
+                          sizes={
+                            item.imageRatio === "portrait"
+                              ? "240px"
+                              : "(min-width: 1280px) 45vw, 100vw"
+                          }
+                          className="object-contain p-2"
+                        />
+                      </div>
+                    )}
 
-                    <div className="rounded-xl border-l-4 border-yellow bg-white p-5 dark:bg-white/5">
-                      <h3 className="mb-2 text-base font-bold text-black dark:text-white">
-                        最终结果
-                      </h3>
-                      <p className="text-base font-semibold leading-relaxed text-black dark:text-white">
-                        {item.result}
-                      </p>
+                    <div className="space-y-5">
+                      <div className="rounded-xl bg-primary/[0.04] p-5 ring-1 ring-primary/10 dark:bg-white/5 dark:ring-white/10">
+                        <h3 className="mb-2 text-base font-bold text-black dark:text-white">
+                          初始情况
+                        </h3>
+                        <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
+                          {initialSummary}
+                        </p>
+                      </div>
+
+                      <div className="rounded-xl border-l-4 border-yellow bg-[#FFFBEB] p-5 dark:bg-white/5">
+                        <h3 className="mb-2 text-base font-bold text-black dark:text-white">
+                          最终结果
+                        </h3>
+                        <p className="text-base font-semibold leading-relaxed text-black dark:text-white">
+                          {item.result}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           ) : (
-            <div className="rounded-2xl border border-body-color/10 bg-gray-light p-8 dark:border-white/10 dark:bg-bg-color-dark">
+            <div className="rounded-2xl border border-primary/10 bg-primary/[0.04] p-8 dark:border-white/10 dark:bg-white/5">
               <h2 className="mb-4 text-2xl font-bold text-black dark:text-white">
                 案例内容整理中
               </h2>
