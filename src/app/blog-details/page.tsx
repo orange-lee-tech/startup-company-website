@@ -28,7 +28,7 @@ const BlogDetailsPage = () => {
 
               <div className="mb-10 rounded-md bg-primary/10 p-6">
                 <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                  我们不承诺单一院校或单一公司的“百分百录取”“包 offer”“必过”等结果，而是通过专业规划、过程陪伴与阶段复盘，系统提升学员竞争力。
+                  我们不作单一结果承诺，而是通过专业规划、过程陪伴与阶段复盘，系统提升学员竞争力。
                 </p>
               </div>
 

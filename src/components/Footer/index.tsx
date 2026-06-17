@@ -205,7 +205,7 @@ const Footer = () => {
         <div className="py-8">
           <div className="mb-5 rounded-2xl border border-yellow/40 bg-[#FFFBEB] p-5 dark:border-yellow/30 dark:bg-white/5">
             <p className="text-sm font-medium leading-relaxed text-black dark:text-white">
-              合规提示：九辰不做对单一院校、导师、公司或岗位的“保录取”“包 offer”“百分百上岸”等绝对化承诺。案例展示均应完成授权与脱敏处理，隐藏姓名、完整院校、企业、联系方式等敏感信息。
+              合规提示：九辰坚持真实规划与过程陪跑，不对单一院校、导师、公司或岗位作结果承诺。案例展示均应完成授权确认与脱敏处理。
             </p>
           </div>
 

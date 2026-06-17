@@ -180,7 +180,7 @@ const Contact = () => {
 
                 <div className="mt-7 border-l-4 border-yellow bg-[#FFFBEB] p-5 dark:bg-white/5">
                   <p className="text-sm font-semibold leading-relaxed text-black dark:text-white">
-                    九辰不做对单一院校或公司的“保录取”“包 offer”“百分百上岸”等绝对化承诺，核心是通过定制规划与全程陪跑提升竞争力。
+                    九辰坚持真实规划与过程陪跑，不对单一院校或公司作结果承诺，核心是通过定制规划与全程陪跑提升竞争力。
                   </p>
                 </div>
               </div>

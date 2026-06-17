@@ -6,7 +6,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "关于九辰 | 九辰本硕博升学就业",
   description:
-    "了解九辰教育咨询有限公司的服务理念、教育初心与本硕博升学就业全链条陪跑服务。",
+    "了解长沙九辰教育咨询有限公司的服务理念、教育初心与本硕博升学就业全链条陪跑服务。",
   alternates: { canonical: "/about" },
 };
 
@@ -15,7 +15,7 @@ const AboutPage = () => {
     <>
       <Breadcrumb
         pageName="关于九辰"
-        description="九辰教育咨询有限公司专注本硕博升学与就业陪跑服务，以长期陪伴式、量身定制、可量化目标为核心，陪伴学员走清晰路径。"
+        description="长沙九辰教育咨询有限公司专注本硕博升学与就业陪跑服务，以长期陪伴式、量身定制、可量化目标为核心，陪伴学员走清晰路径。"
       />
 
       <section className="bg-white py-16 dark:bg-gray-dark md:py-20 lg:py-28">

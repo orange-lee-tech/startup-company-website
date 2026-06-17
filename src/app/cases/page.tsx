@@ -154,7 +154,7 @@ const CasesPage = () => {
                 </h2>
 
                 <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                  所有案例发布前均应完成授权确认与脱敏处理。展示时优先突出背景类型、初始问题、服务过程与最终结果，不使用“保录取”“包 offer”“百分百上岸”等绝对化表述。
+                  所有案例发布前均应完成授权确认与脱敏处理。展示时优先突出背景类型、初始问题、服务过程与最终结果，避免将个别结果表述为普遍承诺。
                 </p>
               </div>
 

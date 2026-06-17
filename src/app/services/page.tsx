@@ -142,7 +142,7 @@ const ServicesPage = () => {
             </h2>
 
             <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-              九辰不做对单一院校或公司的“保录取”“包 offer”“百分百上岸”等绝对化承诺。网站展示内容以服务路径、能力提升、过程陪跑和案例沉淀为主，所有案例发布前均应完成授权与脱敏处理。
+              九辰坚持真实规划与过程陪跑，不对单一院校或公司作结果承诺。网站展示内容以服务路径、能力提升、过程陪跑和案例沉淀为主，所有案例发布前均应完成授权与脱敏处理。
             </p>
           </div>
         </div>

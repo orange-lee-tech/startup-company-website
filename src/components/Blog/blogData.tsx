@@ -33,7 +33,7 @@ const blogData: Blog[] = [
     id: 3,
     title: "是否承诺录取或 offer？",
     paragraph:
-      "我们不做对单一院校或公司的“保录取”“包 offer”“百分百上岸”等夸大承诺。九辰的核心是通过定制化规划、全程陪跑和专业辅导，系统提升学员竞争力。",
+      "我们不作单一结果承诺。九辰的核心是通过定制化规划、全程陪跑和专业辅导，系统提升学员竞争力。",
     image: "/startup-company-website/images/jiuchen/jiuchen-career-growth.png",
     author: {
       name: "九辰教育",

@@ -31,7 +31,7 @@ const AboutSectionOne = () => {
             </h2>
 
             <p className="mb-8 max-w-[760px] text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-              九辰教育咨询有限公司专注本硕博升学与高端就业服务，帮助学员看清目标、拆解路径、推进关键动作。
+              长沙九辰教育咨询有限公司专注本硕博升学与高端就业服务，帮助学员看清目标、拆解路径、推进关键动作。
             </p>
 
             <div className="grid grid-cols-1 border border-body-color/10 dark:border-white/10 md:grid-cols-3">
