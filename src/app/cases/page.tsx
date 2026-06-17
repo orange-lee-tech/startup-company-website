@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   alternates: { canonical: "/cases" },
 };
 
+const caseOverviewTones = [
+  {
+    card: "border-primary/10 bg-primary/5 hover:border-primary/40 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark",
+    badge: "bg-primary/10 text-primary",
+    panel: "bg-white ring-1 ring-primary/10 dark:bg-white/5 dark:ring-white/10",
+  },
+  {
+    card: "border-yellow/20 bg-yellow/5 hover:border-yellow/50 hover:bg-white dark:border-yellow/20 dark:bg-white/10 dark:hover:bg-gray-dark",
+    badge: "bg-yellow/20 text-primary dark:text-yellow",
+    panel: "bg-white ring-1 ring-yellow/20 dark:bg-white/10 dark:ring-yellow/20",
+  },
+];
+
 const CasesPage = () => {
   const caseCategories = casePages.map((item) => {
     const cases = getCasesByCategory(
@@ -48,18 +61,20 @@ const CasesPage = () => {
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
             {caseCategories.map((item, index) => {
+              const tone = caseOverviewTones[index % caseOverviewTones.length];
+
               return (
                 <Link
                   key={item.slug}
                   href={`/cases/${item.slug}`}
-                  className="group flex h-full flex-col rounded-2xl border border-primary/10 bg-white p-6 shadow-three transition hover:-translate-y-1 hover:border-primary/40 dark:border-white/10 dark:bg-gray-dark"
+                  className={`group flex h-full flex-col rounded-2xl border p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three ${tone.card}`}
                 >
                   <div className="mb-5 flex items-center justify-between gap-4">
-                    <p className="rounded-full bg-primary/10 px-3 py-1.5 text-sm font-bold text-primary">
+                    <p className={`rounded-full px-3 py-1.5 text-sm font-bold ${tone.badge}`}>
                       {String(index + 1).padStart(2, "0")}
                     </p>
 
-                    <span className="text-sm font-semibold text-primary">
+                    <span className="text-sm font-semibold text-primary transition group-hover:translate-x-1">
                       查看详情 →
                     </span>
                   </div>
@@ -73,7 +88,7 @@ const CasesPage = () => {
                   </p>
 
                   {item.featuredCase ? (
-                    <div className="mt-auto rounded-xl bg-primary/[0.04] p-4 ring-1 ring-primary/10 dark:bg-white/5 dark:ring-white/10">
+                    <div className={`mt-auto rounded-xl p-4 ${tone.panel}`}>
                       <p className="mb-2 text-sm font-semibold text-primary">
                         代表结果
                       </p>
@@ -83,11 +98,11 @@ const CasesPage = () => {
                       </h3>
 
                       <p className="line-clamp-3 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
-                        {item.featuredCase.result}
+                        {item.featuredCase.outcomeSummary || item.featuredCase.result}
                       </p>
                     </div>
                   ) : (
-                    <div className="mt-auto rounded-xl border border-dashed border-primary/20 bg-primary/[0.03] p-4 dark:border-white/20 dark:bg-white/5">
+                    <div className={`mt-auto rounded-xl border border-dashed border-primary/20 p-4 ${tone.panel}`}>
                       <p className="text-sm leading-relaxed text-body-color dark:text-body-color-dark">
                         该方向案例素材仍在整理与脱敏确认中，可先咨询相近路径。
                       </p>
@@ -98,7 +113,7 @@ const CasesPage = () => {
             })}
           </div>
 
-          <div className="mt-10 rounded-2xl border border-primary/10 bg-primary/[0.04] p-7 dark:border-white/10 dark:bg-white/5 md:p-8">
+          <div className="mt-10 rounded-2xl border border-primary/10 bg-primary/5 p-7 dark:border-white/10 dark:bg-white/5 md:p-8">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-8">
                 <h2 className="mb-3 text-2xl font-bold text-black dark:text-white">
