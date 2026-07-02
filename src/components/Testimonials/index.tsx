@@ -68,7 +68,7 @@ const Testimonials = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 md:grid-cols-3">
+        <div className="flex snap-x gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:gap-px md:overflow-hidden md:rounded-2xl md:border md:border-white/10 md:bg-white/10 md:pb-0">
           {featuredCases.map((item, index) => {
             const categoryMeta = categoryMetaMap[item.category];
 
@@ -76,7 +76,7 @@ const Testimonials = () => {
               <Link
                 key={item.id}
                 href={categoryMeta.path}
-                className="group flex min-h-[420px] flex-col bg-[#06152F]/72 p-7 transition hover:bg-white/10"
+                className="group flex min-h-[390px] min-w-[82vw] snap-start flex-col rounded-2xl bg-[#06152F]/72 p-6 transition hover:bg-white/10 md:min-h-[420px] md:min-w-0 md:rounded-none md:p-7"
               >
                 <div className="mb-6 flex items-center justify-between gap-4">
                   <p className="text-sm font-bold tracking-wide text-yellow">
@@ -92,7 +92,7 @@ const Testimonials = () => {
                   {item.title}
                 </h3>
 
-                <p className="mb-6 text-base leading-relaxed text-white/74 transition group-hover:text-white">
+                <p className="mb-6 line-clamp-3 text-base leading-relaxed text-white/74 transition group-hover:text-white md:line-clamp-none">
                   {item.background}
                 </p>
 
@@ -101,7 +101,7 @@ const Testimonials = () => {
                     最终结果
                   </p>
 
-                  <p className="text-base font-semibold leading-relaxed text-white">
+                  <p className="line-clamp-4 text-base font-semibold leading-relaxed text-white md:line-clamp-none">
                     {item.result}
                   </p>
                 </div>
