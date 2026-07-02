@@ -36,10 +36,7 @@ const heroStats = [
   },
 ];
 
-const titleImages = {
-  day: withBasePath("/images/jiuchen/day title.png"),
-  night: withBasePath("/images/jiuchen/night title.png"),
-};
+const titleImage = withBasePath("/images/jiuchen/night title.png");
 
 const Hero = () => {
   return (
@@ -57,20 +54,12 @@ const Hero = () => {
             <h1 className="mx-auto mb-4 max-w-[520px] lg:mx-0 lg:max-w-[640px]">
               <span className="sr-only">以智启学，以仁伴行</span>
               <Image
-                src={titleImages.day}
+                src={titleImage}
                 alt="以智启学，以仁伴行"
                 width={640}
                 height={156}
                 priority
-                className="block h-auto w-full dark:hidden"
-              />
-              <Image
-                src={titleImages.night}
-                alt="以智启学，以仁伴行"
-                width={640}
-                height={156}
-                priority
-                className="hidden h-auto w-full dark:block"
+                className="h-auto w-full"
               />
             </h1>
 
