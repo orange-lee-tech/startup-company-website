@@ -52,6 +52,46 @@ const TeacherCarousel = () => {
     return null;
   }
 
+  const renderTeacherCard = (
+    teacher: (typeof teachers)[number],
+    key: string,
+    extraClassName = "",
+  ) => (
+    <Link
+      key={key}
+      href={teacher.hasDetail && teacher.detailPath ? teacher.detailPath : "/teachers"}
+      className={`group relative flex min-h-[210px] flex-col overflow-hidden rounded-xl bg-white transition hover:z-10 hover:shadow-three dark:bg-gray-dark sm:min-h-[260px] lg:min-h-[430px] lg:rounded-none lg:border-r lg:border-body-color/10 lg:last:border-r-0 lg:dark:border-white/10 ${extraClassName}`}
+    >
+      <div className="relative flex h-[104px] w-full items-end justify-center overflow-hidden bg-linear-to-b from-[#EEF3FF] to-white px-2 pt-2 dark:from-bg-color-dark dark:to-gray-dark sm:h-[140px] md:h-[180px] lg:h-[285px]">
+        <Image
+          src={teacher.portraitImage}
+          alt={teacher.name}
+          fill
+          sizes="(min-width: 1024px) 33vw, 82vw"
+          className="object-contain object-bottom transition duration-500 group-hover:scale-105"
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col p-2 text-center sm:p-4 lg:p-7 lg:text-left">
+        <p className="mb-1 line-clamp-1 text-[11px] font-semibold leading-tight text-primary sm:text-sm lg:mb-2">
+          {teacher.title}
+        </p>
+
+        <h3 className="mb-1 text-base font-bold leading-tight text-black transition group-hover:text-primary dark:text-white sm:text-xl lg:mb-3 lg:text-2xl">
+          {teacher.name}
+        </h3>
+
+        <p className="line-clamp-2 text-[11px] leading-relaxed text-body-color dark:text-body-color-dark sm:text-sm lg:text-base">
+          {teacher.school}
+        </p>
+
+        <p className="mt-auto hidden pt-4 text-sm font-semibold text-primary opacity-0 transition group-hover:opacity-100 lg:block">
+          查看师资 →
+        </p>
+      </div>
+    </Link>
+  );
+
   return (
     <section className="bg-gray-light py-12 dark:bg-bg-color-dark md:py-14 lg:py-18">
       <div className="container">
@@ -70,7 +110,7 @@ const TeacherCarousel = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-3 md:flex">
             <button
               type="button"
               onClick={handlePrev}
@@ -117,51 +157,29 @@ const TeacherCarousel = () => {
           </div>
         </div>
 
+        <div className="flex snap-x gap-3 overflow-x-auto pb-2 md:hidden">
+          {teachers.map((teacher) =>
+            renderTeacherCard(
+              teacher,
+              teacher.id,
+              "min-w-[78vw] snap-start border border-body-color/10 p-1 dark:border-white/10",
+            ),
+          )}
+        </div>
+
         <div
-          className="grid grid-cols-3 gap-2 overflow-hidden rounded-2xl border border-body-color/10 bg-white p-2 dark:border-white/10 dark:bg-gray-dark sm:gap-3 sm:p-3 lg:gap-0 lg:p-0"
+          className="hidden grid-cols-3 gap-2 overflow-hidden rounded-2xl border border-body-color/10 bg-white p-2 dark:border-white/10 dark:bg-gray-dark md:grid sm:gap-3 sm:p-3 lg:gap-0 lg:p-0"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onFocus={() => setIsPaused(true)}
           onBlur={() => setIsPaused(false)}
         >
-          {visibleTeachers.map((teacher, index) => (
-            <Link
-              key={`${teacher.id}-${index}`}
-              href={teacher.hasDetail && teacher.detailPath ? teacher.detailPath : "/teachers"}
-              className="group relative flex min-h-[210px] flex-col overflow-hidden rounded-xl bg-white transition hover:z-10 hover:shadow-three dark:bg-gray-dark sm:min-h-[260px] lg:min-h-[430px] lg:rounded-none lg:border-r lg:border-body-color/10 lg:last:border-r-0 lg:dark:border-white/10"
-            >
-              <div className="relative flex h-[104px] w-full items-end justify-center overflow-hidden bg-linear-to-b from-[#EEF3FF] to-white px-2 pt-2 dark:from-bg-color-dark dark:to-gray-dark sm:h-[140px] md:h-[180px] lg:h-[285px]">
-                <Image
-                  src={teacher.portraitImage}
-                  alt={teacher.name}
-                  fill
-                  sizes="(min-width: 1024px) 33vw, 33vw"
-                  className="object-contain object-bottom transition duration-500 group-hover:scale-105"
-                />
-              </div>
-
-              <div className="flex flex-1 flex-col p-2 text-center sm:p-4 lg:p-7 lg:text-left">
-                <p className="mb-1 line-clamp-1 text-[11px] font-semibold leading-tight text-primary sm:text-sm lg:mb-2">
-                  {teacher.title}
-                </p>
-
-                <h3 className="mb-1 text-base font-bold leading-tight text-black transition group-hover:text-primary dark:text-white sm:text-xl lg:mb-3 lg:text-2xl">
-                  {teacher.name}
-                </h3>
-
-                <p className="line-clamp-2 text-[11px] leading-relaxed text-body-color dark:text-body-color-dark sm:text-sm lg:text-base">
-                  {teacher.school}
-                </p>
-
-                <p className="mt-auto hidden pt-4 text-sm font-semibold text-primary opacity-0 transition group-hover:opacity-100 lg:block">
-                  查看师资 →
-                </p>
-              </div>
-            </Link>
-          ))}
+          {visibleTeachers.map((teacher, index) =>
+            renderTeacherCard(teacher, `${teacher.id}-${index}`),
+          )}
         </div>
 
-        <div className="mt-5 flex justify-center gap-2">
+        <div className="mt-5 hidden justify-center gap-2 md:flex">
           {teachers.slice(0, Math.min(teachers.length, 6)).map((teacher, index) => (
             <button
               key={teacher.id}
