@@ -1,9 +1,13 @@
 import { withBasePath } from "@/lib/site";
+
+export type TeacherGender = "male" | "female";
+
 export type Teacher = {
   id: string;
   name: string;
   school: string;
   title: string;
+  gender: TeacherGender;
   portraitImage: string;
   cardImage?: string;
   featured?: boolean;
@@ -13,8 +17,12 @@ export type Teacher = {
 };
 
 const portraitBase = withBasePath("/images/teacher/portraits");
+const portraitByGender: Record<TeacherGender, string> = {
+  male: `${portraitBase}/male.png`,
+  female: `${portraitBase}/female.png`,
+};
 
-const defaultPortrait = `${portraitBase}/female.png`;
+const getPortrait = (gender: TeacherGender) => portraitByGender[gender];
 
 export const teachers: Teacher[] = [
   {
@@ -22,7 +30,8 @@ export const teachers: Teacher[] = [
     name: "徐老师",
     school: "经济与金融方向｜高校科研背景",
     title: "升学与学术规划导师",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     featured: true,
     hasDetail: true,
     detailPath: "/teachers/xu-zhaoyi",
@@ -33,7 +42,8 @@ export const teachers: Teacher[] = [
     name: "成老师",
     school: "金融与统计方向｜高校科研背景",
     title: "升学与学术规划导师",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     featured: true,
     hasDetail: true,
     detailPath: "/teachers/cheng-cheng",
@@ -44,7 +54,8 @@ export const teachers: Teacher[] = [
     name: "海外导师A",
     school: "理工科研方向｜国际学术背景",
     title: "科研与博士申请导师",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     featured: true,
     hasDetail: true,
     detailPath: "/teachers/maxim-fedorov",
@@ -55,7 +66,8 @@ export const teachers: Teacher[] = [
     name: "邱老师",
     school: "光通信与光子计算方向",
     title: "科研与升学规划导师",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     featured: true,
     hasDetail: true,
     detailPath: "/teachers/qiu-feng",
@@ -66,7 +78,8 @@ export const teachers: Teacher[] = [
     name: "王老师",
     school: "土木与绿色工程方向",
     title: "工程与科研导师",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     featured: true,
     hasDetail: true,
     detailPath: "/teachers/wang-zhifeng",
@@ -77,7 +90,8 @@ export const teachers: Teacher[] = [
     name: "王老师B",
     school: "交通与结构工程方向",
     title: "博士生导师",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     featured: true,
     hasDetail: true,
     detailPath: "/teachers/wang-da",
@@ -88,7 +102,8 @@ export const teachers: Teacher[] = [
     name: "李老师",
     school: "电子与信息方向",
     title: "助理教授",
-    portraitImage: defaultPortrait,
+    gender: "female",
+    portraitImage: getPortrait("female"),
     hasDetail: false,
   },
   {
@@ -96,7 +111,8 @@ export const teachers: Teacher[] = [
     name: "石老师",
     school: "信息与微系统方向",
     title: "副研究员",
-    portraitImage: defaultPortrait,
+    gender: "female",
+    portraitImage: getPortrait("female"),
     hasDetail: false,
   },
   {
@@ -104,7 +120,8 @@ export const teachers: Teacher[] = [
     name: "海外导师B",
     school: "国际理工方向",
     title: "讲师",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     hasDetail: false,
   },
   {
@@ -112,7 +129,8 @@ export const teachers: Teacher[] = [
     name: "海外导师C",
     school: "国际教育方向",
     title: "副教授",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     hasDetail: false,
   },
   {
@@ -120,7 +138,8 @@ export const teachers: Teacher[] = [
     name: "刘老师",
     school: "统计与经济方向",
     title: "教授",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     hasDetail: false,
   },
   {
@@ -128,7 +147,8 @@ export const teachers: Teacher[] = [
     name: "朱老师",
     school: "金融与经济方向",
     title: "教授",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     hasDetail: false,
   },
   {
@@ -136,7 +156,8 @@ export const teachers: Teacher[] = [
     name: "何老师",
     school: "法学与经管方向",
     title: "教授",
-    portraitImage: defaultPortrait,
+    gender: "female",
+    portraitImage: getPortrait("female"),
     hasDetail: false,
   },
   {
@@ -144,7 +165,8 @@ export const teachers: Teacher[] = [
     name: "夏老师",
     school: "交通工程方向",
     title: "教授",
-    portraitImage: defaultPortrait,
+    gender: "male",
+    portraitImage: getPortrait("male"),
     hasDetail: false,
   },
   {
@@ -152,9 +174,10 @@ export const teachers: Teacher[] = [
     name: "张老师",
     school: "工程与管理方向",
     title: "教授",
-    portraitImage: defaultPortrait,
+    gender: "female",
+    portraitImage: getPortrait("female"),
     hasDetail: false,
-  }
+  },
 ];
 
 export const featuredTeachers = teachers.filter((t) => t.featured);
