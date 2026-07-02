@@ -1,32 +1,34 @@
+import { withBasePath } from "@/lib/site";
+import Image from "next/image";
 import Link from "next/link";
 
 const heroCategories = [
   {
-    title: "保研辅导",
-    desc: "定位评估、材料打磨、夏令营与预推免陪跑",
+    title: "保研规划",
+    desc: "定位、材料、夏令营与预推免节奏陪跑",
   },
   {
     title: "留学申请",
-    desc: "海外本硕选校、文书申请、网申与面试指导",
+    desc: "选校、文书、网申、面试与入学衔接",
   },
   {
-    title: "博士申请",
+    title: "申博路径",
     desc: "国内申博、海外 PhD、导师匹配与研究计划",
   },
   {
-    title: "就业辅导",
+    title: "就业陪跑",
     desc: "职业定位、简历优化、面试训练与 Offer 选择",
   },
 ];
 
 const heroStats = [
   {
-    value: "4",
-    label: "核心类别",
+    value: "1v1",
+    label: "定制诊断",
   },
   {
-    value: "1v1",
-    label: "定制规划",
+    value: "6",
+    label: "产品方向",
   },
   {
     value: "全程",
@@ -34,63 +36,81 @@ const heroStats = [
   },
 ];
 
+const titleImages = {
+  day: withBasePath("/images/jiuchen/day title.png"),
+  night: withBasePath("/images/jiuchen/night title.png"),
+};
+
 const Hero = () => {
   return (
     <section
       id="home"
-className="relative z-10 flex min-h-[100svh] items-center overflow-hidden bg-transparent pt-[112px] pb-12 md:pt-[132px] md:pb-16 lg:min-h-[680px] lg:pt-[118px] lg:pb-[64px]"    >
-      
+      className="relative z-10 flex items-center overflow-hidden bg-transparent pt-[96px] pb-8 md:pt-[126px] md:pb-14 lg:min-h-[680px] lg:pt-[118px] lg:pb-[64px]"
+    >
       <div className="container relative z-10">
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
+        <div className="grid grid-cols-1 items-center gap-7 lg:grid-cols-12 lg:gap-12">
           <div className="hero-fade-up text-center lg:col-span-7 lg:text-left">
-            <p className="mb-5 inline-flex rounded-full border border-white/15 bg-white/10 px-5 py-2 text-sm font-semibold text-white/90 backdrop-blur-sm">
-              九辰教育 · 升学就业一站式规划
+            <p className="mb-4 inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold text-white/90 backdrop-blur-sm sm:text-sm lg:px-5">
+              九辰教育 · 本硕博升学就业规划
             </p>
 
-            <h1 className="mb-5 whitespace-nowrap text-[clamp(30px,9.2vw,46px)] font-bold leading-[1.08] tracking-[-0.05em] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)] sm:text-6xl md:text-7xl lg:text-[76px] xl:text-[84px]">
-  以智启学，
-  <span className="text-yellow">以仁伴行</span>
-</h1>
+            <h1 className="mx-auto mb-4 max-w-[520px] lg:mx-0 lg:max-w-[640px]">
+              <span className="sr-only">以智启学，以仁伴行</span>
+              <Image
+                src={titleImages.day}
+                alt="以智启学，以仁伴行"
+                width={640}
+                height={156}
+                priority
+                className="block h-auto w-full dark:hidden"
+              />
+              <Image
+                src={titleImages.night}
+                alt="以智启学，以仁伴行"
+                width={640}
+                height={156}
+                priority
+                className="hidden h-auto w-full dark:block"
+              />
+            </h1>
 
-            <p className="mb-5 max-w-[780px] text-xl font-semibold leading-relaxed text-white md:text-2xl lg:mx-0">
-              保研、留学、申博与就业，四类入口清晰匹配不同阶段目标
+            <p className="mx-auto mb-4 max-w-[720px] text-lg font-semibold leading-relaxed text-white md:text-2xl lg:mx-0">
+              让升学与就业选择，更有章法，也更有人味。
             </p>
 
-            <p className="mx-auto mb-8 max-w-[760px] text-base leading-relaxed text-white/80 sm:text-lg lg:mx-0">
-              围绕保研辅导、留学申请、博士申请与就业辅导，提供从定位评估、背景提升、材料打磨到面试陪跑的系统服务，让升学与求职路径更清晰、更可执行。
+            <p className="mx-auto mb-6 max-w-[700px] text-sm leading-relaxed text-white/78 sm:text-base lg:mx-0 lg:text-lg">
+              从保研、留学、申博到求职，九辰以诊断、规划、执行与复盘串联关键节点，帮助你把复杂路径拆成可落地的下一步。
             </p>
 
-            <div className="mb-6 grid max-w-[720px] grid-cols-3 overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-center backdrop-blur-sm lg:mx-0">
+            <div className="mb-5 grid max-w-[620px] grid-cols-3 overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-center backdrop-blur-sm lg:mx-0">
               {heroStats.map((item, index) => (
                 <div
                   key={item.label}
-                  className={`px-3 py-4 sm:px-5 ${
-                    index < heroStats.length - 1
-                      ? "border-r border-white/10"
-                      : ""
+                  className={`px-2 py-3 sm:px-5 sm:py-4 ${
+                    index < heroStats.length - 1 ? "border-r border-white/10" : ""
                   }`}
                 >
-                  <p className="text-2xl font-bold leading-none text-yellow sm:text-3xl">
+                  <p className="text-xl font-bold leading-none text-yellow sm:text-3xl">
                     {item.value}
                   </p>
-                  <p className="mt-2 text-xs font-medium text-white/75 sm:text-sm">
+                  <p className="mt-1 text-[11px] font-medium text-white/75 sm:mt-2 sm:text-sm">
                     {item.label}
                   </p>
                 </div>
               ))}
             </div>
 
-            <div className="flex flex-col items-center gap-4 sm:flex-row lg:items-start">
+            <div className="flex flex-col items-center gap-3 sm:flex-row lg:items-start">
               <Link
                 href="/contact"
-                className="w-full rounded-xs bg-yellow px-8 py-4 text-center text-base font-semibold text-[#07142F] duration-300 hover:bg-yellow/90 sm:w-auto"
+                className="w-full rounded-xs bg-yellow px-7 py-3.5 text-center text-base font-semibold text-[#07142F] duration-300 hover:bg-yellow/90 sm:w-auto"
               >
                 预约免费评估
               </Link>
 
               <Link
                 href="/cases"
-                className="w-full rounded-xs border border-white/25 px-8 py-4 text-center text-base font-semibold text-white duration-300 hover:bg-white/10 sm:w-auto"
+                className="w-full rounded-xs border border-white/25 px-7 py-3.5 text-center text-base font-semibold text-white duration-300 hover:bg-white/10 sm:w-auto"
               >
                 查看学员案例
               </Link>
@@ -98,27 +118,27 @@ className="relative z-10 flex min-h-[100svh] items-center overflow-hidden bg-tra
           </div>
 
           <div className="hero-fade-up lg:col-span-5">
-            <div className="relative overflow-hidden rounded-[28px] border border-white/12 bg-white/[0.075] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-md md:p-6 lg:p-5 xl:p-6">
+            <div className="relative overflow-hidden rounded-[24px] border border-white/12 bg-white/[0.075] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-md md:p-6 lg:p-5 xl:p-6">
               <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-yellow/10 blur-3xl" />
               <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-primary/20 blur-3xl" />
 
               <div className="relative">
-                <p className="mb-3 text-sm font-semibold text-yellow">
-                  规划路径矩阵
+                <p className="mb-2 text-sm font-semibold text-yellow">
+                  产品服务矩阵
                 </p>
 
-                <h2 className="mb-5 text-2xl font-bold leading-tight text-white">
+                <h2 className="mb-4 text-xl font-bold leading-tight text-white md:text-2xl">
                   先判断方向，再定制路径
                 </h2>
 
-                <div className="space-y-3 lg:space-y-2 xl:space-y-3">
+                <div className="flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-2 lg:block lg:space-y-2 lg:pb-0 xl:space-y-3">
                   {heroCategories.map((item, index) => (
                     <Link
                       key={item.title}
                       href="/services"
-                      className="group grid grid-cols-[42px_1fr] gap-4 rounded-2xl border border-white/10 bg-[#06152F]/58 p-4 transition hover:border-yellow/40 hover:bg-white/10 lg:p-3 xl:p-4"
+                      className="group grid min-w-[235px] grid-cols-[38px_1fr] gap-3 rounded-2xl border border-white/10 bg-[#06152F]/58 p-3 transition hover:border-yellow/40 hover:bg-white/10 md:min-w-0 xl:p-4"
                     >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-yellow transition group-hover:bg-yellow group-hover:text-[#07142F]">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-yellow transition group-hover:bg-yellow group-hover:text-[#07142F]">
                         {String(index + 1).padStart(2, "0")}
                       </div>
 
@@ -127,7 +147,7 @@ className="relative z-10 flex min-h-[100svh] items-center overflow-hidden bg-tra
                           {item.title}
                         </h3>
 
-                        <p className="text-sm leading-relaxed text-white/68">
+                        <p className="line-clamp-2 text-sm leading-relaxed text-white/68">
                           {item.desc}
                         </p>
                       </div>
@@ -135,9 +155,9 @@ className="relative z-10 flex min-h-[100svh] items-center overflow-hidden bg-tra
                   ))}
                 </div>
 
-                <div className="mt-5 rounded-2xl border border-yellow/20 bg-yellow/10 p-4">
+                <div className="mt-4 rounded-2xl border border-yellow/20 bg-yellow/10 p-3 md:p-4">
                   <p className="text-sm font-medium leading-relaxed text-white/82">
-                    不确定属于哪一类？可以先提交当前阶段、目标方向与主要困惑，由规划老师进行免费初步评估。
+                    不确定方向也没关系，先把当前阶段与目标说清楚，剩下的路径由规划老师帮你拆解。
                   </p>
                 </div>
               </div>
