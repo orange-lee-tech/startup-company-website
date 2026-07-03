@@ -18,8 +18,8 @@ export type Teacher = {
 
 const portraitBase = withBasePath("/images/teacher/portraits");
 const portraitByGender: Record<TeacherGender, string> = {
-  male: `${portraitBase}/male.png`,
-  female: `${portraitBase}/female.png`,
+  male: `${portraitBase}/male.webp`,
+  female: `${portraitBase}/female.webp`,
 };
 
 const getPortrait = (gender: TeacherGender) => portraitByGender[gender];

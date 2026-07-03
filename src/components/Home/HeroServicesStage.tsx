@@ -4,7 +4,7 @@ import Testimonials from "@/components/Testimonials";
 import { withBasePath } from "@/lib/site";
 
 const HomeHeroServicesStage = () => {
-  const backgroundImage = `url('${withBasePath("/images/jiuchen/background.png")}')`;
+  const backgroundImage = `url('${withBasePath("/images/jiuchen/background.webp")}')`;
 
   return (
     <div className="relative overflow-hidden bg-[#020817]">
