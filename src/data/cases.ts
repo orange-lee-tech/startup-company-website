@@ -271,12 +271,26 @@ function getFirstSection(body: string, titles: string[]) {
   return "";
 }
 
-function normalizeImagePath(imagePath: string) {
+function normalizeCaseImageAssetPath(imagePath: string) {
   if (!imagePath) {
+    return "";
+  }
+
+  if (imagePath.startsWith("/images/case/")) {
+    return imagePath.replace(/\.(png|jpe?g)$/i, ".webp");
+  }
+
+  return imagePath;
+}
+
+function normalizeImagePath(imagePath: string) {
+  const normalizedPath = normalizeCaseImageAssetPath(imagePath);
+
+  if (!normalizedPath) {
     return undefined;
   }
 
-  return withBasePath(imagePath);
+  return withBasePath(normalizedPath);
 }
 
 function normalizeImageRatio(value: string): CaseImageRatio | undefined {
@@ -325,7 +339,7 @@ function resolveAdmissionVisual(result: string):
 
   return {
     unit: matchedVisual.unit,
-    image: withBasePath(matchedVisual.image),
+    image: normalizeImagePath(matchedVisual.image) ?? withBasePath(matchedVisual.image),
   };
 }
 
@@ -381,7 +395,9 @@ function parseCaseFile(filePath: string): StudentCase | undefined {
   const resolvedAdmissionVisual = explicitAdmissionImage
     ? {
         unit: explicitAdmissionUnit || title,
-        image: withBasePath(explicitAdmissionImage),
+        image:
+          normalizeImagePath(explicitAdmissionImage) ??
+          withBasePath(explicitAdmissionImage),
       }
     : resolveAdmissionVisual(result || outcomeSummary || title);
 
