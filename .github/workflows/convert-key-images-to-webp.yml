@@ -1,0 +1,85 @@
+name: Convert key PNG images to WebP
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/convert-key-images-to-webp.yml"
+      - "public/images/jiuchen/background.png"
+      - "public/images/teacher/portraits/male.png"
+      - "public/images/teacher/portraits/female.png"
+      - "src/components/Home/HeroServicesStage.tsx"
+      - "src/data/teachers.ts"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    if: ${{ !contains(github.event.head_commit.message, 'chore: convert key images to webp') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install WebP tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y webp
+
+      - name: Convert selected PNG files
+        run: |
+          set -euo pipefail
+
+          test -f public/images/jiuchen/background.png
+          test -f public/images/teacher/portraits/male.png
+          test -f public/images/teacher/portraits/female.png
+
+          cwebp -q 82 -m 6 public/images/jiuchen/background.png -o public/images/jiuchen/background.webp
+          cwebp -q 82 -m 6 public/images/teacher/portraits/male.png -o public/images/teacher/portraits/male.webp
+          cwebp -q 82 -m 6 public/images/teacher/portraits/female.png -o public/images/teacher/portraits/female.webp
+
+      - name: Update code references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              Path("src/components/Home/HeroServicesStage.tsx"): {
+                  "/images/jiuchen/background.png": "/images/jiuchen/background.webp",
+              },
+              Path("src/data/teachers.ts"): {
+                  "${portraitBase}/male.png": "${portraitBase}/male.webp",
+                  "${portraitBase}/female.png": "${portraitBase}/female.webp",
+              },
+          }
+
+          for path, changes in replacements.items():
+              text = path.read_text(encoding="utf-8")
+              for old, new in changes.items():
+                  text = text.replace(old, new)
+              path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Commit converted assets
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            public/images/jiuchen/background.webp \
+            public/images/teacher/portraits/male.webp \
+            public/images/teacher/portraits/female.webp \
+            src/components/Home/HeroServicesStage.tsx \
+            src/data/teachers.ts
+
+          if git diff --cached --quiet; then
+            echo "No image conversion changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore: convert key images to webp"
+          git push
