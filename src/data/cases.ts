@@ -59,32 +59,32 @@ const caseCategories: CaseCategory[] = [
 const admissionVisuals: AdmissionVisual[] = [
   {
     unit: "清华大学",
-    image: "/images/case/tschinghua university.jpg",
+    image: "/images/case/tschinghua university.webp",
     keywords: ["清华大学", "清华", "Tsinghua"],
   },
   {
     unit: "北京大学",
-    image: "/images/case/peiking university.jpg",
+    image: "/images/case/peiking university.webp",
     keywords: ["北京大学", "北大", "Peking University"],
   },
   {
     unit: "上海交通大学",
-    image: "/images/case/shanghai jiaotong university.jpg",
+    image: "/images/case/shanghai jiaotong university.webp",
     keywords: ["上海交通大学", "上海交大", "上交", "Shanghai Jiao Tong"],
   },
   {
     unit: "浙江大学",
-    image: "/images/case/zhejiang university.jpg",
+    image: "/images/case/zhejiang university.webp",
     keywords: ["浙江大学", "浙大", "Zhejiang University"],
   },
   {
     unit: "哈尔滨工业大学",
-    image: "/images/case/haerbinggongye university.jpg",
+    image: "/images/case/haerbinggongye university.webp",
     keywords: ["哈尔滨工业大学", "哈工大", "哈工深", "哈尔滨工业大学深圳"],
   },
   {
     unit: "中国科学院微电子研究所",
-    image: "/images/case/zhongguokexueyuanweidianziyanjiusuo.jpg",
+    image: "/images/case/zhongguokexueyuanweidianziyanjiusuo.webp",
     keywords: ["中国科学院微电子研究所", "中科院微电子", "国科大微电子"],
   },
 ];
