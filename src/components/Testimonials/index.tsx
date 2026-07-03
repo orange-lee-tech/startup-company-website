@@ -76,7 +76,7 @@ const Testimonials = () => {
               <Link
                 key={item.id}
                 href={categoryMeta.path}
-                className="group flex min-h-[390px] min-w-[82vw] snap-start flex-col rounded-2xl bg-[#06152F]/72 p-6 transition hover:bg-white/10 md:min-h-[420px] md:min-w-0 md:rounded-none md:p-7"
+                className="group flex min-h-[390px] min-w-[82vw] snap-start flex-col rounded-2xl bg-[#0B1F44]/66 p-6 transition hover:bg-white/10 md:min-h-[420px] md:min-w-0 md:rounded-none md:p-7"
               >
                 <div className="mb-6 flex items-center justify-between gap-4">
                   <p className="text-sm font-bold tracking-wide text-yellow">
@@ -123,12 +123,6 @@ const Testimonials = () => {
               </Link>
             );
           })}
-        </div>
-
-        <div className="mt-8 rounded-2xl border border-yellow/25 bg-yellow/10 p-6">
-          <p className="text-sm font-medium leading-relaxed text-white/82">
-            案例展示说明：网站案例均采用脱敏表达，重点展示背景类型、初始问题、服务过程与最终结果；录取截图、Offer、证明材料等更适合放在案例详情页展示。
-          </p>
         </div>
       </div>
     </section>
