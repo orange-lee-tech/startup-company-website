@@ -40,14 +40,14 @@ const HomeHeroServicesStage = () => {
       {/* 夕阳暖光保留：让画面不至于过冷、过压抑 */}
       <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_78%_72%,rgba(255,198,87,0.24),transparent_30%)]" />
 
-      {/* 底部收口：统一过渡到首页浅色专题底色，避免深浅硬切 */}
-      <div className="absolute inset-x-0 bottom-0 z-0 h-[34%] bg-linear-to-b from-transparent via-[#315B93]/52 to-[#E4EAF3]" />
+      {/* 底部局部过渡：从案例区深蓝，经蓝灰和灰蓝，落到师资区浅蓝灰 */}
+      <div className="absolute inset-x-0 bottom-0 z-0 h-[42%] bg-linear-to-b from-transparent via-[#5577A6]/48 to-[#E4EAF3]" />
 
       <div className="relative z-10">
         <Hero />
         <Features />
         <Testimonials />
-        <div className="h-16 bg-linear-to-b from-transparent to-[#E4EAF3] md:h-24" />
+        <div className="h-24 bg-linear-to-b from-[#234A80]/20 via-[#A8B8D0]/35 to-[#E4EAF3] md:h-28" />
       </div>
     </div>
   );
