@@ -9,11 +9,11 @@ const ctaPoints = [
 
 const HomeContactCTA = () => {
   return (
-    <section className="bg-white py-12 dark:bg-gray-dark md:py-14 lg:py-16">
+    <section className="bg-[#EEF2F8] py-12 dark:bg-gray-dark md:py-14 lg:py-16">
       <div className="container">
-        <div className="relative overflow-hidden rounded-3xl bg-[#07142F] p-7 text-white shadow-three md:p-10 lg:p-12">
-          <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-primary/30 blur-[90px]" />
-          <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-yellow/15 blur-[80px]" />
+        <div className="relative overflow-hidden rounded-3xl bg-[#0B1F44] p-7 text-white shadow-three md:p-10 lg:p-12">
+          <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-primary/25 blur-[90px]" />
+          <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-yellow/12 blur-[80px]" />
 
           <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-7">
