@@ -10,6 +10,12 @@ export type CaseCategory =
 
 export type CaseImageRatio = "portrait" | "landscape";
 
+type AdmissionVisual = {
+  unit: string;
+  image: string;
+  keywords: string[];
+};
+
 export type StudentCase = {
   id: string;
   category: CaseCategory;
@@ -22,6 +28,8 @@ export type StudentCase = {
   tags: string[];
   initialSummary?: string;
   outcomeSummary?: string;
+  admissionUnit?: string;
+  admissionImage?: string;
   contentStatus?: string;
   image?: string;
   imageFile?: string;
@@ -46,6 +54,39 @@ const caseCategories: CaseCategory[] = [
   "study-abroad",
   "phd-application",
   "career-coaching",
+];
+
+const admissionVisuals: AdmissionVisual[] = [
+  {
+    unit: "清华大学",
+    image: "/images/case/tschinghua university.jpg",
+    keywords: ["清华大学", "清华", "Tsinghua"],
+  },
+  {
+    unit: "北京大学",
+    image: "/images/case/peiking university.jpg",
+    keywords: ["北京大学", "北大", "Peking University"],
+  },
+  {
+    unit: "上海交通大学",
+    image: "/images/case/shanghai jiaotong university.jpg",
+    keywords: ["上海交通大学", "上海交大", "上交", "Shanghai Jiao Tong"],
+  },
+  {
+    unit: "浙江大学",
+    image: "/images/case/zhejiang university.jpg",
+    keywords: ["浙江大学", "浙大", "Zhejiang University"],
+  },
+  {
+    unit: "哈尔滨工业大学",
+    image: "/images/case/haerbinggongye university.jpg",
+    keywords: ["哈尔滨工业大学", "哈工大", "哈工深", "哈尔滨工业大学深圳"],
+  },
+  {
+    unit: "中国科学院微电子研究所",
+    image: "/images/case/zhongguokexueyuanweidianziyanjiusuo.jpg",
+    keywords: ["中国科学院微电子研究所", "中科院微电子", "国科大微电子"],
+  },
 ];
 
 function getCasesRoot() {
@@ -246,6 +287,48 @@ function normalizeImageRatio(value: string): CaseImageRatio | undefined {
   return undefined;
 }
 
+function findLastKeywordIndex(source: string, keywords: string[]) {
+  return keywords.reduce((latestIndex, keyword) => {
+    const currentIndex = source.lastIndexOf(keyword);
+
+    return currentIndex > latestIndex ? currentIndex : latestIndex;
+  }, -1);
+}
+
+function resolveAdmissionVisual(result: string):
+  | {
+      unit: string;
+      image: string;
+    }
+  | undefined {
+  const normalizedResult = normalizeSummary(result);
+
+  if (!normalizedResult) {
+    return undefined;
+  }
+
+  let matchedVisual: AdmissionVisual | undefined;
+  let latestIndex = -1;
+
+  admissionVisuals.forEach((visual) => {
+    const currentIndex = findLastKeywordIndex(normalizedResult, visual.keywords);
+
+    if (currentIndex > latestIndex) {
+      matchedVisual = visual;
+      latestIndex = currentIndex;
+    }
+  });
+
+  if (!matchedVisual) {
+    return undefined;
+  }
+
+  return {
+    unit: matchedVisual.unit,
+    image: withBasePath(matchedVisual.image),
+  };
+}
+
 function getSourceSortValue(sourceNumber?: string) {
   if (!sourceNumber) {
     return 9999;
@@ -293,6 +376,14 @@ function parseCaseFile(filePath: string): StudentCase | undefined {
   const initialSummary =
     getString(frontmatter, "initialSummary") || challenge || background;
   const outcomeSummary = getString(frontmatter, "outcomeSummary") || result;
+  const explicitAdmissionImage = getString(frontmatter, "admissionImage");
+  const explicitAdmissionUnit = getString(frontmatter, "admissionUnit");
+  const resolvedAdmissionVisual = explicitAdmissionImage
+    ? {
+        unit: explicitAdmissionUnit || title,
+        image: withBasePath(explicitAdmissionImage),
+      }
+    : resolveAdmissionVisual(result || outcomeSummary || title);
 
   return {
     id,
@@ -306,6 +397,8 @@ function parseCaseFile(filePath: string): StudentCase | undefined {
     tags: getStringArray(frontmatter, "tags"),
     initialSummary,
     outcomeSummary,
+    admissionUnit: resolvedAdmissionVisual?.unit,
+    admissionImage: resolvedAdmissionVisual?.image,
     contentStatus: getString(frontmatter, "contentStatus") || undefined,
     image: normalizeImagePath(imagePath),
     imageFile: getString(frontmatter, "imageFile") || undefined,

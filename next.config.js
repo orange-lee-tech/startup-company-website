@@ -7,6 +7,8 @@ const siteBasePath =
 
 const nextConfig = {
   output: "export",
+  basePath: siteBasePath || undefined,
+  assetPrefix: siteBasePath || undefined,
   env: {
     NEXT_PUBLIC_SITE_BASE_PATH: siteBasePath,
   },

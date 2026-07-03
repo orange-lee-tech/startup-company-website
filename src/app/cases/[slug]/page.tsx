@@ -129,6 +129,31 @@ const CaseCategoryPage = async ({
                       {item.title}
                     </h2>
 
+                    {item.admissionImage && (
+                      <div className="relative mb-6 overflow-hidden rounded-xl bg-[#07142F] shadow-sm">
+                        <div className="relative aspect-[16/9] w-full">
+                          <Image
+                            src={item.admissionImage}
+                            alt={item.admissionUnit ?? item.title}
+                            fill
+                            sizes="(min-width: 1280px) 45vw, 100vw"
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 bg-linear-to-t from-[#020817]/85 via-[#020817]/25 to-transparent" />
+                        </div>
+                        {item.admissionUnit && (
+                          <div className="absolute inset-x-0 bottom-0 p-4 text-white md:p-5">
+                            <p className="mb-1 text-xs font-semibold tracking-[0.18em] text-yellow">
+                              去向展示
+                            </p>
+                            <p className="text-xl font-bold leading-tight md:text-2xl">
+                              {item.admissionUnit}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     {item.image && (
                       <div
                         className={`relative mb-6 overflow-hidden rounded-xl bg-white shadow-sm dark:bg-bg-color-dark ${
