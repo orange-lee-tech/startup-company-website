@@ -1,4 +1,4 @@
-name: Convert key PNG images to WebP
+name: Convert selected images to WebP
 
 on:
   push:
@@ -8,8 +8,10 @@ on:
       - "public/images/jiuchen/background.png"
       - "public/images/teacher/portraits/male.png"
       - "public/images/teacher/portraits/female.png"
+      - "public/images/case/**"
       - "src/components/Home/HeroServicesStage.tsx"
       - "src/data/teachers.ts"
+      - "src/data/cases.ts"
   workflow_dispatch:
 
 permissions:
@@ -27,17 +29,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y webp
 
-      - name: Convert selected PNG files
+      - name: Convert selected images
         run: |
           set -euo pipefail
 
-          test -f public/images/jiuchen/background.png
-          test -f public/images/teacher/portraits/male.png
-          test -f public/images/teacher/portraits/female.png
+          cwebp -q 82 -m 6 "public/images/jiuchen/background.png" -o "public/images/jiuchen/background.webp"
+          cwebp -q 82 -m 6 "public/images/teacher/portraits/male.png" -o "public/images/teacher/portraits/male.webp"
+          cwebp -q 82 -m 6 "public/images/teacher/portraits/female.png" -o "public/images/teacher/portraits/female.webp"
 
-          cwebp -q 82 -m 6 public/images/jiuchen/background.png -o public/images/jiuchen/background.webp
-          cwebp -q 82 -m 6 public/images/teacher/portraits/male.png -o public/images/teacher/portraits/male.webp
-          cwebp -q 82 -m 6 public/images/teacher/portraits/female.png -o public/images/teacher/portraits/female.webp
+          for input in public/images/case/*.png; do
+            [ -f "$input" ] || continue
+            output="${input%.png}.webp"
+            cwebp -q 82 -m 6 "$input" -o "$output"
+          done
 
       - name: Update code references
         run: |
@@ -51,6 +55,14 @@ jobs:
               Path("src/data/teachers.ts"): {
                   "${portraitBase}/male.png": "${portraitBase}/male.webp",
                   "${portraitBase}/female.png": "${portraitBase}/female.webp",
+              },
+              Path("src/data/cases.ts"): {
+                  "/images/case/tschinghua university.jpg": "/images/case/tschinghua university.webp",
+                  "/images/case/peiking university.jpg": "/images/case/peiking university.webp",
+                  "/images/case/shanghai jiaotong university.jpg": "/images/case/shanghai jiaotong university.webp",
+                  "/images/case/zhejiang university.jpg": "/images/case/zhejiang university.webp",
+                  "/images/case/haerbinggongye university.jpg": "/images/case/haerbinggongye university.webp",
+                  "/images/case/zhongguokexueyuanweidianziyanjiusuo.jpg": "/images/case/zhongguokexueyuanweidianziyanjiusuo.webp",
               },
           }
 
@@ -66,17 +78,18 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            public/images/jiuchen/background.webp \
-            public/images/teacher/portraits/male.webp \
-            public/images/teacher/portraits/female.webp \
-            src/components/Home/HeroServicesStage.tsx \
-            src/data/teachers.ts
+          git add public/images/jiuchen/background.webp
+          git add public/images/teacher/portraits/male.webp
+          git add public/images/teacher/portraits/female.webp
+          git add public/images/case/*.webp
+          git add src/components/Home/HeroServicesStage.tsx
+          git add src/data/teachers.ts
+          git add src/data/cases.ts
 
           if git diff --cached --quiet; then
             echo "No image conversion changes to commit."
             exit 0
           fi
 
-          git commit -m "chore: convert key images to webp"
+          git commit -m "chore: convert selected images to webp"
           git push
