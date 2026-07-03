@@ -17,13 +17,10 @@ permissions:
 
 jobs:
   convert:
-    if: ${{ !contains(github.event.head_commit.message, 'chore: convert key images to webp') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install WebP tools
         run: |
