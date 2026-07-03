@@ -7,10 +7,10 @@ const HomeHeroServicesStage = () => {
   const backgroundImage = `url('${withBasePath("/images/jiuchen/background.webp")}')`;
 
   return (
-    <div className="relative overflow-hidden bg-[#020817]">
+    <div className="relative overflow-hidden bg-[#07142F]">
       {/* 移动端：保留建筑氛围，但不让图片压住文字与横向卡片 */}
       <div
-        className="absolute inset-0 z-0 bg-no-repeat opacity-90 lg:hidden"
+        className="absolute inset-0 z-0 bg-no-repeat opacity-95 lg:hidden"
         style={{
           backgroundImage,
           backgroundPosition: "72% top",
@@ -28,20 +28,20 @@ const HomeHeroServicesStage = () => {
         }}
       />
 
-      {/* 左侧阅读暗幕：主要服务文字区域，不压死右侧建筑 */}
-      <div className="absolute inset-0 z-0 bg-linear-to-r from-[#020817]/96 via-[#07142F]/78 to-[#020817]/28" />
+      {/* 左侧阅读暗幕：适当调浅，让建筑和光感多露出一些 */}
+      <div className="absolute inset-0 z-0 bg-linear-to-r from-[#06122A]/88 via-[#0B1F44]/62 to-[#07142F]/14" />
 
-      {/* 顶部暗幕：保证透明导航栏、Logo、菜单文字清晰 */}
-      <div className="absolute inset-0 z-0 bg-linear-to-b from-[#020817]/60 via-[#020817]/22 to-[#020817]/78" />
+      {/* 顶部暗幕：保证透明导航栏、Logo、菜单文字清晰，同时减少厚重感 */}
+      <div className="absolute inset-0 z-0 bg-linear-to-b from-[#06122A]/48 via-[#07142F]/12 to-[#07142F]/58" />
 
       {/* 建筑冷色调增强：保留科技感和国际化气质 */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_74%_28%,rgba(51,172,255,0.16),transparent_30%)]" />
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_74%_28%,rgba(51,172,255,0.20),transparent_32%)]" />
 
       {/* 夕阳暖光保留：让画面不至于过冷、过压抑 */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_78%_72%,rgba(255,198,87,0.18),transparent_26%)]" />
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_78%_72%,rgba(255,198,87,0.22),transparent_28%)]" />
 
-      {/* 底部收口：让案例摘要结束处自然过渡到后续浅色板块 */}
-      <div className="absolute inset-x-0 bottom-0 z-0 h-[22%] bg-linear-to-b from-transparent to-[#020817]" />
+      {/* 底部收口：比原来更浅，避免深浅区硬切 */}
+      <div className="absolute inset-x-0 bottom-0 z-0 h-[22%] bg-linear-to-b from-transparent to-[#07142F]" />
 
       <div className="relative z-10">
         <Hero />
