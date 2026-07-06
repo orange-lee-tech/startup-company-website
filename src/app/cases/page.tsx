@@ -55,7 +55,7 @@ const CasesPage = () => {
             </h1>
 
             <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-              案例均以脱敏方式展示，页面重点放在学员初始情况、目标诉求与最终结果，便于快速判断相近路径。
+              你可以从不同服务方向中查看相近背景与结果路径，也可以先咨询规划老师，判断更接近自己的阶段与目标。
             </p>
           </div>
 
@@ -104,7 +104,7 @@ const CasesPage = () => {
                   ) : (
                     <div className={`mt-auto rounded-xl border border-dashed border-primary/20 p-4 ${tone.panel}`}>
                       <p className="text-sm leading-relaxed text-body-color dark:text-body-color-dark">
-                        该方向案例素材仍在整理与脱敏确认中，可先咨询相近路径。
+                        可先咨询相近路径，由规划老师根据当前背景判断适合方向。
                       </p>
                     </div>
                   )}
@@ -113,26 +113,24 @@ const CasesPage = () => {
             })}
           </div>
 
-          <div className="mt-10 rounded-2xl border border-primary/10 bg-primary/5 p-7 dark:border-white/10 dark:bg-white/5 md:p-8">
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
-              <div className="lg:col-span-8">
-                <h2 className="mb-3 text-2xl font-bold text-black dark:text-white">
-                  案例展示说明
+          <div className="mt-10 rounded-2xl bg-primary p-8 text-white md:p-10">
+            <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
+              <div>
+                <h2 className="mb-3 text-2xl font-bold">
+                  想了解更接近自己的案例路径？
                 </h2>
 
-                <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                  所有案例发布前均应完成授权确认与脱敏处理。公开展示以代表性路径为主，避免将个别结果表述为普遍承诺。
+                <p className="max-w-[720px] text-base leading-relaxed text-white/80">
+                  提交当前阶段、目标方向与主要困惑，规划老师会结合你的背景给出初步判断。
                 </p>
               </div>
 
-              <div className="lg:col-span-4">
-                <Link
-                  href="/contact"
-                  className="flex w-full items-center justify-center rounded-xs bg-primary px-8 py-4 text-base font-semibold text-white transition hover:bg-primary/90"
-                >
-                  咨询相近案例路径
-                </Link>
-              </div>
+              <Link
+                href="/contact"
+                className="inline-flex shrink-0 items-center justify-center rounded-xs bg-white px-8 py-4 text-base font-semibold text-primary transition hover:bg-white/90"
+              >
+                咨询相近案例路径
+              </Link>
             </div>
           </div>
         </div>
