@@ -29,7 +29,7 @@ const TeachersPage = () => {
     <>
       <Breadcrumb
         pageName="师资"
-        description="展示九辰教育导师与教研团队。已有公开详细资料的老师可进入个人详情页，其余老师暂展示基础信息。"
+        description="九辰教育汇聚多领域导师与教研团队，围绕升学规划、申请材料、面试训练与就业辅导提供支持。"
       />
 
       <section className="bg-white py-14 dark:bg-gray-dark md:py-16 lg:py-20">
@@ -40,11 +40,11 @@ const TeachersPage = () => {
             </p>
 
             <h1 className="mb-6 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
-              导师与教研团队总览
+              覆盖升学规划、申请辅导与就业支持的导师资源
             </h1>
 
             <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-              以下信息用于展示导师资源覆盖范围。已有公开详情资料的老师可点击卡片进入个人主页；其余老师暂展示姓名、机构与职称等基础信息。
+              不同导师擅长的方向与项目经验各有侧重，九辰会结合学生阶段、目标方向和当前短板进行服务匹配。
             </p>
           </div>
 
