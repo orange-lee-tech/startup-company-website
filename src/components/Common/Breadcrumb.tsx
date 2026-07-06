@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { withBasePath } from "@/lib/site";
 
 const Breadcrumb = ({
   pageName,
@@ -8,7 +8,7 @@ const Breadcrumb = ({
   description: string;
 }) => {
   return (
-    <section className="relative z-10 overflow-hidden bg-[#E9EEF6] pt-24 pb-9 dark:bg-bg-color-dark md:pt-28 md:pb-10 lg:pt-32 lg:pb-12">
+    <section className="relative z-10 overflow-hidden bg-[#E9EEF6] pt-22 pb-8 dark:bg-bg-color-dark md:pt-24 md:pb-9 lg:pt-[104px] lg:pb-10">
       <div className="container">
         <div className="-mx-4 flex flex-wrap items-start gap-y-5 md:items-center">
           <div className="w-full px-4 md:w-8/12 lg:w-7/12">
@@ -27,12 +27,12 @@ const Breadcrumb = ({
             <div className="md:text-end">
               <ul className="flex items-center md:justify-end">
                 <li className="flex items-center">
-                  <Link
-                    href="/"
+                  <a
+                    href={withBasePath("/")}
                     className="pr-1 text-base font-medium text-body-color hover:text-primary"
                   >
                     首页
-                  </Link>
+                  </a>
                   <span className="mr-3 block h-2 w-2 rotate-45 border-r-2 border-t-2 border-body-color" />
                 </li>
                 <li className="text-base font-medium text-primary">
