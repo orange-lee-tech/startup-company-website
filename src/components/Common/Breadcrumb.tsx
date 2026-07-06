@@ -8,7 +8,7 @@ const Breadcrumb = ({
   description: string;
 }) => {
   return (
-    <section className="relative z-10 overflow-hidden bg-[#E9EEF6] pt-22 pb-8 dark:bg-bg-color-dark md:pt-24 md:pb-9 lg:pt-[104px] lg:pb-10">
+    <section className="relative z-10 overflow-hidden bg-[#E9EEF6] pt-[88px] pb-8 dark:bg-bg-color-dark md:pt-24 md:pb-9 lg:pt-[104px] lg:pb-10">
       <div className="container">
         <div className="-mx-4 flex flex-wrap items-start gap-y-5 md:items-center">
           <div className="w-full px-4 md:w-8/12 lg:w-7/12">
