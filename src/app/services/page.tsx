@@ -44,7 +44,7 @@ const ServicesPage = () => {
               </h1>
 
               <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-                主页只展示服务摘要，完整服务内容进入对应详情页。你可以按当前阶段和目标方向选择服务，也可以先预约免费评估，由规划老师协助判断适合路径。
+                你可以按当前阶段和目标方向选择服务，也可以先预约免费评估，由规划老师协助判断适合路径。
               </p>
             </div>
 
@@ -151,16 +151,6 @@ const ServicesPage = () => {
                 预约免费评估
               </Link>
             </div>
-          </div>
-
-          <div className="mt-8 rounded-2xl border border-primary/10 bg-primary/5 p-7 dark:border-white/10 dark:bg-white/5">
-            <h2 className="mb-4 text-2xl font-bold text-black dark:text-white">
-              服务展示边界
-            </h2>
-
-            <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-              九辰坚持真实规划与过程陪跑，不对单一院校或公司作结果承诺。网站展示内容以服务路径、能力提升、过程陪跑和案例沉淀为主，所有案例发布前均应完成授权与脱敏处理。
-            </p>
           </div>
         </div>
       </section>
