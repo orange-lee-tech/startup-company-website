@@ -31,9 +31,9 @@ const ServicesPage = () => {
         description="九辰教育围绕本硕博升学与就业目标，提供长期陪伴式、量身定制、可量化目标的全链条服务。"
       />
 
-      <section className="bg-white py-16 dark:bg-gray-dark md:py-20 lg:py-28">
+      <section className="bg-white py-12 dark:bg-gray-dark md:py-14 lg:py-18">
         <div className="container">
-          <div className="mb-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+          <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
               <p className="mb-4 text-base font-semibold text-primary">
                 六大核心服务方向
@@ -132,7 +132,7 @@ const ServicesPage = () => {
             })}
           </div>
 
-          <div className="mt-14 rounded-2xl bg-primary p-8 text-white md:p-10">
+          <div className="mt-12 rounded-2xl bg-primary p-8 text-white md:p-10">
             <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
               <div>
                 <h2 className="mb-3 text-2xl font-bold">
