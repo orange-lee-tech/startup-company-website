@@ -3,7 +3,6 @@
 import { siteNavItems } from "@/data/navigation";
 import { withBasePath } from "@/lib/site";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
@@ -15,6 +14,7 @@ const Header = () => {
 
   const isHome = pathname === "/";
   const isTransparent = isHome && !sticky;
+  const resolveHref = (path: string) => withBasePath(path);
 
   const scrollToHomeTop = () => {
     window.scrollTo({
@@ -31,7 +31,19 @@ const Header = () => {
     }
   };
 
-    const isActivePath = (path: string) => {
+  const handleNavClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    path: string,
+  ) => {
+    if (path === "/") {
+      handleHomeClick(event);
+      return;
+    }
+
+    setMenuOpen(false);
+  };
+
+  const isActivePath = (path: string) => {
     if (path === "/") {
       return pathname === "/";
     }
@@ -63,14 +75,14 @@ const Header = () => {
       <div className="container">
         <div className="relative -mx-4 flex items-center justify-between">
           <div className="w-auto max-w-full px-4">
-            <Link
-  href="/"
-  aria-label="九辰教育首页"
-  onClick={handleHomeClick}
-  className={`header-logo flex items-center gap-3 ${
-    sticky ? "py-4 lg:py-3" : "py-6"
-  }`}
->
+            <a
+              href={resolveHref("/")}
+              aria-label="九辰教育首页"
+              onClick={handleHomeClick}
+              className={`header-logo flex items-center gap-3 ${
+                sticky ? "py-4 lg:py-3" : "py-6"
+              }`}
+            >
               <Image
                 src={withBasePath("/images/jiuchen/jiuchen-logo-notext.png")}
                 alt="九辰教育咨询"
@@ -89,7 +101,7 @@ const Header = () => {
               >
                 九辰教育
               </span>
-            </Link>
+            </a>
           </div>
 
           <div className="flex flex-1 items-center justify-end px-4">
@@ -101,10 +113,10 @@ const Header = () => {
 
                   return (
                     <li key={item.path} className="group relative">
-                      <Link
-  href={item.path}
-  onClick={item.path === "/" ? handleHomeClick : undefined}
-  className={`flex items-center gap-1.5 text-base font-medium transition ${
+                      <a
+                        href={resolveHref(item.path)}
+                        onClick={(event) => handleNavClick(event, item.path)}
+                        className={`flex items-center gap-1.5 text-base font-medium transition ${
                           isTransparent
                             ? active
                               ? "text-yellow"
@@ -130,7 +142,7 @@ const Header = () => {
                             />
                           </svg>
                         )}
-                      </Link>
+                      </a>
 
                       {hasChildren && (
                         <div className="pointer-events-none absolute left-1/2 top-full z-50 w-[260px] -translate-x-1/2 pt-4 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:opacity-100">
@@ -139,9 +151,12 @@ const Header = () => {
                               const childActive = isActivePath(child.path);
 
                               return (
-                                <Link
+                                <a
                                   key={child.path}
-                                  href={child.path}
+                                  href={resolveHref(child.path)}
+                                  onClick={(event) =>
+                                    handleNavClick(event, child.path)
+                                  }
                                   className={`block rounded-lg px-4 py-3 transition ${
                                     childActive
                                       ? "bg-primary/10 text-primary"
@@ -157,7 +172,7 @@ const Header = () => {
                                       {child.description}
                                     </span>
                                   )}
-                                </Link>
+                                </a>
                               );
                             })}
                           </div>
@@ -170,8 +185,8 @@ const Header = () => {
             </nav>
 
             <div className="ml-3 flex md:ml-5">
-  <ThemeToggler transparent={isTransparent} />
-</div>
+              <ThemeToggler transparent={isTransparent} />
+            </div>
 
             <button
               type="button"
@@ -228,15 +243,11 @@ const Header = () => {
                       key={item.path}
                       className="border-b border-body-color/10 pb-3 last:border-b-0 dark:border-white/10"
                     >
-                      <Link
-  href={item.path}
-  onClick={
-    item.path === "/"
-      ? handleHomeClick
-      : () => setMenuOpen(false)
-  }
-  className="block py-2"
->
+                      <a
+                        href={resolveHref(item.path)}
+                        onClick={(event) => handleNavClick(event, item.path)}
+                        className="block py-2"
+                      >
                         <span
                           className={`mb-1 block text-lg font-bold transition ${
                             active
@@ -252,19 +263,21 @@ const Header = () => {
                             {item.description}
                           </span>
                         )}
-                      </Link>
+                      </a>
 
                       {hasChildren && (
                         <div className="mt-2 grid grid-cols-2 gap-2">
                           {item.children?.map((child) => (
-                            <Link
+                            <a
                               key={child.path}
-                              href={child.path}
-                              onClick={() => setMenuOpen(false)}
+                              href={resolveHref(child.path)}
+                              onClick={(event) =>
+                                handleNavClick(event, child.path)
+                              }
                               className="rounded-lg bg-primary/5 px-3 py-2 text-sm font-medium text-dark transition hover:bg-primary/10 hover:text-primary dark:text-white"
                             >
                               {child.title}
-                            </Link>
+                            </a>
                           ))}
                         </div>
                       )}
