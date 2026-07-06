@@ -95,15 +95,15 @@ const CaseCategoryPage = async ({
 
           <div className="mb-10 max-w-[900px]">
             <p className="mb-4 text-base font-semibold text-primary">
-              案例详情
+              案例列表
             </p>
 
             <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
-              {page.title}
+              查看该方向下不同背景学员的规划过程与结果
             </h1>
 
             <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-              {page.description}
+              下面按案例卡片展示初始情况、关键材料和最终结果，帮助你快速对照自己的阶段、目标与申请路径。
             </p>
           </div>
 
@@ -204,11 +204,11 @@ const CaseCategoryPage = async ({
           ) : (
             <div className="rounded-2xl border border-primary/10 bg-primary/5 p-8 dark:border-white/10 dark:bg-white/5">
               <h2 className="mb-4 text-2xl font-bold text-black dark:text-white">
-                案例内容整理中
+                暂无公开案例
               </h2>
 
               <p className="mb-6 text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                当前方向的案例素材仍在整理与脱敏确认中。后续将补充经授权展示的代表案例。
+                当前方向暂未展示公开案例，你可以先咨询相近路径，由规划老师结合背景判断适合方向。
               </p>
 
               <div className="flex flex-wrap gap-4">
