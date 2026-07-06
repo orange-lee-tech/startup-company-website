@@ -97,7 +97,7 @@ const ServiceDetailPage = async ({
         description={detail.subtitle}
       />
 
-      <section className="bg-white py-16 dark:bg-gray-dark md:py-20 lg:py-28">
+      <section className="bg-white py-12 dark:bg-gray-dark md:py-14 lg:py-18">
         <div className="container">
           <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
             <div className="lg:col-span-8">
