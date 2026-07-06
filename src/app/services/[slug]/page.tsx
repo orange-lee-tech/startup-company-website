@@ -102,26 +102,26 @@ const ServiceDetailPage = async ({
           <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
             <div className="lg:col-span-8">
               <p className="mb-4 text-base font-semibold text-primary">
-                服务详情
+                服务方案
               </p>
 
               <h1 className="mb-6 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
-                {detail.title}
+                从适合人群、服务内容到交付成果，拆解完整执行路径
               </h1>
 
               <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
-                {detail.subtitle}
+                以下内容用于帮助你快速判断服务是否匹配当前阶段，并了解九辰如何围绕目标、短板、周期和资源进行个性化规划。
               </p>
             </div>
 
             <div className="lg:col-span-4">
               <div className="rounded-2xl bg-primary p-7 text-white shadow-three transition duration-300 hover:-translate-y-1 hover:shadow-three">
                 <h2 className="mb-4 text-2xl font-bold">
-                  适合先做免费评估
+                  先做匹配评估
                 </h2>
 
                 <p className="mb-6 text-base leading-relaxed text-white/80">
-                  每位学生的背景、目标、时间和短板不同，建议先提交当前情况，由规划老师进行初步判断。
+                  提交当前情况后，规划老师会结合背景、目标、时间和短板，判断更适合的服务路径。
                 </p>
 
                 <Link
@@ -160,26 +160,14 @@ const ServiceDetailPage = async ({
             <DetailBlock title="配套资源" items={detail.resources} toneIndex={7} />
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="rounded-2xl border border-primary/10 bg-primary/5 p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark">
-              <h2 className="mb-5 text-2xl font-bold text-black dark:text-white">
-                私人订制体现
-              </h2>
+          <div className="mt-8 rounded-2xl border border-primary/10 bg-primary/5 p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-white hover:shadow-three dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark">
+            <h2 className="mb-5 text-2xl font-bold text-black dark:text-white">
+              私人订制体现
+            </h2>
 
-              <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                {detail.customization}
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-yellow/40 bg-[#FFFBEB] p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-three dark:border-yellow/30 dark:bg-white/5">
-              <h2 className="mb-5 text-2xl font-bold text-black dark:text-white">
-                展示边界
-              </h2>
-
-              <p className="text-base font-semibold leading-relaxed text-black dark:text-white">
-                {detail.boundary}
-              </p>
-            </div>
+            <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark">
+              {detail.customization}
+            </p>
           </div>
 
           <div className="mt-12 rounded-2xl bg-primary p-8 text-white md:p-10">
