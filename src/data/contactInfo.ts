@@ -8,5 +8,8 @@ export const contactInfo = {
   phone: "18086136309",
   icpRecord: "湘ICP备2026021463号",
   icpUrl: "http://beian.miit.gov.cn/",
+  publicSecurityRecord: "湘公网安备43010402002934号",
+  publicSecurityUrl:
+    "http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43010402002934",
   privacyEntity: "长沙九辰教育咨询有限公司",
 };
