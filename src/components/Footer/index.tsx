@@ -215,14 +215,25 @@ const Footer = () => {
               reserved.
             </p>
 
-            <a
-              href={contactInfo.icpUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-3 inline-block transition hover:text-primary hover:underline"
-            >
-              {contactInfo.icpRecord}
-            </a>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+              <a
+                href={contactInfo.icpUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="transition hover:text-primary hover:underline"
+              >
+                {contactInfo.icpRecord}
+              </a>
+
+              <a
+                href={contactInfo.publicSecurityUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="transition hover:text-primary hover:underline"
+              >
+                {contactInfo.publicSecurityRecord}
+              </a>
+            </div>
           </div>
         </div>
       </div>
