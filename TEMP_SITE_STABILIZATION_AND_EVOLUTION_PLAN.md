@@ -2,16 +2,16 @@
 
 > 本文件是本轮专项工作的临时总控清单，用于 AI / 开发者持续校对进度。
 >
-> **删除条件：只有当下列四个阶段全部完成、线上验证通过、文档已同步，才删除本文件。**
+> **删除条件：只有四个阶段全部完成、线上验证通过、正式文档同步后，才删除本文件。**
 >
-> 当前网站仍以 Next.js 静态导出为正式生产形态，但必须保留未来向 CMS、API、数据库、SSR/ISR、账号/业务系统等动态能力演进的空间。任何为了当前稳定性采取的临时降级措施，都不得被误写成永久架构限制。
+> 当前生产形态仍是 Next.js 静态导出，但必须保留未来向 CMS、API、数据库、SSR/ISR、资讯系统、账号与业务系统演进的能力。任何当前稳定性措施都不得被误写为永久架构限制。
 
 ## 总目标
 
-1. 先清除手机端 Client Exception、发布权限、Nginx 与缓存等 P0 稳定性风险。
-2. 清理历史 Startup/SaaS 模板页面、无效路由、垃圾文案与无引用资产，避免 SEO 与维护污染。
-3. 重构 SEO 基础：自动 sitemap、规范 canonical、OG、JSON-LD、精准 H1、企业信任内链、性能治理。
-4. 保留并明确动态化演进接口：继续使用 Next.js App Router / Server Components / 动态路由，以内容仓储接口隔离本地数据与未来 CMS/API/DB。
+1. 清除手机端 Client Exception、403、Nginx、缓存和发布中断等 P0 风险。
+2. 清理历史 Startup/SaaS 模板页面、垃圾文案、无引用组件与资产。
+3. 重构 SEO 基础：自动 sitemap、canonical、OG、JSON-LD、精准 H1、企业信任内链与移动性能。
+4. 保留动态化演进空间：App Router / Server Components / 动态路由继续保留，以内容仓储接口隔离本地数据与未来 CMS/API/DB。
 
 ---
 
@@ -19,57 +19,61 @@
 
 ## 目标
 
-让官网在桌面 Chrome/Edge、Android Chrome/Edge、微信内置 WebView 等主要环境中稳定加载；任意单个客户端异常不能再把整站变成白屏；生产发布流程必须可重复验证。
+让官网在桌面 Chrome/Edge、Android Chrome/Edge、微信 WebView 等主要环境中稳定加载；单个客户端异常不能再导致整站白屏；生产发布必须可重复、可验证、可回滚。
 
 ## 工作项
 
-- [ ] 彻查并消除手机端 `Application error: a client-side exception has occurred`。**状态：Webpack 版本已上线；手机无痕模式 + `?__fresh=20260808-webpack-1` 实测首页及按钮跳转正常，无白屏、无 403。普通旧会话此前仍出现异常，当前证据强烈指向旧缓存 / 混合构建 / 发布中断遗留状态；待完成缓存策略并再次验证普通会话后关闭此项。**
-- [x] 删除/硬化首页无必要的自动滚动客户端逻辑 `ScrollUp`。**已从首页关键加载路径移除。**
-- [x] 隔离旧 `next-themes` 顶层运行时依赖，保留主题能力但避免整个站点受单一 Provider 拖垮。**RootLayout 已不再依赖 ThemeProvider；ThemeToggler 改为轻量本地实现。依赖包本身暂留，阶段二清理未引用依赖时再处理。**
-- [x] 将生产构建切换到 Webpack 稳定通道，同时保留 Turbopack 构建入口用于后续重新验证，不永久堵死 Turbopack。**`npm run build` 使用 `--webpack`，新增 `npm run build:turbopack`。**
-- [x] 新增 `app/error.tsx` 和 `app/global-error.tsx`，为运行时异常提供品牌化恢复界面。
-- [x] 新增正式 `app/not-found.tsx`，避免依赖历史模板错误页。
-- [x] 硬化 Header / ScrollToTop 中对浏览器滚动 API 的调用，避免不兼容浏览器 API 直接抛异常。
-- [x] 修复移动端展开导航无法上下滚动的问题。**导航面板已增加基于 `100dvh` 的最大高度、纵向滚动、overscroll containment、触摸滚动和安全区底部留白；待部署后手机复测。**
-- [x] 固化生产静态目录权限要求：父目录可穿越、`out/` 目录 755、文件 644、nginx 用户可读。**本轮服务器已实际修复；重新登录后再次验证所有 JS/CSS 均可由 nginx 用户读取。待同步正式部署文档。**
-- [x] 固化 `nginx -t` 为 reload 前置条件，避免重复 `location` 等配置错误再次进入生产。**本轮服务器已实际验证 successful；待同步正式部署文档。**
-- [x] 固化 Next 静态路由规则，避免 `/services` 等路径重定向泄露 `http://域名:8088/...`。**本轮服务器已修复并验证核心路径 200；待同步正式部署文档。**
-- [ ] 明确 HTML 与 `/_next/static/` 的缓存策略，降低“旧 HTML + 新 JS / 新 HTML + 旧 JS”的混合构建风险。**当前已出现“普通旧会话异常、无痕 fresh URL 正常”的直接证据，本项升级为阶段一最高优先级之一。**
-- [x] 增加发布后 Smoke Test：主页、服务总览、服务详情、案例、师资、FAQ、联系页、404、JS/CSS 静态资源。**`scripts/smoke-production.sh` 已在公网实际执行并完整 PASS；核心页面 200、缺失页 404、静态资源 200。**
-- [ ] 完成真实手机回归验证，并记录结果。**已完成第一轮：手机无痕 fresh URL 全部按钮正常、无白屏、无 403；发现并修复移动导航滚动缺陷。待新提交部署后复测导航及普通非无痕会话。**
-- [ ] 将当前“直接删除并重建线上 out/”改造成不受 SSH 中断影响的安全发布流程，至少保证 build 未完成 / 权限未修复时旧版本继续在线；后续阶段进一步演进为版本目录 + 原子切换。
+- [ ] 彻查并消除手机端 `Application error: a client-side exception has occurred`。
+  - 已切换 Webpack 生产构建。
+  - 已移除首页 `ScrollUp` 自动执行逻辑。
+  - 已从 RootLayout 隔离旧 `next-themes` Provider。
+  - 手机无痕 + fresh URL 已实测页面和按钮正常，无白屏、无 403。
+  - 普通旧会话此前异常，证据强烈指向旧缓存 / 混合构建 / 发布中断遗留状态。
+  - 待缓存策略正式上线并完成普通会话最终复测后关闭此项。
+- [x] 删除/硬化首页无必要的自动滚动客户端逻辑 `ScrollUp`。
+- [x] 隔离旧 `next-themes` 顶层运行时依赖；主题能力保留为轻量本地实现。
+- [x] `npm run build` 默认使用 Webpack，同时保留 `npm run build:turbopack` 供未来复测。
+- [x] 新增 `app/error.tsx`、`app/global-error.tsx`。
+- [x] 新增正式 `app/not-found.tsx`。
+- [x] Header / ScrollToTop 对滚动 API 做兼容保护。
+- [x] 修复移动端展开导航无法上下滚动的问题；待最终实机确认最底部导航入口可达。
+- [x] 修复生产目录权限：父目录可穿越、目录 755、文件 644、nginx 用户可读。
+- [x] 修复重复 `location /`，恢复 `nginx -t` successful。
+- [x] 修复静态路由规则，避免 `/services` 等 301 到 `http://域名:8088/...`。
+- [ ] 正式上线 HTML 与 `/_next/static/` 分层缓存策略。
+  - 仓库已新增 `docs/deployment/jiuchen-static-production.conf.example`。
+  - HTML / 页面：每次重新验证。
+  - `/_next/static/`：构建哈希资源长期缓存。
+  - public 图片字体：中短期缓存。
+  - robots / sitemap / llms：短缓存。
+  - 待同步到真实服务器 Nginx 后验证响应头。
+- [x] 新增并执行公网 Smoke Test：`scripts/smoke-production.sh`。
+- [ ] 完成真实手机最终回归：普通会话、无痕会话、导航滚动、服务/案例/师资/联系等路径。
+- [ ] 将“直接删除并重建线上 out/”迁移为版本目录 + 原子切换。
+  - 仓库已新增 `scripts/deploy-production-atomic.sh`。
+  - 脚本采用独立 Git worktree 构建、权限检查、版本目录、原子 symlink 切换、本机哈希验证、公网 Smoke Test 和失败回滚。
+  - 待一次性把 Nginx root 从仓库 `out/` 迁移到 `/www/wwwroot/jiuchen-current` 后启用。
 
-## 第一轮稳定化代码变更记录
+## 2026-08-08 已确认的线上结果
 
-- 首页移除 `ScrollUp` 自动执行逻辑。
-- RootLayout 不再由 `next-themes` 的 ThemeProvider 包裹全站。
-- 主题按钮改为站内轻量实现，默认保持深色模式并用 localStorage 保存选择；存储不可用时自动降级，不影响页面加载。
-- 生产 build 默认切到 Webpack，保留 Turbopack 独立入口用于未来复测。
-- 新增 route/global error boundary 与正式 404。
-- Header / ScrollToTop 对 `window.scrollTo` 做能力判断并提供回退。
-- 新增可复用公网 Smoke Test 脚本。
-- 移动端展开导航增加独立纵向滚动能力，避免小屏设备下底部入口不可见、不可点击。
-
-## 2026-08-08 线上验证记录
-
-- Webpack 构建已确认上线。
-- `nginx -t`：successful。
-- `scripts/smoke-production.sh https://jiuchenedu.com`：完整 PASS。
-- 首页、About、服务总览/详情、案例总览/详情、师资总览/详情、FAQ、Contact：公网均 200。
-- 缺失测试页：404。
-- 首页实际引用的 Webpack JS/CSS：公网全部 200。
-- nginx 用户：可读取全部 `out/_next/static` 下 JS/CSS。
-- 手机无痕模式访问 `https://jiuchenedu.com/?__fresh=20260808-webpack-1`：页面与按钮跳转全部正常，无 Client Exception、无 403。
-- 新发现 UI 缺陷：移动导航内容高度超过屏幕时无法滚动；源码已修复，等待部署验证。
+- [x] Webpack 构建成功并上线。
+- [x] `nginx -t` successful。
+- [x] 首页、About、服务总览/详情、案例总览/详情、师资总览/详情、FAQ、Contact 公网均 200。
+- [x] 缺失测试页返回 404。
+- [x] 首页实际引用的 Webpack JS/CSS 公网全部 200。
+- [x] nginx 用户可读取全部 `out/_next/static` JS/CSS。
+- [x] 手机无痕访问 fresh URL 页面与按钮全部正常，无 Client Exception、无 403。
+- [x] 一次新构建后因尚未执行 chmod，首页再次出现 403；完成权限修复、reload、Smoke Test 后恢复正常。此事件进一步确认“直接在 live out/ 构建”属于发布架构风险，而不是页面业务代码故障。
 
 ## 本阶段完成标准
 
-- 主要桌面与手机浏览器不再出现整页 Client Exception。
-- `npm run build` 成功。
-- `nginx -t` 成功。
-- 公网核心页面全部直接 200，不泄露 8088。
-- 错误边界和 404 页面可用。
-- 发布流程中的权限、路由、缓存、Smoke Test 有明确可重复步骤。
+- 主要桌面和手机浏览器不再出现整页 Client Exception。
+- 普通会话与无痕会话均稳定。
+- 移动导航可完整滚动并点击所有入口。
+- `npm run build`、`nginx -t`、公网 Smoke Test 全部成功。
+- 核心页面直接 200，不泄露 8088。
+- HTML / 静态资源缓存策略明确并在线验证。
+- 发布不再直接破坏当前在线 `out/`；SSH 中断或构建失败时旧版本继续服务。
 
 ---
 
@@ -81,23 +85,24 @@
 
 ## 工作项
 
-- [ ] 删除当前无业务意义的 `/signin`。
-- [ ] 删除当前无业务意义的 `/signup`。
-- [ ] 删除 `/blog-sidebar` 英文模板文章页。
+- [ ] 删除 `/signin`。
+- [ ] 删除 `/signup`。
+- [ ] 删除 `/blog-sidebar` 英文模板页。
 - [ ] 删除 `/blog-details` 历史模板详情页。
-- [ ] 删除当前仅用于 redirect 的假 `/blog`，未来资讯系统重新正式建设。
+- [ ] 删除当前仅 redirect 的假 `/blog`；未来资讯系统重新正式建设。
 - [ ] 删除公开 `/error` 模板页，由 Next 正规 error boundary / not-found 接管。
 - [ ] 全仓扫描 `Startup`、`SaaS`、模板英文文案、假作者、假日期、假社交入口等残留。
 - [ ] 删除确认无引用的 Blog/Login/Newsletter/模板组件。
-- [ ] 删除确认无引用的模板图片和静态资产；删除前必须全文搜索引用。
+- [ ] 删除确认无引用的模板图片和静态资产；删除前全文搜索引用。
+- [ ] 删除不再使用的旧依赖（包括确认无引用后的 `next-themes`）。
 - [ ] 构建并验证被删除页面真实返回 404。
 
 ## 本阶段完成标准
 
-- 公开站点不存在与九辰业务无关的 Startup/SaaS 模板页面。
-- 搜索引擎不会继续发现有效的垃圾模板 URL。
-- 仓库内无明显无引用模板组件与静态资源。
-- 不影响未来重新建设真正的资讯、会员或账号体系。
+- 公开站点不存在与九辰业务无关的模板页面。
+- 搜索引擎不会继续发现有效垃圾模板 URL。
+- 仓库内无明显无引用模板组件、依赖与静态资源。
+- 不影响未来正式建设资讯、会员或账号体系。
 
 ---
 
@@ -105,19 +110,19 @@
 
 ## 目标
 
-让搜索引擎、社交平台和 AI 搜索更准确理解“长沙九辰教育咨询有限公司 / 九辰教育”的企业实体、六大服务、案例与师资，同时提升移动体验和 Core Web Vitals。
+让搜索引擎、社交平台和 AI 搜索准确理解“长沙九辰教育咨询有限公司 / 九辰教育”的企业实体、六大服务、案例与师资，并改善移动性能。
 
 ## 工作项
 
-- [ ] 由 Next 数据源自动生成 sitemap，替代手工 XML。
-- [ ] sitemap 覆盖固定页面、服务、案例、师资，未来可自然扩展文章。
-- [ ] 校对 robots、canonical 与主域策略。
-- [ ] 完善全站 Metadata title 模板、description、Open Graph、分享图。
+- [ ] 用 Next 数据源自动生成 sitemap，替代手工 XML。
+- [ ] sitemap 自动覆盖固定页面、服务、案例、师资，并可自然扩展未来文章。
+- [ ] 校对 robots、canonical 与唯一主域策略。
+- [ ] 完善 title 模板、description、Open Graph、分享图。
 - [ ] 增加 Organization / WebSite JSON-LD。
 - [ ] 服务页增加 Service JSON-LD。
 - [ ] 师资页增加 Person JSON-LD。
 - [ ] 层级页面增加 BreadcrumbList JSON-LD。
-- [ ] 优化各服务详情 H1，使其与具体 slug 搜索意图一致。
+- [ ] 优化服务详情 H1，使其与具体 slug 搜索意图一致。
 - [ ] 优化案例分类 H1 与正文主题差异化。
 - [ ] 为 `/about` 增加合理站内入口，强化企业主体与信任信息。
 - [ ] 检查 heading 层级、图片 alt、内部链接、404/noindex 策略。
@@ -126,10 +131,10 @@
 
 ## 本阶段完成标准
 
-- sitemap 自动化且与实际路由一致。
+- sitemap 自动化并与实际路由一致。
 - 核心页面 canonical / metadata / OG 完整。
-- 企业、服务、师资、面包屑具备可验证的结构化数据。
-- 核心 H1 与页面主题一致，不再大面积复用泛化标题。
+- 企业、服务、师资、面包屑具备可验证结构化数据。
+- 核心 H1 与页面主题一致。
 - 不存在公开模板垃圾 URL 干扰索引。
 
 ---
@@ -138,7 +143,7 @@
 
 ## 目标
 
-保持当前静态站简单、快速、低成本，同时让未来新增资讯中心、CMS、API、数据库、ISR/SSR、报名、会员或 CRM 时不必推倒现有页面结构。
+保持当前静态站简单、快速、低成本，同时让未来新增资讯中心、CMS、API、数据库、ISR/SSR、报名、会员或 CRM 时不必推倒核心页面结构。
 
 ## 架构原则
 
@@ -156,39 +161,40 @@ Next.js App Router / Server Components
 ## 工作项
 
 - [ ] 明确保留 App Router、Server Components、动态 `[slug]` 路由。
-- [ ] 不把“全站禁止 `next/link`”写成永久规范；当前原生 `<a>` 仅作为已知故障期间的兼容策略，客户端路由问题解决后重新评估。
+- [ ] 不把“全站禁止 `next/link`”写成永久规范；当前原生 `<a>` 只作为已知故障期间的兼容策略，客户端路由问题解决后重新评估。
 - [ ] 控制 `"use client"` 边界，只给真实交互组件使用。
 - [ ] 为服务、案例、师资、未来文章设计内容仓储接口，让页面不直接绑定某个 TS 文件。
-- [ ] 规划 Article 内容模型：slug、title、description、content、author、category、publishedAt、updatedAt、SEO、状态。
-- [ ] 规划未来 `/articles` 或正式 `/blog` 路由，不复用旧模板垃圾页面。
-- [ ] 将静态 `output: "export"` 视为当前 deployment adapter，而不是永久业务限制。
+- [ ] 规划 Article 模型：slug、title、description、content、author、category、publishedAt、updatedAt、SEO、状态。
+- [ ] 规划未来 `/articles` 或正式 `/blog`，不复用旧模板垃圾页面。
+- [ ] 将 `output: "export"` 视为当前 deployment adapter，而不是永久业务限制。
 - [ ] 文档化未来从 Nginx 静态 `try_files` 切换到 Next Server / 容器 / Serverless `proxy_pass` 的边界。
 - [ ] Next / React / ESLint 版本对齐，迁移 ESLint CLI。
-- [ ] TypeScript `strict` 分阶段提升，不一次性制造大量无关重构。
+- [ ] TypeScript `strict` 分阶段提升。
 - [ ] 增加 E2E/Playwright，覆盖桌面与移动 viewport。
-- [ ] 规划原子化发布、版本目录与快速回滚。
+- [ ] 完善版本目录、原子发布与快速回滚长期方案。
 
 ## 本阶段完成标准
 
-- 当前仍可继续作为静态企业官网低成本运行。
+- 当前仍可作为静态企业官网低成本运行。
 - 页面和 URL 体系不依赖“数据一定来自本地文件”的假设。
 - 有清晰的动态内容与部署演进路径。
 - 后续新增资讯中心/CMS 不需要推倒核心服务、案例、师资页面。
 
 ---
 
-# 已确认并已修复的服务器问题（本轮历史记录）
+# 已确认并已修复的服务器问题
 
-- [x] 发现并修复 `/etc/nginx/default.d/` 中重复 `location /`，恢复 `nginx -t` successful。
-- [x] 修复 Nginx 对 `/www/wwwroot/startup-company-website/out` 的读取/穿越权限，首页由 403 恢复 200。
-- [x] 修复静态目录规则导致 `/services` 等地址 301 到 `http://jiuchenedu.com:8088/...` 的问题。
-- [x] 验证本机 8088 与公网 HTTPS 的首页、服务总览、服务详情均返回 200。
-- [x] Webpack 版本发布后执行完整公网 Smoke Test，核心页面、404、静态资源均符合预期。
+- [x] 重复 `location /`。
+- [x] `out/` 与父目录权限导致的 403。
+- [x] 静态目录路由 301 泄露内部 8088。
+- [x] Webpack 版本核心页面、404、静态资源 Smoke Test。
+- [x] 发布中断/漏 chmod 可再次制造 403，已确认根因并纳入原子发布整改。
 
 ---
 
 # 当前执行状态
 
 - 当前阶段：**阶段一：P0 稳定性清零**
-- 当前最高优先问题：**部署并验证移动导航滚动修复；随后完成 HTML / `/_next/static/` 缓存策略和普通非无痕会话复测。**
-- 临时文件删除状态：**禁止删除，四阶段尚未完成**
+- 当前最高优先事项：**完成真实 Nginx 缓存策略上线 + 一次性原子发布 root 迁移 + 普通/无痕手机最终回归。**
+- 已准备但尚未启用：`scripts/deploy-production-atomic.sh`、`docs/deployment/jiuchen-static-production.conf.example`。
+- 临时文件删除状态：**禁止删除，四阶段尚未完成。**
