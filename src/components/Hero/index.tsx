@@ -1,6 +1,5 @@
 import { withBasePath } from "@/lib/site";
 import Image from "next/image";
-import Link from "next/link";
 
 const heroCategories = [
   {
@@ -90,19 +89,19 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col items-center gap-3 sm:flex-row lg:items-start">
-              <Link
-                href="/contact"
+              <a
+                href={withBasePath("/contact")}
                 className="w-full rounded-xs bg-yellow px-7 py-3.5 text-center text-base font-semibold text-[#07142F] duration-300 hover:bg-yellow/90 sm:w-auto"
               >
                 预约免费评估
-              </Link>
+              </a>
 
-              <Link
-                href="/cases"
+              <a
+                href={withBasePath("/cases")}
                 className="w-full rounded-xs border border-white/25 px-7 py-3.5 text-center text-base font-semibold text-white duration-300 hover:bg-white/10 sm:w-auto"
               >
                 查看学员案例
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -122,9 +121,9 @@ const Hero = () => {
 
                 <div className="flex gap-3 overflow-x-auto pb-1 md:grid md:grid-cols-2 lg:block lg:space-y-2 lg:pb-0 xl:space-y-3">
                   {heroCategories.map((item, index) => (
-                    <Link
+                    <a
                       key={item.title}
-                      href="/services"
+                      href={withBasePath("/services")}
                       className="group grid min-w-[235px] grid-cols-[38px_1fr] gap-3 rounded-2xl border border-white/10 bg-[#06152F]/58 p-3 transition hover:border-yellow/40 hover:bg-white/10 md:min-w-0 xl:p-4"
                     >
                       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-yellow transition group-hover:bg-yellow group-hover:text-[#07142F]">
@@ -140,7 +139,7 @@ const Hero = () => {
                           {item.desc}
                         </p>
                       </div>
-                    </Link>
+                    </a>
                   ))}
                 </div>
 
