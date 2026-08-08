@@ -28,7 +28,7 @@ test("core routes render without client exceptions", async ({ page }) => {
   expect(pageErrors).toEqual([]);
 });
 
-test("mobile navigation can scroll to and open its final links", async ({
+test("mobile navigation has its own scroll range and can open final links", async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-chromium");
@@ -42,13 +42,25 @@ test("mobile navigation can scroll to and open its final links", async ({
   const menu = page.locator("header .overflow-y-auto");
   await expect(menu).toBeVisible();
 
+  const dimensions = await menu.evaluate((element) => ({
+    clientHeight: element.clientHeight,
+    scrollHeight: element.scrollHeight,
+  }));
+  expect(dimensions.scrollHeight).toBeGreaterThan(dimensions.clientHeight);
+
+  await menu.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
+  await expect
+    .poll(() => menu.evaluate((element) => element.scrollTop))
+    .toBeGreaterThan(0);
+
   const contactLink = menu.getByRole("link", { name: "联系我们", exact: true });
-  await contactLink.scrollIntoViewIfNeeded();
   await expect(contactLink).toBeVisible();
   await contactLink.click();
 
   await expect(page).toHaveURL(/\/contact$/);
-  await expect(page.getByRole("heading", { name: "免费咨询", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "预约免费一对一评估", exact: true })).toBeVisible();
   expect(pageErrors).toEqual([]);
 });
 
