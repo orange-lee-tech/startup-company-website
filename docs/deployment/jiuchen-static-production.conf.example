@@ -1,0 +1,49 @@
+# 九辰官网宿主机 Nginx 静态站点示例片段
+#
+# 用途：放在实际 server {} 中，或通过 server {} 的 include 引入。
+# 生产迁移完成后建议 server {} 使用：
+#   root /www/wwwroot/jiuchen-current;
+#
+# jiuchen-current 是指向版本目录的符号链接，由
+# scripts/deploy-production-atomic.sh 在完整构建和验证后原子切换。
+#
+# 注意：不要与其他文件重复定义 location /。
+
+index index.html;
+
+# Next.js 构建哈希静态资源：文件名变化即代表内容变化，可以长期缓存。
+# 使用 expires 而不是 location 级 add_header，避免覆盖 server 级已有安全响应头。
+location ^~ /_next/static/ {
+    try_files $uri =404;
+    expires 1y;
+    access_log off;
+}
+
+# public/ 下的图片、字体等静态资源没有统一内容哈希，采用较短缓存。
+location ~* \.(?:png|jpe?g|gif|webp|avif|svg|ico|woff2?|ttf|otf)$ {
+    try_files $uri =404;
+    expires 7d;
+}
+
+# robots / sitemap / llms 属于可变文本资产，保持短缓存，方便 SEO 更新及时生效。
+location = /robots.txt {
+    try_files $uri =404;
+    expires 10m;
+}
+
+location = /sitemap.xml {
+    try_files $uri =404;
+    expires 10m;
+}
+
+location = /llms.txt {
+    try_files $uri =404;
+    expires 10m;
+}
+
+# HTML / 页面路由：每次访问都允许浏览器向服务器重新验证，
+# 防止旧 HTML 长时间引用已被替换的 JS 构建。
+location / {
+    expires epoch;
+    try_files $uri.html $uri/index.html $uri =404;
+}
