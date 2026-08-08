@@ -35,6 +35,12 @@ jobs:
       - name: Dependency security gate
         run: npm audit --audit-level=critical
 
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: Build production export
         env:
           GITHUB_PAGES: ""
@@ -42,4 +48,4 @@ jobs:
         run: npm run build
 
       - name: Verify export contract
-        run: node scripts/verify-static-export.mjs
+        run: npm run verify:export
