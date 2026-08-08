@@ -41,18 +41,18 @@
 - [x] 修复重复 `location /`，恢复 `nginx -t` successful。
 - [x] 修复静态路由规则，避免 `/services` 等 301 到 `http://域名:8088/...`。
 - [ ] 正式上线 HTML 与 `/_next/static/` 分层缓存策略。
-  - 仓库已新增 `docs/deployment/jiuchen-static-production.conf.example`。
-  - HTML / 页面：每次重新验证。
-  - `/_next/static/`：构建哈希资源长期缓存。
-  - public 图片字体：中短期缓存。
-  - robots / sitemap / llms：短缓存。
-  - 待同步到真实服务器 Nginx 后验证响应头。
+  - 2026-08-08 预检确认：`/_next/static/` 已在线返回 `Cache-Control: public, max-age=31536000, immutable`。
+  - 2026-08-08 预检确认：HTML 当前仅有 ETag / Last-Modified，没有明确 `Cache-Control: no-cache`。
+  - 现有 `/etc/nginx/default.d/jiuchen-cache-security.conf` 已承担 Next 静态资源长期缓存、图片字体中期缓存、robots/sitemap/llms 短缓存。
+  - 因此本阶段只需给页面 `location /` 增加 HTML revalidation，不重复新增静态资源 location，避免再次制造重复配置。
 - [x] 新增并执行公网 Smoke Test：`scripts/smoke-production.sh`。
 - [ ] 完成真实手机最终回归：普通会话、无痕会话、导航滚动、服务/案例/师资/联系等路径。
 - [ ] 将“直接删除并重建线上 out/”迁移为版本目录 + 原子切换。
   - 仓库已新增 `scripts/deploy-production-atomic.sh`。
   - 脚本采用独立 Git worktree 构建、权限检查、版本目录、原子 symlink 切换、本机哈希验证、公网 Smoke Test 和失败回滚。
-  - 待一次性把 Nginx root 从仓库 `out/` 迁移到 `/www/wwwroot/jiuchen-current` 后启用。
+  - 2026-08-08 预检确认当前 Nginx root 仍为 `/www/wwwroot/startup-company-website/out`。
+  - 2026-08-08 预检确认 `/www/wwwroot/jiuchen-current` 与 `/www/wwwroot/jiuchen-releases` 尚不存在，可以安全执行一次性迁移。
+  - 已新增 `scripts/migrate-production-to-atomic.sh`：不重新 build，直接复制当前健康 `out/` 为 bootstrap release，建立 `jiuchen-current`，切换 Nginx root，同时给 HTML 开启 `no-cache` revalidation；失败自动恢复 Nginx 配置并回滚。
 
 ## 2026-08-08 已确认的线上结果
 
@@ -64,6 +64,9 @@
 - [x] nginx 用户可读取全部 `out/_next/static` JS/CSS。
 - [x] 手机无痕访问 fresh URL 页面与按钮全部正常，无 Client Exception、无 403。
 - [x] 一次新构建后因尚未执行 chmod，首页再次出现 403；完成权限修复、reload、Smoke Test 后恢复正常。此事件进一步确认“直接在 live out/ 构建”属于发布架构风险，而不是页面业务代码故障。
+- [x] 原子迁移预检完整通过；未修改服务器配置。
+- [x] 预检确认现有缓存配置对 Next 哈希静态资源已正确长期缓存，但 HTML 缺少明确 no-cache。
+- [x] 预检确认旧模板 URL 已有 `jiuchen-seo-guard.conf` 临时返回 404；阶段二仍需从源码与资产层彻底删除。
 
 ## 本阶段完成标准
 
@@ -195,6 +198,6 @@ Next.js App Router / Server Components
 # 当前执行状态
 
 - 当前阶段：**阶段一：P0 稳定性清零**
-- 当前最高优先事项：**完成真实 Nginx 缓存策略上线 + 一次性原子发布 root 迁移 + 普通/无痕手机最终回归。**
-- 已准备但尚未启用：`scripts/deploy-production-atomic.sh`、`docs/deployment/jiuchen-static-production.conf.example`。
+- 当前最高优先事项：**执行一次性原子发布迁移并同时上线 HTML no-cache；随后完成普通/无痕手机最终回归。**
+- 已准备：`scripts/migrate-production-to-atomic.sh`、`scripts/deploy-production-atomic.sh`、`scripts/preflight-atomic-migration.sh`、`docs/deployment/jiuchen-static-production.conf.example`。
 - 临时文件删除状态：**禁止删除，四阶段尚未完成。**
