@@ -1,14 +1,14 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { aboutInfo } from "@/data/about";
+import { buildPageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: "关于九辰 | 九辰本硕博升学就业",
   description:
     "了解长沙九辰教育咨询有限公司的服务理念、教育初心与本硕博升学就业全链条陪跑服务。",
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
 
 const aboutCardTones = [
   "border-primary/10 bg-primary/5 hover:border-primary/40 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:hover:bg-gray-dark",
