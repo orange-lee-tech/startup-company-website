@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const outDir = join(process.cwd(), "out");
+const siteUrl = "https://jiuchenedu.com";
 
 function fail(message) {
   console.error(`FAIL: ${message}`);
@@ -12,6 +13,16 @@ function pageCandidates(route) {
   if (route === "/") return [join(outDir, "index.html")];
   const clean = route.replace(/^\/+|\/+$/g, "");
   return [join(outDir, `${clean}.html`), join(outDir, clean, "index.html")];
+}
+
+function findPage(route) {
+  return pageCandidates(route).find(existsSync);
+}
+
+function readPage(route) {
+  const file = findPage(route);
+  if (!file) return "";
+  return readFileSync(file, "utf8");
 }
 
 function assertPage(route) {
@@ -30,6 +41,14 @@ function assertMissingPage(route) {
     fail(`legacy route ${route} is still exported at ${found}`);
   } else {
     console.log(`OK legacy route absent ${route}`);
+  }
+}
+
+function assertIncludes(label, content, expected) {
+  if (!content.includes(expected)) {
+    fail(`${label} is missing expected content: ${expected}`);
+  } else {
+    console.log(`OK ${label}`);
   }
 }
 
@@ -70,6 +89,49 @@ if (!existsSync(outDir)) {
     const file = join(outDir, artifact);
     if (!existsSync(file)) fail(`missing SEO artifact ${artifact}`);
     else console.log(`OK SEO artifact ${artifact}`);
+  }
+
+  const homeHtml = readPage("/");
+  assertIncludes(
+    "homepage canonical",
+    homeHtml,
+    `<link rel="canonical" href="${siteUrl}/"`,
+  );
+  assertIncludes("homepage Organization JSON-LD", homeHtml, '"@type":"Organization"');
+  assertIncludes("homepage WebSite JSON-LD", homeHtml, '"@type":"WebSite"');
+  assertIncludes("homepage Open Graph", homeHtml, 'property="og:site_name"');
+
+  const serviceHtml = readPage("/services/baoyan");
+  assertIncludes("service Service JSON-LD", serviceHtml, '"@type":"Service"');
+  assertIncludes("service breadcrumb JSON-LD", serviceHtml, '"@type":"BreadcrumbList"');
+  assertIncludes(
+    "service page-specific H1",
+    serviceHtml,
+    "保研辅导：定位、背景提升、材料申请与面试冲刺全流程规划",
+  );
+
+  const teacherHtml = readPage("/teachers/xu-zhaoyi");
+  assertIncludes("teacher Person JSON-LD", teacherHtml, '"@type":"Person"');
+  assertIncludes("teacher breadcrumb JSON-LD", teacherHtml, '"@type":"BreadcrumbList"');
+
+  const caseHtml = readPage("/cases/baoyan");
+  assertIncludes(
+    "case page-specific H1",
+    caseHtml,
+    "保研案例：不同背景学员的规划过程、申请节点与录取结果",
+  );
+
+  const robots = readFileSync(join(outDir, "robots.txt"), "utf8");
+  assertIncludes("robots sitemap declaration", robots, `${siteUrl}/sitemap.xml`);
+
+  const sitemap = readFileSync(join(outDir, "sitemap.xml"), "utf8");
+  for (const requiredUrl of [
+    `${siteUrl}/`,
+    `${siteUrl}/services/baoyan`,
+    `${siteUrl}/cases/baoyan`,
+    `${siteUrl}/teachers/xu-zhaoyi`,
+  ]) {
+    assertIncludes(`sitemap URL ${requiredUrl}`, sitemap, requiredUrl);
   }
 
   const chunksDir = join(outDir, "_next", "static", "chunks");
