@@ -1,5 +1,5 @@
 import { studentCases, type CaseCategory } from "@/data/cases";
-import Link from "next/link";
+import { withBasePath } from "@/lib/site";
 
 const featuredCaseIds = [
   "baoyan-001",
@@ -59,12 +59,12 @@ const Testimonials = () => {
           </div>
 
           <div className="lg:col-span-4 lg:text-right">
-            <Link
-              href="/cases"
+            <a
+              href={withBasePath("/cases")}
               className="inline-flex items-center text-base font-semibold text-yellow hover:underline"
             >
               查看全部案例 →
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -73,9 +73,9 @@ const Testimonials = () => {
             const categoryMeta = categoryMetaMap[item.category];
 
             return (
-              <Link
+              <a
                 key={item.id}
-                href={categoryMeta.path}
+                href={withBasePath(categoryMeta.path)}
                 className="group flex min-h-[390px] min-w-[82vw] snap-start flex-col rounded-2xl bg-[#0B1F44]/66 p-6 transition hover:bg-white/10 md:min-h-[420px] md:min-w-0 md:rounded-none md:p-7"
               >
                 <div className="mb-6 flex items-center justify-between gap-4">
@@ -120,7 +120,7 @@ const Testimonials = () => {
                 <p className="mt-6 text-sm font-semibold text-yellow">
                   查看该类案例 →
                 </p>
-              </Link>
+              </a>
             );
           })}
         </div>
