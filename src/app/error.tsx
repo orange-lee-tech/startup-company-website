@@ -32,6 +32,8 @@ export default function Error({
           >
             重新尝试
           </button>
+          {/* Error recovery intentionally uses a full document navigation. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-xs border border-primary/20 bg-white px-7 py-3.5 text-base font-semibold text-primary transition hover:bg-primary/5 dark:border-white/15 dark:bg-white/5 dark:text-white"
