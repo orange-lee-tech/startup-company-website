@@ -1,6 +1,6 @@
 import { getCasesByCategory, studentCases, type CaseCategory, type StudentCase } from "@/data/cases";
 import { casePages, getCasePage, getServicePage, servicePages, type RoutePage } from "@/data/routePages";
-import { getServiceDetail, type ServiceDetail } from "@/data/services";
+import { getServiceDetail, serviceDetails, type ServiceDetail } from "@/data/services";
 import { detailedTeachers, getDetailedTeacherById, type TeacherDetail } from "@/data/teacherDetails";
 import { teachers, type Teacher } from "@/data/teachers";
 
@@ -8,6 +8,7 @@ export type ServiceContent = { page: RoutePage; detail: ServiceDetail };
 export type TeacherContent = { teacher: Teacher; detail: TeacherDetail };
 
 export interface ContentRepository {
+  listServices(): Promise<ServiceContent[]>;
   listServicePages(): Promise<RoutePage[]>;
   getService(slug: string): Promise<ServiceContent | undefined>;
   listCasePages(): Promise<RoutePage[]>;
@@ -20,6 +21,14 @@ export interface ContentRepository {
 }
 
 export const contentRepository: ContentRepository = {
+  async listServices() {
+    return serviceDetails
+      .map((detail) => {
+        const page = getServicePage(detail.slug);
+        return page ? { page, detail } : undefined;
+      })
+      .filter((item): item is ServiceContent => Boolean(item));
+  },
   async listServicePages() {
     return servicePages;
   },
