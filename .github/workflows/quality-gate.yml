@@ -41,6 +41,10 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Strict TypeScript migration check
+        continue-on-error: true
+        run: npm run typecheck:strict
+
       - name: Build production export
         env:
           GITHUB_PAGES: ""
