@@ -17,10 +17,20 @@ const Header = () => {
   const resolveHref = (path: string) => withBasePath(path);
 
   const scrollToHomeTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if (typeof window.scrollTo === "function") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return;
+    }
+
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   };
 
   const handleHomeClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -55,7 +65,7 @@ const Header = () => {
     const handleStickyNavbar = () => setSticky(window.scrollY >= 80);
 
     handleStickyNavbar();
-    window.addEventListener("scroll", handleStickyNavbar);
+    window.addEventListener("scroll", handleStickyNavbar, { passive: true });
 
     return () => window.removeEventListener("scroll", handleStickyNavbar);
   }, []);
