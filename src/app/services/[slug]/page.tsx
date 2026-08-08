@@ -1,9 +1,12 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import { getServiceDetail } from "@/data/services";
+import JsonLd from "@/components/SEO/JsonLd";
+import { contentRepository } from "@/content/repository";
 import {
-  getServicePage,
-  servicePages,
-} from "@/data/routePages";
+  absoluteUrl,
+  breadcrumbJsonLd,
+  buildPageMetadata,
+  siteConfig,
+} from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -49,10 +52,9 @@ const DetailBlock = ({
   );
 };
 
-export function generateStaticParams() {
-  return servicePages.map((page) => ({
-    slug: page.slug,
-  }));
+export async function generateStaticParams() {
+  const pages = await contentRepository.listServicePages();
+  return pages.map((page) => ({ slug: page.slug }));
 }
 
 export async function generateMetadata({
@@ -61,20 +63,21 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const page = getServicePage(slug);
-  const detail = getServiceDetail(slug);
+  const service = await contentRepository.getService(slug);
 
-  if (!page) {
-    return {
+  if (!service) {
+    return buildPageMetadata({
       title: "服务详情 | 九辰本硕博升学就业",
-    };
+      description: siteConfig.description,
+      path: `/services/${slug}`,
+    });
   }
 
-  return {
-    title: `${page.title} | 九辰服务`,
-    description: detail?.subtitle || page.description,
-    alternates: { canonical: `/services/${slug}` },
-  };
+  return buildPageMetadata({
+    title: `${service.page.title} | 九辰服务`,
+    description: service.detail.subtitle || service.page.description,
+    path: `/services/${slug}`,
+  });
 }
 
 const ServiceDetailPage = async ({
@@ -83,15 +86,35 @@ const ServiceDetailPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const page = getServicePage(slug);
-  const detail = getServiceDetail(slug);
+  const service = await contentRepository.getService(slug);
 
-  if (!page || !detail) {
+  if (!service) {
     notFound();
   }
 
+  const { page, detail } = service;
+  const path = `/services/${slug}`;
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${absoluteUrl(path)}#service`,
+    name: page.heading,
+    description: detail.subtitle,
+    url: absoluteUrl(path),
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "Country", name: "中国" },
+    serviceType: page.title,
+  };
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: "首页", path: "/" },
+    { name: "服务", path: "/services" },
+    { name: page.title, path },
+  ]);
+
   return (
     <>
+      <JsonLd data={[serviceJsonLd, breadcrumbs]} />
+
       <Breadcrumb
         pageName={detail.title}
         description={detail.subtitle}
@@ -106,7 +129,7 @@ const ServiceDetailPage = async ({
               </p>
 
               <h1 className="mb-6 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
-                从适合人群、服务内容到交付成果，拆解完整执行路径
+                {page.heading}
               </h1>
 
               <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">
