@@ -8,10 +8,11 @@
 
 ## 当前执行状态
 
-- 工作分支：`four-stage-site-hardening-20260808`
-- Draft PR：#2 `四阶段官网稳定化、模板清理、SEO 与动态化预留`
-- 当前策略：**先完成 GitHub 四阶段代码与自动化验证，生产服务器暂时冻结；最后集中做一次部署与 Nginx 验收。**
-- 当前生产站：此前无痕/fresh 手机会话已验证可正常浏览；本分支的新代码尚未部署到生产环境。
+- 四阶段 GitHub 工作已通过 PR #2 完成并 squash 合并到 `main`。
+- 四阶段合并提交：`a8e3aa1e88616e4e093278e84620d551d4f0714f`。
+- 合并前最新 Quality Gate 已完整通过：依赖审计、lint、strict typecheck、Webpack 生产静态构建、导出契约验证、Playwright 桌面/移动浏览器回归全部成功。
+- 当前策略：**生产服务器继续冻结；后续集中进行一次部署、Nginx 缓存/原子发布迁移与真实设备验收。**
+- 当前生产站仍运行此前部署版本；本轮四阶段 `main` 新代码尚未部署到生产环境。
 
 ---
 
@@ -29,7 +30,7 @@
 - [x] TypeScript `strict: true` 已正式启用。
 - [x] ESLint 迁移到 Next 16 flat config；`next lint` 旧命令彻底移除。
 - [x] GitHub Actions Quality Gate 建立：`npm ci` → 高危漏洞审计 → lint → strict typecheck → Webpack build → 静态导出契约验证 → Playwright 桌面/移动回归。
-- [x] Playwright 覆盖核心路由、Client Exception、主题切换以及“手机导航必须存在真实滚动范围并能点到最底部联系入口”。
+- [x] Playwright 直接服务生产 `out/` 产物，覆盖核心路由、Client Exception、主题切换以及“手机导航必须存在真实滚动范围并能点到最底部联系入口”。
 - [x] 静态导出验证器检查核心页面、404/垃圾路由、SEO 产物、唯一 H1、结构化数据、图片 alt、内部链接和遗留模板文案。
 - [x] 原子发布、迁移、Smoke Test、只读诊断脚本均保留在仓库，等待最后服务器阶段启用。
 
@@ -108,7 +109,7 @@
 
 # 最终关闭本临时文件前的剩余清单
 
-1. [ ] 当前四阶段 PR 的最新 Quality Gate 全部绿色并合并到 `main`。
+1. [x] 四阶段 GitHub PR 的完整 Quality Gate 通过并合并到 `main`。
 2. [ ] 最终集中进入服务器，拉取已经通过 GitHub CI 的 `main`。
 3. [ ] 完成 HTML 缓存策略和原子发布 root 迁移。
 4. [ ] 完成 Nginx 配置测试、生产 Smoke Test 与回滚验证。
@@ -117,4 +118,4 @@
 7. [ ] 正式 README / 部署交接文档与最终生产状态同步。
 8. [ ] 上述全部完成后删除本文件。
 
-**当前结论：GitHub 四阶段主体工作已完成，等待最终 CI 完整通过并合并；生产服务器继续保持冻结，不在手机终端中做新的迁移操作。**
+**当前结论：GitHub 四阶段主体工作已完成并进入 `main`；生产服务器继续保持冻结，下一阶段只做一次集中上线与线上验收。**
