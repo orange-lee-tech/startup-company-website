@@ -3,10 +3,37 @@ import { join } from "node:path";
 
 const outDir = join(process.cwd(), "out");
 const siteUrl = "https://jiuchenedu.com";
+const coreRoutes = [
+  "/",
+  "/about",
+  "/services",
+  "/services/baoyan",
+  "/services/overseas-funded-phd",
+  "/cases",
+  "/cases/baoyan",
+  "/teachers",
+  "/teachers/xu-zhaoyi",
+  "/faq",
+  "/contact",
+];
+const legacyRoutes = [
+  "/signin",
+  "/signup",
+  "/blog",
+  "/blog-details",
+  "/blog-sidebar",
+  "/error",
+];
 
 function fail(message) {
   console.error(`FAIL: ${message}`);
   process.exitCode = 1;
+}
+
+function normalizeRoute(route) {
+  const clean = route.split(/[?#]/)[0] || "/";
+  if (clean === "/") return "/";
+  return clean.replace(/\/+$/, "");
 }
 
 function pageCandidates(route) {
@@ -16,7 +43,7 @@ function pageCandidates(route) {
 }
 
 function findPage(route) {
-  return pageCandidates(route).find(existsSync);
+  return pageCandidates(normalizeRoute(route)).find(existsSync);
 }
 
 function readPage(route) {
@@ -67,36 +94,24 @@ function walk(dir) {
   });
 }
 
+function isFileLikePath(path) {
+  return (
+    path.startsWith("/_next/") ||
+    path.startsWith("/images/") ||
+    /\.[a-z0-9]{2,8}$/i.test(path)
+  );
+}
+
 if (!existsSync(outDir)) {
   fail("out/ was not generated");
 } else {
-  [
-    "/",
-    "/about",
-    "/services",
-    "/services/baoyan",
-    "/services/overseas-funded-phd",
-    "/cases",
-    "/cases/baoyan",
-    "/teachers",
-    "/teachers/xu-zhaoyi",
-    "/faq",
-    "/contact",
-  ].forEach(assertPage);
+  coreRoutes.forEach(assertPage);
+  legacyRoutes.forEach(assertMissingPage);
 
-  [
-    "/signin",
-    "/signup",
-    "/blog",
-    "/blog-details",
-    "/blog-sidebar",
-    "/error",
-  ].forEach(assertMissingPage);
-
-  for (const artifact of ["robots.txt", "sitemap.xml"]) {
+  for (const artifact of ["robots.txt", "sitemap.xml", "llms.txt"]) {
     const file = join(outDir, artifact);
-    if (!existsSync(file)) fail(`missing SEO artifact ${artifact}`);
-    else console.log(`OK SEO artifact ${artifact}`);
+    if (!existsSync(file)) fail(`missing discovery artifact ${artifact}`);
+    else console.log(`OK discovery artifact ${artifact}`);
   }
 
   const homeHtml = readPage("/");
@@ -129,6 +144,16 @@ if (!existsSync(outDir)) {
     "保研案例：不同背景学员的规划过程、申请节点与录取结果",
   );
 
+  for (const route of coreRoutes) {
+    const html = readPage(route);
+    const h1Count = (html.match(/<h1\b/gi) ?? []).length;
+    if (h1Count !== 1) {
+      fail(`${route} must contain exactly one H1; found ${h1Count}`);
+    } else {
+      console.log(`OK single H1 ${route}`);
+    }
+  }
+
   const robots = readFileSync(join(outDir, "robots.txt"), "utf8");
   assertIncludes("robots sitemap declaration", robots, `${siteUrl}/sitemap.xml`);
 
@@ -159,18 +184,42 @@ if (!existsSync(outDir)) {
     /Sign in with Github/i,
     /10 amazing sites to download stock photos/i,
     /Musharof Chy/i,
+    /jiuchenedu\.com:8088/i,
   ];
-
+  const legacyRouteSet = new Set(legacyRoutes);
   const htmlFiles = walk(outDir).filter((file) => file.endsWith(".html"));
+
   for (const file of htmlFiles) {
     const html = readFileSync(file, "utf8");
+
     for (const pattern of forbiddenPatterns) {
       if (pattern.test(html)) {
-        fail(`legacy template text ${pattern} found in ${file}`);
+        fail(`forbidden output ${pattern} found in ${file}`);
+      }
+    }
+
+    for (const imageTag of html.match(/<img\b[^>]*>/gi) ?? []) {
+      if (!/\balt=("[^"]*"|'[^']*')/i.test(imageTag)) {
+        fail(`image without alt attribute found in ${file}`);
+      }
+    }
+
+    for (const match of html.matchAll(/href="(\/[^" ]*)"/gi)) {
+      const route = normalizeRoute(match[1]);
+      if (legacyRouteSet.has(route)) {
+        fail(`legacy internal link ${route} found in ${file}`);
+        continue;
+      }
+      if (isFileLikePath(route)) continue;
+      if (!findPage(route)) {
+        fail(`broken internal page link ${route} found in ${file}`);
       }
     }
   }
-  console.log(`OK scanned ${htmlFiles.length} HTML files for legacy template text`);
+
+  console.log(
+    `OK scanned ${htmlFiles.length} HTML files for legacy text, internal links and image alt attributes`,
+  );
 }
 
 if (process.exitCode) process.exit(process.exitCode);
