@@ -1,9 +1,14 @@
-import { casePages, servicePages } from "@/data/routePages";
-import { detailedTeachers } from "@/data/teacherDetails";
+import { contentRepository } from "@/content/repository";
 import { absoluteUrl } from "@/lib/seo";
 import type { MetadataRoute } from "next";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [servicePages, casePages, detailedTeachers] = await Promise.all([
+    contentRepository.listServicePages(),
+    contentRepository.listCasePages(),
+    contentRepository.listDetailedTeachers(),
+  ]);
+
   const fixedPages: MetadataRoute.Sitemap = [
     { url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
     { url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.8 },
