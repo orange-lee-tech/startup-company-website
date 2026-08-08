@@ -23,19 +23,29 @@
 
 ## 工作项
 
-- [ ] 彻查并消除手机端 `Application error: a client-side exception has occurred`。
-- [ ] 删除/硬化首页无必要的自动滚动客户端逻辑 `ScrollUp`。
-- [ ] 隔离旧 `next-themes` 顶层运行时依赖，保留主题能力但避免整个站点受单一 Provider 拖垮。
-- [ ] 将生产构建切换到 Webpack 稳定通道，同时保留 Turbopack 构建入口用于后续重新验证，不永久堵死 Turbopack。
-- [ ] 新增 `app/error.tsx` 和 `app/global-error.tsx`，为运行时异常提供品牌化恢复界面。
-- [ ] 新增正式 `app/not-found.tsx`，避免依赖历史模板错误页。
-- [ ] 硬化 Header / ScrollToTop 中对浏览器滚动 API 的调用，避免不兼容浏览器 API 直接抛异常。
-- [ ] 固化生产静态目录权限要求：父目录可穿越、`out/` 目录 755、文件 644、nginx 用户可读。
-- [ ] 固化 `nginx -t` 为 reload 前置条件，避免重复 `location` 等配置错误再次进入生产。
-- [ ] 固化 Next 静态路由规则，避免 `/services` 等路径重定向泄露 `http://域名:8088/...`。
+- [ ] 彻查并消除手机端 `Application error: a client-side exception has occurred`。**状态：已完成第一轮代码隔离，待重新构建上线后实机验证。**
+- [x] 删除/硬化首页无必要的自动滚动客户端逻辑 `ScrollUp`。**已从首页关键加载路径移除。**
+- [x] 隔离旧 `next-themes` 顶层运行时依赖，保留主题能力但避免整个站点受单一 Provider 拖垮。**RootLayout 已不再依赖 ThemeProvider；ThemeToggler 改为轻量本地实现。依赖包本身暂留，阶段二清理未引用依赖时再处理。**
+- [x] 将生产构建切换到 Webpack 稳定通道，同时保留 Turbopack 构建入口用于后续重新验证，不永久堵死 Turbopack。**`npm run build` 使用 `--webpack`，新增 `npm run build:turbopack`。**
+- [x] 新增 `app/error.tsx` 和 `app/global-error.tsx`，为运行时异常提供品牌化恢复界面。
+- [x] 新增正式 `app/not-found.tsx`，避免依赖历史模板错误页。
+- [x] 硬化 Header / ScrollToTop 中对浏览器滚动 API 的调用，避免不兼容浏览器 API 直接抛异常。
+- [x] 固化生产静态目录权限要求：父目录可穿越、`out/` 目录 755、文件 644、nginx 用户可读。**本轮服务器已实际修复；待同步正式部署文档。**
+- [x] 固化 `nginx -t` 为 reload 前置条件，避免重复 `location` 等配置错误再次进入生产。**本轮服务器已实际验证 successful；待同步正式部署文档。**
+- [x] 固化 Next 静态路由规则，避免 `/services` 等路径重定向泄露 `http://域名:8088/...`。**本轮服务器已修复并验证核心路径 200；待同步正式部署文档。**
 - [ ] 明确 HTML 与 `/_next/static/` 的缓存策略，降低“旧 HTML + 新 JS / 新 HTML + 旧 JS”的混合构建风险。
-- [ ] 增加发布后 Smoke Test：主页、服务总览、服务详情、案例、师资、FAQ、联系页、404、JS/CSS 静态资源。
+- [x] 增加发布后 Smoke Test：主页、服务总览、服务详情、案例、师资、FAQ、联系页、404、JS/CSS 静态资源。**已新增 `scripts/smoke-production.sh`，待上线后执行验证。**
 - [ ] 完成真实手机回归验证，并记录结果。
+
+## 第一轮稳定化代码变更记录
+
+- 首页移除 `ScrollUp` 自动执行逻辑。
+- RootLayout 不再由 `next-themes` 的 ThemeProvider 包裹全站。
+- 主题按钮改为站内轻量实现，默认保持深色模式并用 localStorage 保存选择；存储不可用时自动降级，不影响页面加载。
+- 生产 build 默认切到 Webpack，保留 Turbopack 独立入口用于未来复测。
+- 新增 route/global error boundary 与正式 404。
+- Header / ScrollToTop 对 `window.scrollTo` 做能力判断并提供回退。
+- 新增可复用公网 Smoke Test 脚本。
 
 ## 本阶段完成标准
 
@@ -164,5 +174,5 @@ Next.js App Router / Server Components
 # 当前执行状态
 
 - 当前阶段：**阶段一：P0 稳定性清零**
-- 当前最高优先问题：**手机端仍出现 Client Exception 白屏**
+- 当前最高优先问题：**第一轮客户端稳定化代码已提交，等待服务器重新构建发布 + 手机实机验证**
 - 临时文件删除状态：**禁止删除，四阶段尚未完成**
