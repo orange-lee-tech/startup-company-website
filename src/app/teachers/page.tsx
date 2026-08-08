@@ -1,15 +1,15 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import { teachers } from "@/data/teachers";
+import { contentRepository } from "@/content/repository";
+import { buildPageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: "师资 | 九辰本硕博升学就业",
   description:
     "九辰教育导师与教研团队总览，展示老师照片、姓名、学校或机构名称及职称。",
-  alternates: { canonical: "/teachers" },
-};
+  path: "/teachers",
+});
 
 const teacherCardTones = [
   {
@@ -24,7 +24,9 @@ const teacherCardTones = [
   },
 ];
 
-const TeachersPage = () => {
+const TeachersPage = async () => {
+  const teachers = await contentRepository.listTeachers();
+
   return (
     <>
       <Breadcrumb
