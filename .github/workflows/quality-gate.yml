@@ -33,7 +33,7 @@ jobs:
         run: npm ci
 
       - name: Dependency security gate
-        run: npm audit --audit-level=critical
+        run: npm audit --audit-level=high
 
       - name: Lint
         run: npm run lint
