@@ -23,19 +23,21 @@
 
 ## 工作项
 
-- [ ] 彻查并消除手机端 `Application error: a client-side exception has occurred`。**状态：已完成第一轮代码隔离，待重新构建上线后实机验证。**
+- [ ] 彻查并消除手机端 `Application error: a client-side exception has occurred`。**状态：Webpack 版本已上线；手机无痕模式 + `?__fresh=20260808-webpack-1` 实测首页及按钮跳转正常，无白屏、无 403。普通旧会话此前仍出现异常，当前证据强烈指向旧缓存 / 混合构建 / 发布中断遗留状态；待完成缓存策略并再次验证普通会话后关闭此项。**
 - [x] 删除/硬化首页无必要的自动滚动客户端逻辑 `ScrollUp`。**已从首页关键加载路径移除。**
 - [x] 隔离旧 `next-themes` 顶层运行时依赖，保留主题能力但避免整个站点受单一 Provider 拖垮。**RootLayout 已不再依赖 ThemeProvider；ThemeToggler 改为轻量本地实现。依赖包本身暂留，阶段二清理未引用依赖时再处理。**
 - [x] 将生产构建切换到 Webpack 稳定通道，同时保留 Turbopack 构建入口用于后续重新验证，不永久堵死 Turbopack。**`npm run build` 使用 `--webpack`，新增 `npm run build:turbopack`。**
 - [x] 新增 `app/error.tsx` 和 `app/global-error.tsx`，为运行时异常提供品牌化恢复界面。
 - [x] 新增正式 `app/not-found.tsx`，避免依赖历史模板错误页。
 - [x] 硬化 Header / ScrollToTop 中对浏览器滚动 API 的调用，避免不兼容浏览器 API 直接抛异常。
-- [x] 固化生产静态目录权限要求：父目录可穿越、`out/` 目录 755、文件 644、nginx 用户可读。**本轮服务器已实际修复；待同步正式部署文档。**
+- [x] 修复移动端展开导航无法上下滚动的问题。**导航面板已增加基于 `100dvh` 的最大高度、纵向滚动、overscroll containment、触摸滚动和安全区底部留白；待部署后手机复测。**
+- [x] 固化生产静态目录权限要求：父目录可穿越、`out/` 目录 755、文件 644、nginx 用户可读。**本轮服务器已实际修复；重新登录后再次验证所有 JS/CSS 均可由 nginx 用户读取。待同步正式部署文档。**
 - [x] 固化 `nginx -t` 为 reload 前置条件，避免重复 `location` 等配置错误再次进入生产。**本轮服务器已实际验证 successful；待同步正式部署文档。**
 - [x] 固化 Next 静态路由规则，避免 `/services` 等路径重定向泄露 `http://域名:8088/...`。**本轮服务器已修复并验证核心路径 200；待同步正式部署文档。**
-- [ ] 明确 HTML 与 `/_next/static/` 的缓存策略，降低“旧 HTML + 新 JS / 新 HTML + 旧 JS”的混合构建风险。
-- [x] 增加发布后 Smoke Test：主页、服务总览、服务详情、案例、师资、FAQ、联系页、404、JS/CSS 静态资源。**已新增 `scripts/smoke-production.sh`，待上线后执行验证。**
-- [ ] 完成真实手机回归验证，并记录结果。
+- [ ] 明确 HTML 与 `/_next/static/` 的缓存策略，降低“旧 HTML + 新 JS / 新 HTML + 旧 JS”的混合构建风险。**当前已出现“普通旧会话异常、无痕 fresh URL 正常”的直接证据，本项升级为阶段一最高优先级之一。**
+- [x] 增加发布后 Smoke Test：主页、服务总览、服务详情、案例、师资、FAQ、联系页、404、JS/CSS 静态资源。**`scripts/smoke-production.sh` 已在公网实际执行并完整 PASS；核心页面 200、缺失页 404、静态资源 200。**
+- [ ] 完成真实手机回归验证，并记录结果。**已完成第一轮：手机无痕 fresh URL 全部按钮正常、无白屏、无 403；发现并修复移动导航滚动缺陷。待新提交部署后复测导航及普通非无痕会话。**
+- [ ] 将当前“直接删除并重建线上 out/”改造成不受 SSH 中断影响的安全发布流程，至少保证 build 未完成 / 权限未修复时旧版本继续在线；后续阶段进一步演进为版本目录 + 原子切换。
 
 ## 第一轮稳定化代码变更记录
 
@@ -46,6 +48,19 @@
 - 新增 route/global error boundary 与正式 404。
 - Header / ScrollToTop 对 `window.scrollTo` 做能力判断并提供回退。
 - 新增可复用公网 Smoke Test 脚本。
+- 移动端展开导航增加独立纵向滚动能力，避免小屏设备下底部入口不可见、不可点击。
+
+## 2026-08-08 线上验证记录
+
+- Webpack 构建已确认上线。
+- `nginx -t`：successful。
+- `scripts/smoke-production.sh https://jiuchenedu.com`：完整 PASS。
+- 首页、About、服务总览/详情、案例总览/详情、师资总览/详情、FAQ、Contact：公网均 200。
+- 缺失测试页：404。
+- 首页实际引用的 Webpack JS/CSS：公网全部 200。
+- nginx 用户：可读取全部 `out/_next/static` 下 JS/CSS。
+- 手机无痕模式访问 `https://jiuchenedu.com/?__fresh=20260808-webpack-1`：页面与按钮跳转全部正常，无 Client Exception、无 403。
+- 新发现 UI 缺陷：移动导航内容高度超过屏幕时无法滚动；源码已修复，等待部署验证。
 
 ## 本阶段完成标准
 
@@ -168,11 +183,12 @@ Next.js App Router / Server Components
 - [x] 修复 Nginx 对 `/www/wwwroot/startup-company-website/out` 的读取/穿越权限，首页由 403 恢复 200。
 - [x] 修复静态目录规则导致 `/services` 等地址 301 到 `http://jiuchenedu.com:8088/...` 的问题。
 - [x] 验证本机 8088 与公网 HTTPS 的首页、服务总览、服务详情均返回 200。
+- [x] Webpack 版本发布后执行完整公网 Smoke Test，核心页面、404、静态资源均符合预期。
 
 ---
 
 # 当前执行状态
 
 - 当前阶段：**阶段一：P0 稳定性清零**
-- 当前最高优先问题：**第一轮客户端稳定化代码已提交，等待服务器重新构建发布 + 手机实机验证**
+- 当前最高优先问题：**部署并验证移动导航滚动修复；随后完成 HTML / `/_next/static/` 缓存策略和普通非无痕会话复测。**
 - 临时文件删除状态：**禁止删除，四阶段尚未完成**
