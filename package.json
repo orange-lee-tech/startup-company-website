@@ -10,6 +10,7 @@
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "verify:export": "node scripts/verify-static-export.mjs",
+    "test:serve": "node scripts/serve-static-export.mjs",
     "test:e2e": "playwright test"
   },
   "dependencies": {
