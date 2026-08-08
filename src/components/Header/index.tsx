@@ -17,20 +17,9 @@ const Header = () => {
   const resolveHref = (path: string) => withBasePath(path);
 
   const scrollToHomeTop = () => {
-    if (typeof window === "undefined") {
-      return;
+    if (typeof window !== "undefined" && typeof window.scrollTo === "function") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-
-    if (typeof window.scrollTo === "function") {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      return;
-    }
-
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
   };
 
   const handleHomeClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -69,10 +58,6 @@ const Header = () => {
 
     return () => window.removeEventListener("scroll", handleStickyNavbar);
   }, []);
-
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
 
   return (
     <header
@@ -164,9 +149,7 @@ const Header = () => {
                                 <a
                                   key={child.path}
                                   href={resolveHref(child.path)}
-                                  onClick={(event) =>
-                                    handleNavClick(event, child.path)
-                                  }
+                                  onClick={(event) => handleNavClick(event, child.path)}
                                   className={`block rounded-lg px-4 py-3 transition ${
                                     childActive
                                       ? "bg-primary/10 text-primary"
@@ -281,9 +264,7 @@ const Header = () => {
                             <a
                               key={child.path}
                               href={resolveHref(child.path)}
-                              onClick={(event) =>
-                                handleNavClick(event, child.path)
-                              }
+                              onClick={(event) => handleNavClick(event, child.path)}
                               className="rounded-lg bg-primary/5 px-3 py-2 text-sm font-medium text-dark transition hover:bg-primary/10 hover:text-primary dark:text-white"
                             >
                               {child.title}
