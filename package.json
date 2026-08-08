@@ -10,7 +10,8 @@
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "typecheck:strict": "tsc -p tsconfig.strict.json",
-    "verify:export": "node scripts/verify-static-export.mjs"
+    "verify:export": "node scripts/verify-static-export.mjs",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.3",
