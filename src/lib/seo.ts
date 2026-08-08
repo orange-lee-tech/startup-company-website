@@ -9,6 +9,7 @@ export const siteConfig = {
   description:
     "长沙九辰教育咨询有限公司专注本硕博升学与就业陪跑服务，覆盖保研、海外本硕申请、国内申博、海外全奖博士、本科就业与高端就业。",
   locale: "zh_CN",
+  socialImage: "/images/jiuchen/night title.png",
 } as const;
 
 export function absoluteUrl(path = "/") {
@@ -35,11 +36,18 @@ export function buildPageMetadata({
       title,
       description,
       url: path,
+      images: [
+        {
+          url: siteConfig.socialImage,
+          alt: `${siteConfig.name}｜以智启学，以仁伴行`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [siteConfig.socialImage],
     },
   };
 }
