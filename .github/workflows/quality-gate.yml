@@ -15,9 +15,9 @@ concurrency:
 
 jobs:
   build:
-    name: Build static export
+    name: Build and browser regression
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
 
     steps:
       - name: Checkout
@@ -53,3 +53,9 @@ jobs:
 
       - name: Verify export contract
         run: npm run verify:export
+
+      - name: Install Chromium for browser tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Run desktop and mobile browser tests
+        run: npm run test:e2e
