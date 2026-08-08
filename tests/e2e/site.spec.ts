@@ -55,7 +55,7 @@ test("mobile navigation has its own scroll range and can open final links", asyn
     .poll(() => menu.evaluate((element) => element.scrollTop))
     .toBeGreaterThan(0);
 
-  const contactLink = menu.getByRole("link", { name: "联系我们", exact: true });
+  const contactLink = menu.locator('a[href="/contact"]');
   await expect(contactLink).toBeVisible();
   await contactLink.click();
 
