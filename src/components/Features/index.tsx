@@ -1,8 +1,8 @@
 import { withBasePath } from "@/lib/site";
+import type { Feature } from "@/types/feature";
 import SingleFeature from "./SingleFeature";
-import featuresData from "./featuresData";
 
-const Features = () => {
+const Features = ({ features }: { features: Feature[] }) => {
   return (
     <section id="features" className="bg-transparent py-9 md:py-14 lg:py-16">
       <div className="container">
@@ -30,7 +30,7 @@ const Features = () => {
         </div>
 
         <div className="flex snap-x gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-2 md:gap-px md:overflow-hidden md:rounded-2xl md:border md:border-white/10 md:bg-white/10 md:pb-0 xl:grid-cols-3">
-          {featuresData.map((feature) => (
+          {features.map((feature) => (
             <SingleFeature key={feature.id} feature={feature} />
           ))}
         </div>
