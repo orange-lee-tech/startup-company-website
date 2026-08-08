@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Dependency security gate
+        run: npm audit --audit-level=critical
+
       - name: Build production export
         env:
           GITHUB_PAGES: ""
