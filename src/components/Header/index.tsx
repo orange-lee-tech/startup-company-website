@@ -201,7 +201,7 @@ const Header = () => {
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
-              aria-label="打开全站导航"
+              aria-label={menuOpen ? "关闭全站导航" : "打开全站导航"}
               aria-expanded={menuOpen}
               className={`ml-4 flex h-11 w-11 items-center justify-center border transition lg:hidden ${
                 isTransparent
@@ -230,7 +230,7 @@ const Header = () => {
           </div>
 
           {menuOpen && (
-            <div className="absolute right-4 top-full mt-3 w-[min(92vw,460px)] border border-body-color/10 bg-white p-6 shadow-three dark:border-white/10 dark:bg-gray-dark lg:hidden">
+            <div className="absolute right-4 top-full mt-3 max-h-[calc(100dvh-9rem)] w-[min(92vw,460px)] touch-pan-y overflow-y-auto overscroll-contain border border-body-color/10 bg-white p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-three [-webkit-overflow-scrolling:touch] dark:border-white/10 dark:bg-gray-dark lg:hidden">
               <div className="mb-5 flex items-center justify-between">
                 <p className="text-sm font-semibold text-primary">全站导航</p>
 
