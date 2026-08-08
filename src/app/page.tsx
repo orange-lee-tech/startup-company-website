@@ -1,14 +1,13 @@
 import HomeContactCTA from "@/components/Home/HomeContactCTA";
 import HomeHeroServicesStage from "@/components/Home/HeroServicesStage";
 import TeacherCarousel from "@/components/Teachers/TeacherCarousel";
-import { Metadata } from "next";
+import { buildPageMetadata, siteConfig } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "九辰本硕博升学就业 | 长沙九辰教育咨询有限公司",
-  description:
-    "长沙九辰教育咨询有限公司专注本硕博升学与就业陪跑服务，覆盖保研、海外本硕申请、国内申博、海外全奖博士、本科就业与高端就业。",
-  alternates: { canonical: "/" },
-};
+export const metadata = buildPageMetadata({
+  title: siteConfig.defaultTitle,
+  description: siteConfig.description,
+  path: "/",
+});
 
 export default function Home() {
   return (
