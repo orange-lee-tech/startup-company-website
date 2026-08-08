@@ -1,0 +1,36 @@
+import { casePages, servicePages } from "@/data/routePages";
+import { detailedTeachers } from "@/data/teacherDetails";
+import { absoluteUrl } from "@/lib/seo";
+import type { MetadataRoute } from "next";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const fixedPages: MetadataRoute.Sitemap = [
+    { url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
+    { url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.8 },
+    { url: absoluteUrl("/services"), changeFrequency: "monthly", priority: 0.9 },
+    { url: absoluteUrl("/cases"), changeFrequency: "monthly", priority: 0.9 },
+    { url: absoluteUrl("/teachers"), changeFrequency: "monthly", priority: 0.8 },
+    { url: absoluteUrl("/faq"), changeFrequency: "monthly", priority: 0.7 },
+    { url: absoluteUrl("/contact"), changeFrequency: "monthly", priority: 0.7 },
+  ];
+
+  const services: MetadataRoute.Sitemap = servicePages.map((page) => ({
+    url: absoluteUrl(`/services/${page.slug}`),
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  const cases: MetadataRoute.Sitemap = casePages.map((page) => ({
+    url: absoluteUrl(`/cases/${page.slug}`),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  const teachers: MetadataRoute.Sitemap = detailedTeachers.map((teacher) => ({
+    url: absoluteUrl(`/teachers/${teacher.id}`),
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [...fixedPages, ...services, ...cases, ...teachers];
+}
