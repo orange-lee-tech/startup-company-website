@@ -1,11 +1,5 @@
-import { studentCases, type CaseCategory } from "@/data/cases";
+import type { CaseCategory, StudentCase } from "@/data/cases";
 import { withBasePath } from "@/lib/site";
-
-const featuredCaseIds = [
-  "baoyan-001",
-  "study-abroad-01",
-  "career-coaching-001",
-];
 
 const categoryMetaMap: Record<
   CaseCategory,
@@ -32,11 +26,7 @@ const categoryMetaMap: Record<
   },
 };
 
-const featuredCases = featuredCaseIds
-  .map((id) => studentCases.find((item) => item.id === id))
-  .filter((item): item is NonNullable<typeof item> => Boolean(item));
-
-const Testimonials = () => {
+const Testimonials = ({ featuredCases }: { featuredCases: StudentCase[] }) => {
   return (
     <section
       id="testimonials"
