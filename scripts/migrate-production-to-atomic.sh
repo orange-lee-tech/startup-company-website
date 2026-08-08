@@ -12,9 +12,15 @@ HOST_HEADER="${HOST_HEADER:-jiuchenedu.com}"
 
 OLD_ROOT="root /www/wwwroot/startup-company-website/out;"
 NEW_ROOT="root /www/wwwroot/jiuchen-current;"
+CONFIG_CHANGED=0
+LINK_CREATED=0
+RELEASE_CREATED=0
 
 fail() {
   printf 'FAIL: %s\n' "$1" >&2
+  if [[ "${CONFIG_CHANGED:-0}" -eq 1 ]] && declare -F rollback >/dev/null 2>&1; then
+    rollback
+  fi
   exit 1
 }
 
@@ -29,7 +35,7 @@ if [[ -e "$CURRENT_LINK" || -L "$CURRENT_LINK" ]]; then
   fail "$CURRENT_LINK already exists; migration may already have been performed"
 fi
 
-ROOT_MATCHES="$(grep -F "$OLD_ROOT" "$NGINX_CONF" | wc -l | tr -d ' ')"
+ROOT_MATCHES="$(grep -F -c "$OLD_ROOT" "$NGINX_CONF" || true)"
 [[ "$ROOT_MATCHES" == "1" ]] || fail "expected exactly one current nginx root '$OLD_ROOT', found $ROOT_MATCHES"
 
 cd "$REPO_DIR"
@@ -38,9 +44,6 @@ STAMP="$(date +%Y%m%d-%H%M%S)"
 RELEASE_ID="${STAMP}-bootstrap-${SHORT_SHA}"
 RELEASE_PATH="$RELEASES_DIR/$RELEASE_ID"
 BACKUP_DIR="/etc/nginx/jiuchen-migration-backup-${STAMP}"
-CONFIG_CHANGED=0
-LINK_CREATED=0
-RELEASE_CREATED=0
 
 rollback() {
   set +e
@@ -52,14 +55,17 @@ rollback() {
     if nginx -t >/dev/null 2>&1; then
       systemctl reload nginx || true
     fi
+    CONFIG_CHANGED=0
   fi
 
   if [[ "$LINK_CREATED" -eq 1 ]]; then
     rm -f "$CURRENT_LINK"
+    LINK_CREATED=0
   fi
 
   if [[ "$RELEASE_CREATED" -eq 1 ]]; then
     rm -rf "$RELEASE_PATH"
+    RELEASE_CREATED=0
   fi
 }
 
@@ -138,7 +144,7 @@ HOME_BODY="$(mktemp)"
 trap 'rm -f "$HTML_HEADERS" "$ASSET_HEADERS" "$HOME_BODY"; on_signal' INT TERM HUP
 
 curl -fsSI "$BASE_URL/" -o "$HTML_HEADERS"
-cat "$HTML_HEADERS" | grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' || true
+grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' "$HTML_HEADERS" || true
 if ! grep -Eqi '^cache-control:.*no-cache' "$HTML_HEADERS"; then
   rm -f "$HTML_HEADERS" "$ASSET_HEADERS" "$HOME_BODY"
   fail "HTML response does not include Cache-Control: no-cache"
@@ -149,7 +155,7 @@ ASSET_PATH="$(grep -oE '/_next/static/[^" ]+\.(js|css)' "$HOME_BODY" | head -n 1
 [[ -n "$ASSET_PATH" ]] || fail "could not discover a Next.js static asset"
 curl -fsSI "$BASE_URL$ASSET_PATH" -o "$ASSET_HEADERS"
 printf 'Asset: %s\n' "$ASSET_PATH"
-cat "$ASSET_HEADERS" | grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' || true
+grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' "$ASSET_HEADERS" || true
 if ! grep -Eqi '^cache-control:.*max-age=31536000.*immutable' "$ASSET_HEADERS"; then
   rm -f "$HTML_HEADERS" "$ASSET_HEADERS" "$HOME_BODY"
   fail "Next static asset is missing long immutable cache headers"
