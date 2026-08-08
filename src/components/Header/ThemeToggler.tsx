@@ -1,19 +1,41 @@
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 type ThemeTogglerProps = {
   transparent?: boolean;
 };
 
+const STORAGE_KEY = "jiuchen-theme";
+
 const ThemeToggler = ({ transparent = false }: ThemeTogglerProps) => {
-  const { resolvedTheme, setTheme } = useTheme();
+  const [isDark, setIsDark] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    try {
+      const savedTheme = window.localStorage.getItem(STORAGE_KEY);
+      const nextIsDark = savedTheme !== "light";
+
+      document.documentElement.classList.toggle("dark", nextIsDark);
+      setIsDark(nextIsDark);
+    } catch {
+      document.documentElement.classList.add("dark");
+      setIsDark(true);
+    } finally {
+      setMounted(true);
+    }
   }, []);
 
-  const isDark = mounted && resolvedTheme === "dark";
+  const toggleTheme = () => {
+    const nextIsDark = !isDark;
+    document.documentElement.classList.toggle("dark", nextIsDark);
+    setIsDark(nextIsDark);
+
+    try {
+      window.localStorage.setItem(STORAGE_KEY, nextIsDark ? "dark" : "light");
+    } catch {
+      // Theme switching should keep working even when storage is unavailable.
+    }
+  };
 
   const buttonClass = transparent
     ? "border-white/25 bg-white/10 text-white backdrop-blur-sm hover:border-yellow/50 hover:bg-white/15 hover:text-yellow"
@@ -23,10 +45,10 @@ const ThemeToggler = ({ transparent = false }: ThemeTogglerProps) => {
     <button
       aria-label="切换深色模式"
       type="button"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={toggleTheme}
       className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border transition md:h-11 md:w-11 ${buttonClass}`}
     >
-      {isDark ? (
+      {mounted && isDark ? (
         <svg
           viewBox="0 0 24 24"
           className="h-5 w-5 stroke-current"
