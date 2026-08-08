@@ -12,6 +12,7 @@ const TeacherCarousel = () => {
   const teachers = featuredTeachers;
   const [startIndex, setStartIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [canAutoplay, setCanAutoplay] = useState(false);
 
   const visibleTeachers = useMemo(() => {
     if (teachers.length <= VISIBLE_COUNT) {
@@ -37,7 +38,30 @@ const TeacherCarousel = () => {
   };
 
   useEffect(() => {
-    if (teachers.length <= VISIBLE_COUNT || isPaused) {
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const syncAutoplay = () => {
+      setCanAutoplay(desktop.matches && !reducedMotion.matches);
+    };
+
+    syncAutoplay();
+    desktop.addEventListener?.("change", syncAutoplay);
+    reducedMotion.addEventListener?.("change", syncAutoplay);
+
+    return () => {
+      desktop.removeEventListener?.("change", syncAutoplay);
+      reducedMotion.removeEventListener?.("change", syncAutoplay);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (
+      !canAutoplay ||
+      teachers.length <= VISIBLE_COUNT ||
+      isPaused ||
+      document.visibilityState !== "visible"
+    ) {
       return;
     }
 
@@ -46,7 +70,7 @@ const TeacherCarousel = () => {
     }, AUTOPLAY_INTERVAL);
 
     return () => window.clearInterval(timer);
-  }, [isPaused, teachers.length]);
+  }, [canAutoplay, isPaused, teachers.length]);
 
   if (!teachers.length) {
     return null;
