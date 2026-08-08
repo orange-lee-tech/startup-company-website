@@ -2,7 +2,7 @@ import { getCasesByCategory, studentCases, type CaseCategory, type StudentCase }
 import { casePages, getCasePage, getServicePage, servicePages, type RoutePage } from "@/data/routePages";
 import { getServiceDetail, serviceDetails, type ServiceDetail } from "@/data/services";
 import { detailedTeachers, getDetailedTeacherById, type TeacherDetail } from "@/data/teacherDetails";
-import { teachers, type Teacher } from "@/data/teachers";
+import { featuredTeachers, teachers, type Teacher } from "@/data/teachers";
 
 export type ServiceContent = { page: RoutePage; detail: ServiceDetail };
 export type TeacherContent = { teacher: Teacher; detail: TeacherDetail };
@@ -16,6 +16,7 @@ export interface ContentRepository {
   getCasesByCategory(category: CaseCategory): Promise<StudentCase[]>;
   listCases(): Promise<StudentCase[]>;
   listTeachers(): Promise<Teacher[]>;
+  listFeaturedTeachers(): Promise<Teacher[]>;
   listDetailedTeachers(): Promise<Teacher[]>;
   getDetailedTeacher(id: string): Promise<TeacherContent | undefined>;
 }
@@ -51,6 +52,9 @@ export const contentRepository: ContentRepository = {
   },
   async listTeachers() {
     return teachers;
+  },
+  async listFeaturedTeachers() {
+    return featuredTeachers;
   },
   async listDetailedTeachers() {
     return detailedTeachers;
