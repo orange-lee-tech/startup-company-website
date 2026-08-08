@@ -1,4 +1,3 @@
-import ScrollUp from "@/components/Common/ScrollUp";
 import HomeContactCTA from "@/components/Home/HomeContactCTA";
 import HomeHeroServicesStage from "@/components/Home/HeroServicesStage";
 import TeacherCarousel from "@/components/Teachers/TeacherCarousel";
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <ScrollUp />
       <HomeHeroServicesStage />
       <TeacherCarousel />
       <HomeContactCTA />
