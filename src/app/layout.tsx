@@ -25,11 +25,18 @@ export const metadata: Metadata = {
     url: "/",
     title: siteConfig.defaultTitle,
     description: siteConfig.description,
+    images: [
+      {
+        url: siteConfig.socialImage,
+        alt: `${siteConfig.name}｜以智启学，以仁伴行`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.defaultTitle,
     description: siteConfig.description,
+    images: [siteConfig.socialImage],
   },
   robots: {
     index: true,
