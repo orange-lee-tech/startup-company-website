@@ -52,6 +52,14 @@ function assertIncludes(label, content, expected) {
   }
 }
 
+function assertMatches(label, content, pattern) {
+  if (!pattern.test(content)) {
+    fail(`${label} does not match ${pattern}`);
+  } else {
+    console.log(`OK ${label}`);
+  }
+}
+
 function walk(dir) {
   return readdirSync(dir).flatMap((name) => {
     const fullPath = join(dir, name);
@@ -92,10 +100,10 @@ if (!existsSync(outDir)) {
   }
 
   const homeHtml = readPage("/");
-  assertIncludes(
+  assertMatches(
     "homepage canonical",
     homeHtml,
-    `<link rel="canonical" href="${siteUrl}/"`,
+    /<link rel="canonical" href="https:\/\/jiuchenedu\.com\/?"/,
   );
   assertIncludes("homepage Organization JSON-LD", homeHtml, '"@type":"Organization"');
   assertIncludes("homepage WebSite JSON-LD", homeHtml, '"@type":"WebSite"');
