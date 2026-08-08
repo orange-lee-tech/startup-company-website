@@ -47,17 +47,34 @@ cleanup() {
   fi
   rm -f "${CURRENT_LINK}.next.$$" "${CURRENT_LINK}.rollback.$$"
 }
-trap cleanup EXIT
 
 rollback() {
+  set +e
   if [[ "$SWITCHED" -eq 1 && -n "$PREVIOUS_TARGET" && -d "$PREVIOUS_TARGET" ]]; then
     printf '==> Rolling back to %s\n' "$PREVIOUS_TARGET" >&2
     ln -s "$PREVIOUS_TARGET" "${CURRENT_LINK}.rollback.$$"
     mv -Tf "${CURRENT_LINK}.rollback.$$" "$CURRENT_LINK"
-    nginx -t >/dev/null
-    systemctl reload nginx
+    if nginx -t >/dev/null 2>&1; then
+      systemctl reload nginx || true
+    fi
+    SWITCHED=0
   fi
 }
+
+on_error() {
+  local exit_code=$?
+  rollback
+  exit "$exit_code"
+}
+
+on_signal() {
+  rollback
+  exit 130
+}
+
+trap cleanup EXIT
+trap on_error ERR
+trap on_signal INT TERM HUP
 
 printf '==> Building commit %s in isolated worktree\n' "$TARGET_SHA"
 git worktree add --detach "$BUILD_DIR" "$TARGET_SHA" >/dev/null
@@ -93,23 +110,15 @@ systemctl reload nginx
 
 printf '==> Verifying local nginx serves the new release\n'
 LOCAL_BODY="$(mktemp)"
-trap 'rm -f "$LOCAL_BODY"; rollback; cleanup' ERR INT TERM HUP
-curl -fsS -H "Host: $HOST_HEADER" "$LOCAL_URL/" -o "$LOCAL_BODY" || {
-  rollback
-  fail "local nginx homepage request failed after switch"
-}
+curl -fsS -H "Host: $HOST_HEADER" "$LOCAL_URL/" -o "$LOCAL_BODY"
 if ! cmp -s "$RELEASE_PATH/index.html" "$LOCAL_BODY"; then
   rm -f "$LOCAL_BODY"
-  rollback
   fail "local nginx is not serving the staged release index.html"
 fi
 rm -f "$LOCAL_BODY"
 
 printf '==> Running public smoke test\n'
-if ! bash "$REPO_DIR/scripts/smoke-production.sh" "$BASE_URL"; then
-  rollback
-  fail "public smoke test failed; previous release restored"
-fi
+bash "$REPO_DIR/scripts/smoke-production.sh" "$BASE_URL"
 
 printf '==> Cleaning old releases (keeping %s)\n' "$KEEP_RELEASES"
 CURRENT_TARGET="$(readlink -f "$CURRENT_LINK")"
@@ -121,6 +130,7 @@ mapfile -t OLD_RELEASES < <(
 )
 for old_release in "${OLD_RELEASES[@]}"; do
   [[ "$old_release" == "$CURRENT_TARGET" ]] && continue
+  [[ "$old_release" == "$PREVIOUS_TARGET" ]] && continue
   rm -rf "$old_release"
 done
 
