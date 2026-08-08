@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 type ThemeTogglerProps = {
   transparent?: boolean;
@@ -7,28 +7,18 @@ type ThemeTogglerProps = {
 const STORAGE_KEY = "jiuchen-theme";
 
 const ThemeToggler = ({ transparent = false }: ThemeTogglerProps) => {
-  const [isDark, setIsDark] = useState(true);
-  const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
     try {
       const savedTheme = window.localStorage.getItem(STORAGE_KEY);
-      const nextIsDark = savedTheme !== "light";
-
-      document.documentElement.classList.toggle("dark", nextIsDark);
-      setIsDark(nextIsDark);
+      document.documentElement.classList.toggle("dark", savedTheme !== "light");
     } catch {
       document.documentElement.classList.add("dark");
-      setIsDark(true);
-    } finally {
-      setMounted(true);
     }
   }, []);
 
   const toggleTheme = () => {
-    const nextIsDark = !isDark;
+    const nextIsDark = !document.documentElement.classList.contains("dark");
     document.documentElement.classList.toggle("dark", nextIsDark);
-    setIsDark(nextIsDark);
 
     try {
       window.localStorage.setItem(STORAGE_KEY, nextIsDark ? "dark" : "light");
@@ -48,38 +38,36 @@ const ThemeToggler = ({ transparent = false }: ThemeTogglerProps) => {
       onClick={toggleTheme}
       className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border transition md:h-11 md:w-11 ${buttonClass}`}
     >
-      {mounted && isDark ? (
-        <svg
-          viewBox="0 0 24 24"
-          className="h-5 w-5 stroke-current"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M12 4V2M12 22v-2M4.93 4.93 3.52 3.52M20.48 20.48l-1.41-1.41M4 12H2M22 12h-2M4.93 19.07l-1.41 1.41M20.48 3.52l-1.41 1.41"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <path
-            d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
-            strokeWidth="2"
-          />
-        </svg>
-      ) : (
-        <svg
-          viewBox="0 0 24 24"
-          className="h-5 w-5 stroke-current"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M21 14.2A7.8 7.8 0 0 1 9.8 3 8.8 8.8 0 1 0 21 14.2Z"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      )}
+      <svg
+        viewBox="0 0 24 24"
+        className="hidden h-5 w-5 stroke-current dark:block"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 4V2M12 22v-2M4.93 4.93 3.52 3.52M20.48 20.48l-1.41-1.41M4 12H2M22 12h-2M4.93 19.07l-1.41 1.41M20.48 3.52l-1.41 1.41"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+        <path
+          d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+          strokeWidth="2"
+        />
+      </svg>
+
+      <svg
+        viewBox="0 0 24 24"
+        className="block h-5 w-5 stroke-current dark:hidden"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M21 14.2A7.8 7.8 0 0 1 9.8 3 8.8 8.8 0 1 0 21 14.2Z"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
     </button>
   );
 };
