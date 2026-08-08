@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { withBasePath } from "@/lib/site";
 import SingleFeature from "./SingleFeature";
 import featuresData from "./featuresData";
 
@@ -21,12 +21,12 @@ const Features = () => {
             </p>
           </div>
 
-          <Link
-            href="/services"
+          <a
+            href={withBasePath("/services")}
             className="inline-flex items-center text-sm font-semibold text-yellow hover:underline md:text-base"
           >
             查看完整产品服务
-          </Link>
+          </a>
         </div>
 
         <div className="flex snap-x gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-2 md:gap-px md:overflow-hidden md:rounded-2xl md:border md:border-white/10 md:bg-white/10 md:pb-0 xl:grid-cols-3">
