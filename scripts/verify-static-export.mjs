@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const outDir = join(process.cwd(), "out");
@@ -33,6 +33,13 @@ function assertMissingPage(route) {
   }
 }
 
+function walk(dir) {
+  return readdirSync(dir).flatMap((name) => {
+    const fullPath = join(dir, name);
+    return statSync(fullPath).isDirectory() ? walk(fullPath) : [fullPath];
+  });
+}
+
 if (!existsSync(outDir)) {
   fail("out/ was not generated");
 } else {
@@ -59,6 +66,12 @@ if (!existsSync(outDir)) {
     "/error",
   ].forEach(assertMissingPage);
 
+  for (const artifact of ["robots.txt", "sitemap.xml"]) {
+    const file = join(outDir, artifact);
+    if (!existsSync(file)) fail(`missing SEO artifact ${artifact}`);
+    else console.log(`OK SEO artifact ${artifact}`);
+  }
+
   const chunksDir = join(outDir, "_next", "static", "chunks");
   if (!existsSync(chunksDir)) {
     fail("missing _next/static/chunks");
@@ -69,6 +82,25 @@ if (!existsSync(outDir)) {
     if (!hasJs) fail("no JavaScript chunks found in static export");
     else console.log("OK Next.js static chunks present");
   }
+
+  const forbiddenPatterns = [
+    /Free Next\.js Template/i,
+    /Startup Nextjs Template/i,
+    /Sign in with Github/i,
+    /10 amazing sites to download stock photos/i,
+    /Musharof Chy/i,
+  ];
+
+  const htmlFiles = walk(outDir).filter((file) => file.endsWith(".html"));
+  for (const file of htmlFiles) {
+    const html = readFileSync(file, "utf8");
+    for (const pattern of forbiddenPatterns) {
+      if (pattern.test(html)) {
+        fail(`legacy template text ${pattern} found in ${file}`);
+      }
+    }
+  }
+  console.log(`OK scanned ${htmlFiles.length} HTML files for legacy template text`);
 }
 
 if (process.exitCode) process.exit(process.exitCode);
