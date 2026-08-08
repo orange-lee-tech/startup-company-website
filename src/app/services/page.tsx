@@ -1,14 +1,14 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import { serviceDetails } from "@/data/services";
+import { contentRepository } from "@/content/repository";
+import { buildPageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: "服务 | 九辰本硕博升学就业",
   description:
     "九辰教育六大核心服务方向，覆盖保研、海外本硕、国内博士、海外全奖博士、本科就业与高端就业。",
-  alternates: { canonical: "/services" },
-};
+  path: "/services",
+});
 
 const serviceCardTones = [
   {
@@ -23,7 +23,9 @@ const serviceCardTones = [
   },
 ];
 
-const ServicesPage = () => {
+const ServicesPage = async () => {
+  const services = await contentRepository.listServices();
+
   return (
     <>
       <Breadcrumb
@@ -55,7 +57,7 @@ const ServicesPage = () => {
                 </p>
 
                 <p className="mb-2 text-5xl font-bold">
-                  6
+                  {services.length}
                   <span className="ml-2 text-xl">大方向</span>
                 </p>
 
@@ -67,7 +69,7 @@ const ServicesPage = () => {
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {serviceDetails.map((service, index) => {
+            {services.map(({ detail: service }, index) => {
               const tone = serviceCardTones[index % serviceCardTones.length];
 
               return (

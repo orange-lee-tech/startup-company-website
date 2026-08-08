@@ -9,6 +9,10 @@ const footerNav = [
     path: "/",
   },
   {
+    title: "关于九辰",
+    path: "/about",
+  },
+  {
     title: "服务",
     path: "/services",
   },

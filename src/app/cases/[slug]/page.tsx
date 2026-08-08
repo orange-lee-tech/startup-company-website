@@ -1,9 +1,12 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import { getCasesByCategory } from "@/data/cases";
+import JsonLd from "@/components/SEO/JsonLd";
+import { contentRepository } from "@/content/repository";
+import type { CaseCategory } from "@/data/cases";
 import {
-  casePages,
-  getCasePage,
-} from "@/data/routePages";
+  breadcrumbJsonLd,
+  buildPageMetadata,
+  siteConfig,
+} from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -21,10 +24,9 @@ const caseCardTones = [
   },
 ];
 
-export function generateStaticParams() {
-  return casePages.map((page) => ({
-    slug: page.slug,
-  }));
+export async function generateStaticParams() {
+  const pages = await contentRepository.listCasePages();
+  return pages.map((page) => ({ slug: page.slug }));
 }
 
 export async function generateMetadata({
@@ -33,19 +35,21 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const page = getCasePage(slug);
+  const page = await contentRepository.getCasePage(slug);
 
   if (!page) {
-    return {
+    return buildPageMetadata({
       title: "案例详情 | 九辰本硕博升学就业",
-    };
+      description: siteConfig.description,
+      path: `/cases/${slug}`,
+    });
   }
 
-  return {
+  return buildPageMetadata({
     title: `${page.title} | 九辰案例`,
     description: page.description,
-    alternates: { canonical: `/cases/${slug}` },
-  };
+    path: `/cases/${slug}`,
+  });
 }
 
 const CaseCategoryPage = async ({
@@ -54,18 +58,27 @@ const CaseCategoryPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const page = getCasePage(slug);
+  const [page, casePages] = await Promise.all([
+    contentRepository.getCasePage(slug),
+    contentRepository.listCasePages(),
+  ]);
 
   if (!page) {
     notFound();
   }
 
-  const cases = getCasesByCategory(
-    slug as Parameters<typeof getCasesByCategory>[0],
-  );
+  const cases = await contentRepository.getCasesByCategory(slug as CaseCategory);
+  const path = `/cases/${slug}`;
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: "首页", path: "/" },
+    { name: "案例", path: "/cases" },
+    { name: page.title, path },
+  ]);
 
   return (
     <>
+      <JsonLd data={breadcrumbs} />
+
       <Breadcrumb
         pageName={page.title}
         description={page.description}
@@ -99,7 +112,7 @@ const CaseCategoryPage = async ({
             </p>
 
             <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
-              查看该方向下不同背景学员的规划过程与结果
+              {page.heading}
             </h1>
 
             <p className="text-base leading-relaxed text-body-color dark:text-body-color-dark md:text-lg">

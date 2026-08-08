@@ -1,15 +1,14 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import { getCasesByCategory } from "@/data/cases";
-import { casePages } from "@/data/routePages";
+import { contentRepository } from "@/content/repository";
+import { buildPageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: "案例 | 九辰本硕博升学就业",
   description:
     "九辰教育学员案例总览，覆盖保研辅导、留学申请、博士申请与就业辅导。",
-  alternates: { canonical: "/cases" },
-};
+  path: "/cases",
+});
 
 const caseOverviewTones = [
   {
@@ -24,17 +23,16 @@ const caseOverviewTones = [
   },
 ];
 
-const CasesPage = () => {
-  const caseCategories = casePages.map((item) => {
-    const cases = getCasesByCategory(
-      item.slug as Parameters<typeof getCasesByCategory>[0],
-    );
+const CasesPage = async () => {
+  const [casePages, studentCases] = await Promise.all([
+    contentRepository.listCasePages(),
+    contentRepository.listCases(),
+  ]);
 
-    return {
-      ...item,
-      featuredCase: cases[0],
-    };
-  });
+  const caseCategories = casePages.map((item) => ({
+    ...item,
+    featuredCase: studentCases.find((entry) => entry.category === item.slug),
+  }));
 
   return (
     <>

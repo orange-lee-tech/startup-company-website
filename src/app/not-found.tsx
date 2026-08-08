@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "页面未找到 | 九辰教育",
@@ -21,18 +22,18 @@ export default function NotFound() {
           请检查网址是否正确，或返回九辰教育首页继续浏览服务、案例、师资与咨询信息。
         </p>
         <div className="flex flex-col justify-center gap-3 sm:flex-row">
-          <a
+          <Link
             href="/"
             className="inline-flex items-center justify-center rounded-xs bg-primary px-7 py-3.5 text-base font-semibold text-white transition hover:bg-primary/90"
           >
             返回首页
-          </a>
-          <a
+          </Link>
+          <Link
             href="/contact"
             className="inline-flex items-center justify-center rounded-xs border border-primary/20 bg-white px-7 py-3.5 text-base font-semibold text-primary transition hover:bg-primary/5 dark:border-white/15 dark:bg-white/5 dark:text-white"
           >
             联系九辰
-          </a>
+          </Link>
         </div>
       </div>
     </main>

@@ -1,6 +1,6 @@
 "use client";
 
-import { featuredTeachers } from "@/data/teachers";
+import type { Teacher } from "@/data/teachers";
 import { withBasePath } from "@/lib/site";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
@@ -8,10 +8,10 @@ import { useEffect, useMemo, useState } from "react";
 const AUTOPLAY_INTERVAL = 4500;
 const VISIBLE_COUNT = 3;
 
-const TeacherCarousel = () => {
-  const teachers = featuredTeachers;
+const TeacherCarousel = ({ teachers }: { teachers: Teacher[] }) => {
   const [startIndex, setStartIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [canAutoplay, setCanAutoplay] = useState(false);
 
   const visibleTeachers = useMemo(() => {
     if (teachers.length <= VISIBLE_COUNT) {
@@ -37,7 +37,30 @@ const TeacherCarousel = () => {
   };
 
   useEffect(() => {
-    if (teachers.length <= VISIBLE_COUNT || isPaused) {
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const syncAutoplay = () => {
+      setCanAutoplay(desktop.matches && !reducedMotion.matches);
+    };
+
+    syncAutoplay();
+    desktop.addEventListener?.("change", syncAutoplay);
+    reducedMotion.addEventListener?.("change", syncAutoplay);
+
+    return () => {
+      desktop.removeEventListener?.("change", syncAutoplay);
+      reducedMotion.removeEventListener?.("change", syncAutoplay);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (
+      !canAutoplay ||
+      teachers.length <= VISIBLE_COUNT ||
+      isPaused ||
+      document.visibilityState !== "visible"
+    ) {
       return;
     }
 
@@ -46,14 +69,14 @@ const TeacherCarousel = () => {
     }, AUTOPLAY_INTERVAL);
 
     return () => window.clearInterval(timer);
-  }, [isPaused, teachers.length]);
+  }, [canAutoplay, isPaused, teachers.length]);
 
   if (!teachers.length) {
     return null;
   }
 
   const renderTeacherCard = (
-    teacher: (typeof teachers)[number],
+    teacher: Teacher,
     key: string,
     extraClassName = "",
   ) => (
@@ -99,9 +122,7 @@ const TeacherCarousel = () => {
       <div className="container">
         <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="mb-4 text-base font-semibold text-primary">
-              师资团队
-            </p>
+            <p className="mb-4 text-base font-semibold text-primary">师资团队</p>
 
             <h2 className="mb-4 text-3xl font-bold leading-tight text-black dark:text-white md:text-4xl">
               汇聚多领域导师资源，提供针对性规划与指导

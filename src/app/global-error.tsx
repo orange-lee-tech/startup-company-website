@@ -96,6 +96,8 @@ export default function GlobalError({
               >
                 重新尝试
               </button>
+              {/* Global recovery deliberately bypasses the client router. */}
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
               <a
                 href="/"
                 style={{

@@ -1,16 +1,19 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import JsonLd from "@/components/SEO/JsonLd";
+import { contentRepository } from "@/content/repository";
 import {
-  detailedTeachers,
-  getDetailedTeacherById,
-} from "@/data/teacherDetails";
+  absoluteUrl,
+  breadcrumbJsonLd,
+  buildPageMetadata,
+  siteConfig,
+} from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export function generateStaticParams() {
-  return detailedTeachers.map((teacher) => ({
-    slug: teacher.id,
-  }));
+export async function generateStaticParams() {
+  const teachers = await contentRepository.listDetailedTeachers();
+  return teachers.map((teacher) => ({ slug: teacher.id }));
 }
 
 export async function generateMetadata({
@@ -19,21 +22,25 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const result = getDetailedTeacherById(slug);
+  const result = await contentRepository.getDetailedTeacher(slug);
 
   if (!result) {
-    return {
+    return buildPageMetadata({
       title: "师资详情 | 九辰教育",
-    };
+      description: siteConfig.description,
+      path: `/teachers/${slug}`,
+    });
   }
 
-  return {
+  const description =
+    result.teacher.summary ??
+    `${result.teacher.name}，${result.teacher.title}，${result.teacher.school}`;
+
+  return buildPageMetadata({
     title: `${result.teacher.name} | 九辰师资`,
-    description:
-      result.teacher.summary ??
-      `${result.teacher.name}，${result.teacher.title}，${result.teacher.school}`,
-    alternates: { canonical: `/teachers/${slug}` },
-  };
+    description,
+    path: `/teachers/${slug}`,
+  });
 }
 
 const TeacherDetailPage = async ({
@@ -42,16 +49,35 @@ const TeacherDetailPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const result = getDetailedTeacherById(slug);
+  const result = await contentRepository.getDetailedTeacher(slug);
 
   if (!result) {
     notFound();
   }
 
   const { teacher, detail } = result;
+  const path = `/teachers/${slug}`;
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${absoluteUrl(path)}#person`,
+    name: teacher.name,
+    jobTitle: teacher.title,
+    description: teacher.summary ?? detail.overview,
+    url: absoluteUrl(path),
+    image: absoluteUrl(teacher.portraitImage),
+    knowsAbout: detail.focusAreas,
+  };
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: "首页", path: "/" },
+    { name: "师资", path: "/teachers" },
+    { name: teacher.name, path },
+  ]);
 
   return (
     <>
+      <JsonLd data={[personJsonLd, breadcrumbs]} />
+
       <Breadcrumb
         pageName={teacher.name}
         description={`${teacher.title}｜${teacher.school}`}
