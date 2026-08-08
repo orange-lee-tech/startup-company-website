@@ -1,5 +1,5 @@
+import { withBasePath } from "@/lib/site";
 import { Feature } from "@/types/feature";
-import Link from "next/link";
 
 const cardThemes = [
   {
@@ -24,8 +24,8 @@ const SingleFeature = ({ feature }: { feature: Feature }) => {
   const theme = cardThemes[(id - 1) % cardThemes.length];
 
   return (
-    <Link
-      href={path}
+    <a
+      href={withBasePath(path)}
       className="group relative block min-h-[205px] min-w-[82vw] snap-start rounded-2xl bg-[#06152F]/72 p-5 transition duration-300 hover:bg-white/10 md:min-h-[250px] md:min-w-0 md:rounded-none md:p-6"
     >
       <span
@@ -63,7 +63,7 @@ const SingleFeature = ({ feature }: { feature: Feature }) => {
           </span>
         ))}
       </div>
-    </Link>
+    </a>
   );
 };
 
