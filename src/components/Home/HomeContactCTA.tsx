@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { withBasePath } from "@/lib/site";
 
 const ctaPoints = [
   "判断适合的服务类别",
@@ -49,19 +49,19 @@ const HomeContactCTA = () => {
               </div>
 
               <div className="mt-6 flex flex-col gap-4 sm:flex-row">
-                <Link
-                  href="/contact"
+                <a
+                  href={withBasePath("/contact")}
                   className="inline-flex items-center justify-center rounded-xs bg-primary px-7 py-4 text-base font-semibold text-white transition hover:bg-primary/90"
                 >
                   预约免费评估
-                </Link>
+                </a>
 
-                <Link
-                  href="/faq"
+                <a
+                  href={withBasePath("/faq")}
                   className="inline-flex items-center justify-center rounded-xs border border-[#9CAFC9] bg-white/45 px-7 py-4 text-base font-semibold text-[#102452] transition hover:bg-white/70"
                 >
                   查看常见问题
-                </Link>
+                </a>
               </div>
             </div>
           </div>
