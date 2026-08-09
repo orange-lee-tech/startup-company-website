@@ -10,8 +10,8 @@ BASE_URL="${BASE_URL:-https://jiuchenedu.com}"
 LOCAL_URL="${LOCAL_URL:-http://127.0.0.1:8088}"
 HOST_HEADER="${HOST_HEADER:-jiuchenedu.com}"
 
-OLD_ROOT="root /www/wwwroot/startup-company-website/out;"
-NEW_ROOT="root /www/wwwroot/jiuchen-current;"
+OLD_ROOT_PATH="/www/wwwroot/startup-company-website/out"
+NEW_ROOT_PATH="/www/wwwroot/jiuchen-current"
 CONFIG_CHANGED=0
 LINK_CREATED=0
 RELEASE_CREATED=0
@@ -35,8 +35,8 @@ if [[ -e "$CURRENT_LINK" || -L "$CURRENT_LINK" ]]; then
   fail "$CURRENT_LINK already exists; migration may already have been performed"
 fi
 
-ROOT_MATCHES="$(grep -F -c "$OLD_ROOT" "$NGINX_CONF" || true)"
-[[ "$ROOT_MATCHES" == "1" ]] || fail "expected exactly one current nginx root '$OLD_ROOT', found $ROOT_MATCHES"
+ROOT_MATCHES="$(awk -v old="$OLD_ROOT_PATH" '$1 == "root" && $2 == old ";" { count++ } END { print count + 0 }' "$NGINX_CONF")"
+[[ "$ROOT_MATCHES" == "1" ]] || fail "expected exactly one current nginx root '$OLD_ROOT_PATH', found $ROOT_MATCHES"
 
 cd "$REPO_DIR"
 SHORT_SHA="$(git rev-parse --short=8 HEAD)"
@@ -110,7 +110,23 @@ cp -a "$STATIC_CONF" "$BACKUP_DIR/jiuchen-static-export.conf"
 printf 'Backup: %s\n' "$BACKUP_DIR"
 
 printf '\n========== 5. Enable atomic root + HTML revalidation =========='"\n"
-sed -i "s#${OLD_ROOT}#${NEW_ROOT}#" "$NGINX_CONF"
+ROOT_TMP="$(mktemp)"
+if ! awk -v old="$OLD_ROOT_PATH" -v new="$NEW_ROOT_PATH" '
+  $1 == "root" && $2 == old ";" {
+    sub(old, new)
+    replaced++
+  }
+  { print }
+  END {
+    if (replaced != 1) exit 42
+  }
+' "$NGINX_CONF" > "$ROOT_TMP"; then
+  rm -f "$ROOT_TMP"
+  fail "could not replace the nginx root safely"
+fi
+cat "$ROOT_TMP" > "$NGINX_CONF"
+rm -f "$ROOT_TMP"
+
 cat > "$STATIC_CONF" <<'EOF'
 index index.html;
 
