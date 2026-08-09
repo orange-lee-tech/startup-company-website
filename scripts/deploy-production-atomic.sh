@@ -110,14 +110,64 @@ mv -Tf "${CURRENT_LINK}.next.$$" "$CURRENT_LINK"
 SWITCHED=1
 systemctl reload nginx
 
-printf '==> Verifying local nginx serves the new release\n'
+printf '==> Waiting for local nginx to serve the new release\n'
 LOCAL_BODY="$(mktemp)"
-curl -fsS -H "Host: $HOST_HEADER" "$LOCAL_URL/" -o "$LOCAL_BODY"
-if ! cmp -s "$RELEASE_PATH/index.html" "$LOCAL_BODY"; then
-  rm -f "$LOCAL_BODY"
-  fail "local nginx is not serving the staged release index.html"
-fi
+LOCAL_RELEASE_READY=0
+for attempt in {1..15}; do
+  : > "$LOCAL_BODY"
+  if curl -fsS -H "Host: $HOST_HEADER" "$LOCAL_URL/" -o "$LOCAL_BODY" \
+    && cmp -s "$RELEASE_PATH/index.html" "$LOCAL_BODY"; then
+    LOCAL_RELEASE_READY=1
+    printf 'PASS: new release visible locally after %s attempt(s)\n' "$attempt"
+    break
+  fi
+  printf 'Waiting for new release visibility (%s/15)...\n' "$attempt"
+  sleep 1
+done
 rm -f "$LOCAL_BODY"
+if [[ "$LOCAL_RELEASE_READY" -ne 1 ]]; then
+  fail "local nginx did not serve the staged release within 15 seconds"
+fi
+
+printf '==> Verifying local HTML cache policy\n'
+LOCAL_HEADERS="$(mktemp)"
+LOCAL_CACHE_READY=0
+for attempt in {1..15}; do
+  : > "$LOCAL_HEADERS"
+  if curl -fsSI -H "Host: $HOST_HEADER" "$LOCAL_URL/" -o "$LOCAL_HEADERS" \
+    && grep -Eqi '^cache-control:.*no-cache' "$LOCAL_HEADERS"; then
+    LOCAL_CACHE_READY=1
+    printf 'PASS: local HTML no-cache visible after %s attempt(s)\n' "$attempt"
+    break
+  fi
+  sleep 1
+done
+if [[ "$LOCAL_CACHE_READY" -ne 1 ]]; then
+  grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:)' "$LOCAL_HEADERS" || true
+  rm -f "$LOCAL_HEADERS"
+  fail "local HTML response is missing Cache-Control: no-cache"
+fi
+rm -f "$LOCAL_HEADERS"
+
+printf '==> Verifying public HTML cache policy\n'
+PUBLIC_HEADERS="$(mktemp)"
+PUBLIC_CACHE_READY=0
+for attempt in {1..15}; do
+  : > "$PUBLIC_HEADERS"
+  if curl -fsSI "$BASE_URL/" -o "$PUBLIC_HEADERS" \
+    && grep -Eqi '^cache-control:.*no-cache' "$PUBLIC_HEADERS"; then
+    PUBLIC_CACHE_READY=1
+    printf 'PASS: public HTML no-cache visible after %s attempt(s)\n' "$attempt"
+    break
+  fi
+  sleep 1
+done
+if [[ "$PUBLIC_CACHE_READY" -ne 1 ]]; then
+  grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' "$PUBLIC_HEADERS" || true
+  rm -f "$PUBLIC_HEADERS"
+  fail "public HTML response is missing Cache-Control: no-cache"
+fi
+rm -f "$PUBLIC_HEADERS"
 
 printf '==> Running public smoke test\n'
 bash "$REPO_DIR/scripts/smoke-production.sh" "$BASE_URL"
