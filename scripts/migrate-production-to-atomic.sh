@@ -89,19 +89,21 @@ bash "$REPO_DIR/scripts/smoke-production.sh" "$BASE_URL"
 
 printf '\n========== 2. Create bootstrap release =========='"\n"
 mkdir -p "$RELEASES_DIR"
+chmod 755 "$RELEASES_DIR"
+runuser -u nginx -- test -x "$RELEASES_DIR" || fail "nginx user cannot traverse releases directory: $RELEASES_DIR"
 mkdir -p "$RELEASE_PATH"
 RELEASE_CREATED=1
 rsync -a --delete "$REPO_DIR/out/" "$RELEASE_PATH/"
 find "$RELEASE_PATH" -type d -exec chmod 755 {} \;
 find "$RELEASE_PATH" -type f -exec chmod 644 {} \;
-runuser -u nginx -- test -r "$RELEASE_PATH/index.html"
+runuser -u nginx -- test -r "$RELEASE_PATH/index.html" || fail "nginx user cannot read bootstrap release index.html"
 printf 'Release staged: %s\n' "$RELEASE_PATH"
 
 printf '\n========== 3. Create current symlink =========='"\n"
 ln -s "$RELEASE_PATH" "$CURRENT_LINK"
 LINK_CREATED=1
 printf '%s -> %s\n' "$CURRENT_LINK" "$(readlink -f "$CURRENT_LINK")"
-runuser -u nginx -- test -r "$CURRENT_LINK/index.html"
+runuser -u nginx -- test -r "$CURRENT_LINK/index.html" || fail "nginx user cannot read current symlink index.html"
 
 printf '\n========== 4. Backup nginx config =========='"\n"
 mkdir -p "$BACKUP_DIR"
