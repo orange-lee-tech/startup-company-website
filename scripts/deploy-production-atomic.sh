@@ -22,6 +22,8 @@ command -v flock >/dev/null 2>&1 || fail "flock is required"
 command -v rsync >/dev/null 2>&1 || fail "rsync is required"
 
 mkdir -p "$RELEASES_DIR"
+chmod 755 "$RELEASES_DIR"
+runuser -u nginx -- test -x "$RELEASES_DIR" || fail "nginx user cannot traverse releases directory: $RELEASES_DIR"
 exec 9>"$LOCK_FILE"
 flock -n 9 || fail "another deployment is already running"
 
