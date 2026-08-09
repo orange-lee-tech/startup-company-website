@@ -149,9 +149,34 @@ CONFIG_CHANGED=1
 
 printf '\n========== 6. Validate and reload nginx =========='"\n"
 nginx -t
+if ! nginx -T 2>/dev/null | grep -Fq 'add_header Cache-Control "no-cache" always;'; then
+  fail "effective nginx configuration does not contain the HTML no-cache header"
+fi
 systemctl reload nginx
 
-printf '\n========== 7. Verify local nginx serves bootstrap release =========='"\n"
+printf '\n========== 7. Wait for reloaded nginx workers =========='"\n"
+LOCAL_HTML_HEADERS="$(mktemp)"
+LOCAL_CONFIG_READY=0
+for attempt in {1..15}; do
+  : > "$LOCAL_HTML_HEADERS"
+  if curl -fsSI -H "Host: $HOST_HEADER" "$LOCAL_URL/" -o "$LOCAL_HTML_HEADERS" \
+    && grep -Eqi '^cache-control:.*no-cache' "$LOCAL_HTML_HEADERS"; then
+    LOCAL_CONFIG_READY=1
+    printf 'PASS: reloaded nginx workers visible after %s attempt(s)\n' "$attempt"
+    break
+  fi
+  printf 'Waiting for reloaded nginx workers (%s/15)...\n' "$attempt"
+  sleep 1
+done
+
+printf '%s\n' '--- Local nginx HTML headers (8088) ---'
+grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' "$LOCAL_HTML_HEADERS" || true
+if [[ "$LOCAL_CONFIG_READY" -ne 1 ]]; then
+  rm -f "$LOCAL_HTML_HEADERS"
+  fail "local nginx did not expose the new HTML no-cache configuration within 15 seconds"
+fi
+rm -f "$LOCAL_HTML_HEADERS"
+
 LOCAL_BODY="$(mktemp)"
 curl -fsS -H "Host: $HOST_HEADER" "$LOCAL_URL/" -o "$LOCAL_BODY"
 if ! cmp -s "$RELEASE_PATH/index.html" "$LOCAL_BODY"; then
@@ -161,33 +186,34 @@ fi
 rm -f "$LOCAL_BODY"
 printf 'PASS: local nginx serves %s\n' "$RELEASE_ID"
 
-printf '\n========== 8. Verify cache headers by layer =========='"\n"
-LOCAL_HTML_HEADERS="$(mktemp)"
+printf '\n========== 8. Verify public cache headers =========='"\n"
 PUBLIC_HTML_HEADERS="$(mktemp)"
 ASSET_HEADERS="$(mktemp)"
 HOME_BODY="$(mktemp)"
 cleanup_headers() {
-  rm -f "$LOCAL_HTML_HEADERS" "$PUBLIC_HTML_HEADERS" "$ASSET_HEADERS" "$HOME_BODY"
+  rm -f "$PUBLIC_HTML_HEADERS" "$ASSET_HEADERS" "$HOME_BODY"
 }
 trap 'cleanup_headers; on_signal' INT TERM HUP
 
-printf '%s\n' '--- Local nginx HTML headers (8088) ---'
-curl -fsSI -H "Host: $HOST_HEADER" "$LOCAL_URL/" -o "$LOCAL_HTML_HEADERS"
-grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' "$LOCAL_HTML_HEADERS" || true
-if ! grep -Eqi '^cache-control:.*no-cache' "$LOCAL_HTML_HEADERS"; then
-  cleanup_headers
-  fail "local nginx HTML response does not include Cache-Control: no-cache"
-fi
-printf 'PASS: local nginx emits Cache-Control: no-cache\n'
+PUBLIC_CONFIG_READY=0
+for attempt in {1..15}; do
+  : > "$PUBLIC_HTML_HEADERS"
+  if curl -fsSI "$BASE_URL/" -o "$PUBLIC_HTML_HEADERS" \
+    && grep -Eqi '^cache-control:.*no-cache' "$PUBLIC_HTML_HEADERS"; then
+    PUBLIC_CONFIG_READY=1
+    printf 'PASS: public no-cache header visible after %s attempt(s)\n' "$attempt"
+    break
+  fi
+  printf 'Waiting for public no-cache header (%s/15)...\n' "$attempt"
+  sleep 1
+done
 
-printf '\n%s\n' '--- Public HTML headers (443) ---'
-curl -fsSI "$BASE_URL/" -o "$PUBLIC_HTML_HEADERS"
+printf '%s\n' '--- Public HTML headers (443) ---'
 grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' "$PUBLIC_HTML_HEADERS" || true
-if ! grep -Eqi '^cache-control:.*no-cache' "$PUBLIC_HTML_HEADERS"; then
+if [[ "$PUBLIC_CONFIG_READY" -ne 1 ]]; then
   cleanup_headers
-  fail "public HTML response is missing Cache-Control: no-cache although local nginx was validated; inspect the outer reverse proxy/header policy"
+  fail "public HTML response is missing Cache-Control: no-cache after local nginx was validated; inspect the outer reverse proxy/header policy"
 fi
-printf 'PASS: public HTML preserves Cache-Control: no-cache\n'
 
 curl -fsS "$BASE_URL/" -o "$HOME_BODY"
 ASSET_PATH="$(grep -oE '/_next/static/[^" ]+\.(js|css)' "$HOME_BODY" | head -n 1 || true)"
