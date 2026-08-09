@@ -133,10 +133,16 @@ cat > "$STATIC_CONF" <<'EOF'
 index index.html;
 
 # HTML/page routes must be revalidated so an old document does not keep
-# referencing JavaScript from a previous deployment.
+# referencing JavaScript from a previous deployment. Use an explicit header
+# instead of relying on `expires epoch`, then repeat the server security
+# headers because nginx add_header inheritance stops at this location.
 location / {
-    expires epoch;
     try_files $uri.html $uri/index.html $uri =404;
+    add_header Cache-Control "no-cache" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
 }
 EOF
 CONFIG_CHANGED=1
@@ -155,30 +161,45 @@ fi
 rm -f "$LOCAL_BODY"
 printf 'PASS: local nginx serves %s\n' "$RELEASE_ID"
 
-printf '\n========== 8. Verify cache headers =========='"\n"
-HTML_HEADERS="$(mktemp)"
+printf '\n========== 8. Verify cache headers by layer =========='"\n"
+LOCAL_HTML_HEADERS="$(mktemp)"
+PUBLIC_HTML_HEADERS="$(mktemp)"
 ASSET_HEADERS="$(mktemp)"
 HOME_BODY="$(mktemp)"
-trap 'rm -f "$HTML_HEADERS" "$ASSET_HEADERS" "$HOME_BODY"; on_signal' INT TERM HUP
+cleanup_headers() {
+  rm -f "$LOCAL_HTML_HEADERS" "$PUBLIC_HTML_HEADERS" "$ASSET_HEADERS" "$HOME_BODY"
+}
+trap 'cleanup_headers; on_signal' INT TERM HUP
 
-curl -fsSI "$BASE_URL/" -o "$HTML_HEADERS"
-grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' "$HTML_HEADERS" || true
-if ! grep -Eqi '^cache-control:.*no-cache' "$HTML_HEADERS"; then
-  rm -f "$HTML_HEADERS" "$ASSET_HEADERS" "$HOME_BODY"
-  fail "HTML response does not include Cache-Control: no-cache"
+printf '%s\n' '--- Local nginx HTML headers (8088) ---'
+curl -fsSI -H "Host: $HOST_HEADER" "$LOCAL_URL/" -o "$LOCAL_HTML_HEADERS"
+grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' "$LOCAL_HTML_HEADERS" || true
+if ! grep -Eqi '^cache-control:.*no-cache' "$LOCAL_HTML_HEADERS"; then
+  cleanup_headers
+  fail "local nginx HTML response does not include Cache-Control: no-cache"
 fi
+printf 'PASS: local nginx emits Cache-Control: no-cache\n'
+
+printf '\n%s\n' '--- Public HTML headers (443) ---'
+curl -fsSI "$BASE_URL/" -o "$PUBLIC_HTML_HEADERS"
+grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' "$PUBLIC_HTML_HEADERS" || true
+if ! grep -Eqi '^cache-control:.*no-cache' "$PUBLIC_HTML_HEADERS"; then
+  cleanup_headers
+  fail "public HTML response is missing Cache-Control: no-cache although local nginx was validated; inspect the outer reverse proxy/header policy"
+fi
+printf 'PASS: public HTML preserves Cache-Control: no-cache\n'
 
 curl -fsS "$BASE_URL/" -o "$HOME_BODY"
 ASSET_PATH="$(grep -oE '/_next/static/[^" ]+\.(js|css)' "$HOME_BODY" | head -n 1 || true)"
 [[ -n "$ASSET_PATH" ]] || fail "could not discover a Next.js static asset"
 curl -fsSI "$BASE_URL$ASSET_PATH" -o "$ASSET_HEADERS"
-printf 'Asset: %s\n' "$ASSET_PATH"
+printf '\nAsset: %s\n' "$ASSET_PATH"
 grep -Ei '^(HTTP/|cache-control:|expires:|etag:|last-modified:|x-served-by:)' "$ASSET_HEADERS" || true
 if ! grep -Eqi '^cache-control:.*max-age=31536000.*immutable' "$ASSET_HEADERS"; then
-  rm -f "$HTML_HEADERS" "$ASSET_HEADERS" "$HOME_BODY"
+  cleanup_headers
   fail "Next static asset is missing long immutable cache headers"
 fi
-rm -f "$HTML_HEADERS" "$ASSET_HEADERS" "$HOME_BODY"
+cleanup_headers
 
 printf '\n========== 9. Public smoke test =========='"\n"
 bash "$REPO_DIR/scripts/smoke-production.sh" "$BASE_URL"
