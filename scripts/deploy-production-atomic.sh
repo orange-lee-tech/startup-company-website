@@ -89,10 +89,13 @@ unset NEXT_PUBLIC_SITE_BASE_PATH
 npm run build
 
 test -f out/index.html || fail "build did not produce out/index.html"
+test -s out/index.html || fail "built out/index.html is empty"
 
+# The isolated worktree is intentionally private and is never served by nginx.
+# Normalize the export itself, then verify nginx access only after it is staged
+# under the public releases directory.
 find out -type d -exec chmod 755 {} \;
 find out -type f -exec chmod 644 {} \;
-runuser -u nginx -- test -r out/index.html || fail "nginx user cannot read built index.html"
 
 printf '==> Staging release %s\n' "$RELEASE_ID"
 mkdir -p "$RELEASE_PATH"
